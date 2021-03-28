@@ -1,5 +1,7 @@
 <?php
 
+namespace PhpOffice\PhpSpreadsheet\Chart;
+
 /**
  * PHPExcel_Chart_Title
  *
@@ -25,7 +27,7 @@
  * @license        http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version        ##VERSION##, ##DATE##
  */
-class PHPExcel_Chart_Title
+class Title
 {
 
     /**
@@ -33,19 +35,19 @@ class PHPExcel_Chart_Title
      *
      * @var string
      */
-    private $caption = null;
+    private $caption = \null;
 
     /**
      * Title Layout
      *
-     * @var PHPExcel_Chart_Layout
+     * @var \PhpOffice\PhpSpreadsheet\Chart\Layout
      */
-    private $layout = null;
+    private $layout = \null;
 
     /**
      * Create a new PHPExcel_Chart_Title
      */
-    public function __construct($caption = null, PHPExcel_Chart_Layout $layout = null)
+    public function __construct($caption = \null, \PhpOffice\PhpSpreadsheet\Chart\Layout $layout = \null)
     {
         $this->caption = $caption;
         $this->layout = $layout;
@@ -65,9 +67,9 @@ class PHPExcel_Chart_Title
      * Set caption
      *
      * @param string $caption
-     * @return PHPExcel_Chart_Title
+     * @return \PhpOffice\PhpSpreadsheet\Chart\Title
      */
-    public function setCaption($caption = null)
+    public function setCaption($caption = \null)
     {
         $this->caption = $caption;
         
@@ -77,7 +79,7 @@ class PHPExcel_Chart_Title
     /**
      * Get Layout
      *
-     * @return PHPExcel_Chart_Layout
+     * @return \PhpOffice\PhpSpreadsheet\Chart\Layout
      */
     public function getLayout()
     {

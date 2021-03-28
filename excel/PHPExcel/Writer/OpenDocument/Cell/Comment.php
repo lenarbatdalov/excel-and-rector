@@ -1,4 +1,6 @@
 <?php
+namespace PhpOffice\PhpSpreadsheet\Writer\Ods\Cell;
+
 /**
  * PHPExcel
  *
@@ -24,8 +26,6 @@
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
-
-
 /**
  * PHPExcel_Writer_OpenDocument_Cell_Comment
  *
@@ -34,9 +34,9 @@
  * @copyright  Copyright (c) 2006 - 2015 PHPExcel (http://www.codeplex.com/PHPExcel)
  * @author     Alexander Pervakov <frost-nzcr4@jagmort.com>
  */
-class PHPExcel_Writer_OpenDocument_Cell_Comment
+class Comment
 {
-    public static function write(PHPExcel_Shared_XMLWriter $objWriter, PHPExcel_Cell $cell)
+    public static function write(\PhpOffice\PhpSpreadsheet\Shared\XMLWriter $objWriter, \PhpOffice\PhpSpreadsheet\Cell\Cell $cell)
     {
         $comments = $cell->getWorksheet()->getComments();
         if (!isset($comments[$cell->getCoordinate()])) {

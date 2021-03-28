@@ -1,4 +1,6 @@
 <?php
+namespace PhpOffice\PhpSpreadsheet\Shared\JAMA;
+
 /**
  *    @package JAMA
  *
@@ -63,24 +65,24 @@ class SingularValueDecomposition
         $A = $Arg->getArrayCopy();
         $this->m = $Arg->getRowDimension();
         $this->n = $Arg->getColumnDimension();
-        $nu      = min($this->m, $this->n);
+        $nu      = \min($this->m, $this->n);
         $e       = array();
         $work    = array();
-        $wantu   = true;
-        $wantv   = true;
-        $nct = min($this->m - 1, $this->n);
-        $nrt = max(0, min($this->n - 2, $this->m));
+        $wantu   = \true;
+        $wantv   = \true;
+        $nct = \min($this->m - 1, $this->n);
+        $nrt = \max(0, \min($this->n - 2, $this->m));
 
         // Reduce A to bidiagonal form, storing the diagonal elements
         // in s and the super-diagonal elements in e.
-        for ($k = 0; $k < max($nct, $nrt); ++$k) {
+        for ($k = 0; $k < \max($nct, $nrt); ++$k) {
             if ($k < $nct) {
                 // Compute the transformation for the k-th column and
                 // place the k-th diagonal in s[$k].
                 // Compute 2-norm of k-th column without under/overflow.
                 $this->s[$k] = 0;
                 for ($i = $k; $i < $this->m; ++$i) {
-                    $this->s[$k] = hypo($this->s[$k], $A[$i][$k]);
+                    $this->s[$k] = \hypo($this->s[$k], $A[$i][$k]);
                 }
                 if ($this->s[$k] != 0.0) {
                     if ($A[$k][$k] < 0.0) {
@@ -125,7 +127,7 @@ class SingularValueDecomposition
                 // Compute 2-norm without under/overflow.
                 $e[$k] = 0;
                 for ($i = $k + 1; $i < $this->n; ++$i) {
-                    $e[$k] = hypo($e[$k], $e[$i]);
+                    $e[$k] = \hypo($e[$k], $e[$i]);
                 }
                 if ($e[$k] != 0.0) {
                     if ($e[$k+1] < 0.0) {
@@ -165,7 +167,7 @@ class SingularValueDecomposition
         }
 
         // Set up the final bidiagonal matrix or order p.
-        $p = min($this->n, $this->m + 1);
+        $p = \min($this->n, $this->m + 1);
         if ($nct < $this->n) {
             $this->s[$nct] = $A[$nct][$nct];
         }
@@ -237,7 +239,7 @@ class SingularValueDecomposition
         // Main iteration loop for the singular values.
         $pp   = $p - 1;
         $iter = 0;
-        $eps  = pow(2.0, -52.0);
+        $eps  = \pow(2.0, -52.0);
 
         while ($p > 0) {
             // Here is where a test for too many iterations would go.
@@ -253,7 +255,7 @@ class SingularValueDecomposition
                 if ($k == -1) {
                     break;
                 }
-                if (abs($e[$k]) <= $eps * (abs($this->s[$k]) + abs($this->s[$k+1]))) {
+                if (\abs($e[$k]) <= $eps * (\abs($this->s[$k]) + \abs($this->s[$k+1]))) {
                     $e[$k] = 0.0;
                     break;
                 }
@@ -265,8 +267,8 @@ class SingularValueDecomposition
                     if ($ks == $k) {
                         break;
                     }
-                    $t = ($ks != $p ? abs($e[$ks]) : 0.) + ($ks != $k + 1 ? abs($e[$ks-1]) : 0.);
-                    if (abs($this->s[$ks]) <= $eps * $t) {
+                    $t = ($ks != $p ? \abs($e[$ks]) : 0.) + ($ks != $k + 1 ? \abs($e[$ks-1]) : 0.);
+                    if (\abs($this->s[$ks]) <= $eps * $t) {
                         $this->s[$ks] = 0.0;
                         break;
                     }
@@ -289,7 +291,7 @@ class SingularValueDecomposition
                     $f = $e[$p-2];
                     $e[$p-2] = 0.0;
                     for ($j = $p - 2; $j >= $k; --$j) {
-                        $t  = hypo($this->s[$j], $f);
+                        $t  = \hypo($this->s[$j], $f);
                         $cs = $this->s[$j] / $t;
                         $sn = $f / $t;
                         $this->s[$j] = $t;
@@ -311,7 +313,7 @@ class SingularValueDecomposition
                     $f = $e[$k-1];
                     $e[$k-1] = 0.0;
                     for ($j = $k; $j < $p; ++$j) {
-                        $t = hypo($this->s[$j], $f);
+                        $t = \hypo($this->s[$j], $f);
                         $cs = $this->s[$j] / $t;
                         $sn = $f / $t;
                         $this->s[$j] = $t;
@@ -329,7 +331,7 @@ class SingularValueDecomposition
                 // Perform one qr step.
                 case 3:
                     // Calculate the shift.
-                    $scale = max(max(max(max(abs($this->s[$p-1]), abs($this->s[$p-2])), abs($e[$p-2])), abs($this->s[$k])), abs($e[$k]));
+                    $scale = \max(\max(\max(\max(\abs($this->s[$p-1]), \abs($this->s[$p-2])), \abs($e[$p-2])), \abs($this->s[$k])), \abs($e[$k]));
                     $sp   = $this->s[$p-1] / $scale;
                     $spm1 = $this->s[$p-2] / $scale;
                     $epm1 = $e[$p-2] / $scale;
@@ -339,7 +341,7 @@ class SingularValueDecomposition
                     $c    = ($sp * $epm1) * ($sp * $epm1);
                     $shift = 0.0;
                     if (($b != 0.0) || ($c != 0.0)) {
-                        $shift = sqrt($b * $b + $c);
+                        $shift = \sqrt($b * $b + $c);
                         if ($b < 0.0) {
                             $shift = -$shift;
                         }
@@ -349,7 +351,7 @@ class SingularValueDecomposition
                     $g = $sk * $ek;
                     // Chase zeros.
                     for ($j = $k; $j < $p-1; ++$j) {
-                        $t  = hypo($f, $g);
+                        $t  = \hypo($f, $g);
                         $cs = $f/$t;
                         $sn = $g/$t;
                         if ($j != $k) {
@@ -366,7 +368,7 @@ class SingularValueDecomposition
                                 $this->V[$i][$j] = $t;
                             }
                         }
-                        $t = hypo($f, $g);
+                        $t = \hypo($f, $g);
                         $cs = $f/$t;
                         $sn = $g/$t;
                         $this->s[$j] = $t;
@@ -437,7 +439,7 @@ class SingularValueDecomposition
      */
     public function getU()
     {
-        return new Matrix($this->U, $this->m, min($this->m + 1, $this->n));
+        return new \Matrix($this->U, $this->m, \min($this->m + 1, $this->n));
     }
 
 
@@ -449,7 +451,7 @@ class SingularValueDecomposition
      */
     public function getV()
     {
-        return new Matrix($this->V);
+        return new \Matrix($this->V);
     }
 
 
@@ -479,7 +481,7 @@ class SingularValueDecomposition
             }
             $S[$i][$i] = $this->s[$i];
         }
-        return new Matrix($S);
+        return new \Matrix($S);
     }
 
 
@@ -503,7 +505,7 @@ class SingularValueDecomposition
      */
     public function cond()
     {
-        return $this->s[0] / $this->s[min($this->m, $this->n) - 1];
+        return $this->s[0] / $this->s[\min($this->m, $this->n) - 1];
     }
 
 
@@ -515,10 +517,10 @@ class SingularValueDecomposition
      */
     public function rank()
     {
-        $eps = pow(2.0, -52.0);
-        $tol = max($this->m, $this->n) * $this->s[0] * $eps;
+        $eps = \pow(2.0, -52.0);
+        $tol = \max($this->m, $this->n) * $this->s[0] * $eps;
         $r = 0;
-        for ($i = 0; $i < count($this->s); ++$i) {
+        for ($i = 0; $i < \count($this->s); ++$i) {
             if ($this->s[$i] > $tol) {
                 ++$r;
             }

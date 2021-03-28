@@ -1,4 +1,6 @@
 <?php
+namespace PhpOffice\PhpSpreadsheet\Shared;
+
 /**
  * PHPExcel
  *
@@ -24,8 +26,6 @@
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
-
-
 /**
  * PHPExcel_Shared_Drawing
  *
@@ -33,7 +33,7 @@
  * @package    PHPExcel_Shared
  * @copyright  Copyright (c) 2006 - 2015 PHPExcel (http://www.codeplex.com/PHPExcel)
  */
-class PHPExcel_Shared_Drawing
+class Drawing
 {
     /**
      * Convert pixels to EMU
@@ -43,7 +43,7 @@ class PHPExcel_Shared_Drawing
      */
     public static function pixelsToEMU($pValue = 0)
     {
-        return round($pValue * 9525);
+        return \round($pValue * 9525);
     }
 
     /**
@@ -55,7 +55,7 @@ class PHPExcel_Shared_Drawing
     public static function EMUToPixels($pValue = 0)
     {
         if ($pValue != 0) {
-            return round($pValue / 9525);
+            return \round($pValue / 9525);
         } else {
             return 0;
         }
@@ -67,22 +67,22 @@ class PHPExcel_Shared_Drawing
      * This gives a conversion factor of 7. Also, we assume that pixels and font size are proportional.
      *
      * @param     int $pValue    Value in pixels
-     * @param     PHPExcel_Style_Font $pDefaultFont    Default font of the workbook
+     * @param     \PhpOffice\PhpSpreadsheet\Style\Font $pDefaultFont    Default font of the workbook
      * @return     int            Value in cell dimension
      */
-    public static function pixelsToCellDimension($pValue = 0, PHPExcel_Style_Font $pDefaultFont)
+    public static function pixelsToCellDimension($pValue = 0, \PhpOffice\PhpSpreadsheet\Style\Font $pDefaultFont)
     {
         // Font name and size
         $name = $pDefaultFont->getName();
         $size = $pDefaultFont->getSize();
 
-        if (isset(PHPExcel_Shared_Font::$defaultColumnWidths[$name][$size])) {
+        if (isset(\PhpOffice\PhpSpreadsheet\Shared\Font::$defaultColumnWidths[$name][$size])) {
             // Exact width can be determined
-            $colWidth = $pValue * PHPExcel_Shared_Font::$defaultColumnWidths[$name][$size]['width'] / PHPExcel_Shared_Font::$defaultColumnWidths[$name][$size]['px'];
+            $colWidth = $pValue * \PhpOffice\PhpSpreadsheet\Shared\Font::$defaultColumnWidths[$name][$size]['width'] / \PhpOffice\PhpSpreadsheet\Shared\Font::$defaultColumnWidths[$name][$size]['px'];
         } else {
             // We don't have data for this particular font and size, use approximation by
             // extrapolating from Calibri 11
-            $colWidth = $pValue * 11 * PHPExcel_Shared_Font::$defaultColumnWidths['Calibri'][11]['width'] / PHPExcel_Shared_Font::$defaultColumnWidths['Calibri'][11]['px'] / $size;
+            $colWidth = $pValue * 11 * \PhpOffice\PhpSpreadsheet\Shared\Font::$defaultColumnWidths['Calibri'][11]['width'] / \PhpOffice\PhpSpreadsheet\Shared\Font::$defaultColumnWidths['Calibri'][11]['px'] / $size;
         }
 
         return $colWidth;
@@ -92,26 +92,26 @@ class PHPExcel_Shared_Drawing
      * Convert column width from (intrinsic) Excel units to pixels
      *
      * @param     float    $pValue        Value in cell dimension
-     * @param     PHPExcel_Style_Font $pDefaultFont    Default font of the workbook
+     * @param     \PhpOffice\PhpSpreadsheet\Style\Font $pDefaultFont    Default font of the workbook
      * @return     int        Value in pixels
      */
-    public static function cellDimensionToPixels($pValue = 0, PHPExcel_Style_Font $pDefaultFont)
+    public static function cellDimensionToPixels($pValue = 0, \PhpOffice\PhpSpreadsheet\Style\Font $pDefaultFont)
     {
         // Font name and size
         $name = $pDefaultFont->getName();
         $size = $pDefaultFont->getSize();
 
-        if (isset(PHPExcel_Shared_Font::$defaultColumnWidths[$name][$size])) {
+        if (isset(\PhpOffice\PhpSpreadsheet\Shared\Font::$defaultColumnWidths[$name][$size])) {
             // Exact width can be determined
-            $colWidth = $pValue * PHPExcel_Shared_Font::$defaultColumnWidths[$name][$size]['px'] / PHPExcel_Shared_Font::$defaultColumnWidths[$name][$size]['width'];
+            $colWidth = $pValue * \PhpOffice\PhpSpreadsheet\Shared\Font::$defaultColumnWidths[$name][$size]['px'] / \PhpOffice\PhpSpreadsheet\Shared\Font::$defaultColumnWidths[$name][$size]['width'];
         } else {
             // We don't have data for this particular font and size, use approximation by
             // extrapolating from Calibri 11
-            $colWidth = $pValue * $size * PHPExcel_Shared_Font::$defaultColumnWidths['Calibri'][11]['px'] / PHPExcel_Shared_Font::$defaultColumnWidths['Calibri'][11]['width'] / 11;
+            $colWidth = $pValue * $size * \PhpOffice\PhpSpreadsheet\Shared\Font::$defaultColumnWidths['Calibri'][11]['px'] / \PhpOffice\PhpSpreadsheet\Shared\Font::$defaultColumnWidths['Calibri'][11]['width'] / 11;
         }
 
         // Round pixels to closest integer
-        $colWidth = (int) round($colWidth);
+        $colWidth = (int) \round($colWidth);
 
         return $colWidth;
     }
@@ -136,7 +136,7 @@ class PHPExcel_Shared_Drawing
     public static function pointsToPixels($pValue = 0)
     {
         if ($pValue != 0) {
-            return (int) ceil($pValue * 1.333333333);
+            return (int) \ceil($pValue * 1.333333333);
         } else {
             return 0;
         }
@@ -150,7 +150,7 @@ class PHPExcel_Shared_Drawing
      */
     public static function degreesToAngle($pValue = 0)
     {
-        return (int)round($pValue * 60000);
+        return (int)\round($pValue * 60000);
     }
 
     /**
@@ -162,7 +162,7 @@ class PHPExcel_Shared_Drawing
     public static function angleToDegrees($pValue = 0)
     {
         if ($pValue != 0) {
-            return round($pValue / 60000);
+            return \round($pValue / 60000);
         } else {
             return 0;
         }
@@ -178,27 +178,27 @@ class PHPExcel_Shared_Drawing
     public static function imagecreatefrombmp($p_sFile)
     {
         //    Load the image into a string
-        $file = fopen($p_sFile, "rb");
-        $read = fread($file, 10);
-        while (!feof($file) && ($read<>"")) {
-            $read .= fread($file, 1024);
+        $file = \fopen($p_sFile, "rb");
+        $read = \fread($file, 10);
+        while (!\feof($file) && ($read<>"")) {
+            $read .= \fread($file, 1024);
         }
 
-        $temp = unpack("H*", $read);
+        $temp = \unpack("H*", $read);
         $hex = $temp[1];
-        $header = substr($hex, 0, 108);
+        $header = \substr($hex, 0, 108);
 
         //    Process the header
         //    Structure: http://www.fastgraph.com/help/bmp_header_format.html
-        if (substr($header, 0, 4)=="424d") {
+        if (\substr($header, 0, 4)=="424d") {
             //    Cut it in parts of 2 bytes
-            $header_parts = str_split($header, 2);
+            $header_parts = \str_split($header, 2);
 
             //    Get the width        4 bytes
-            $width = hexdec($header_parts[19].$header_parts[18]);
+            $width = \hexdec($header_parts[19].$header_parts[18]);
 
             //    Get the height        4 bytes
-            $height = hexdec($header_parts[23].$header_parts[22]);
+            $height = \hexdec($header_parts[23].$header_parts[22]);
 
             //    Unset the header params
             unset($header_parts);
@@ -209,15 +209,15 @@ class PHPExcel_Shared_Drawing
         $y = 1;
 
         //    Create newimage
-        $image = imagecreatetruecolor($width, $height);
+        $image = \imagecreatetruecolor($width, $height);
 
         //    Grab the body from the image
-        $body = substr($hex, 108);
+        $body = \substr($hex, 108);
 
         //    Calculate if padding at the end-line is needed
         //    Divided by two to keep overview.
         //    1 byte = 2 HEX-chars
-        $body_size = (strlen($body)/2);
+        $body_size = (\strlen($body)/2);
         $header_size = ($width*$height);
 
         //    Use end-line padding? Only when needed
@@ -249,13 +249,13 @@ class PHPExcel_Shared_Drawing
             // Calculation of the RGB-pixel (defined as BGR in image-data)
             // Define $i_pos as absolute position in the body
             $i_pos    = $i * 2;
-            $r        = hexdec($body[$i_pos+4].$body[$i_pos+5]);
-            $g        = hexdec($body[$i_pos+2].$body[$i_pos+3]);
-            $b        = hexdec($body[$i_pos].$body[$i_pos+1]);
+            $r        = \hexdec($body[$i_pos+4].$body[$i_pos+5]);
+            $g        = \hexdec($body[$i_pos+2].$body[$i_pos+3]);
+            $b        = \hexdec($body[$i_pos].$body[$i_pos+1]);
 
             // Calculate and draw the pixel
-            $color    = imagecolorallocate($image, $r, $g, $b);
-            imagesetpixel($image, $x, $height-$y, $color);
+            $color    = \imagecolorallocate($image, $r, $g, $b);
+            \imagesetpixel($image, $x, $height-$y, $color);
 
             // Raise the horizontal position
             $x++;

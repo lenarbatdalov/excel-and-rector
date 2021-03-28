@@ -3,6 +3,8 @@
 require_once PHPEXCEL_ROOT . 'PHPExcel/Shared/trend/bestFitClass.php';
 require_once PHPEXCEL_ROOT . 'PHPExcel/Shared/JAMA/Matrix.php';
 
+namespace PhpOffice\PhpSpreadsheet\Shared\Trend;
+
 /**
  * PHPExcel_Polynomial_Best_Fit
  *
@@ -28,7 +30,7 @@ require_once PHPEXCEL_ROOT . 'PHPExcel/Shared/JAMA/Matrix.php';
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
-class PHPExcel_Polynomial_Best_Fit extends PHPExcel_Best_Fit
+class PolynomialBestFit extends \PhpOffice\PhpSpreadsheet\Shared\Trend\BestFit
 {
     /**
      * Algorithm type to use for best-fit
@@ -70,7 +72,7 @@ class PHPExcel_Polynomial_Best_Fit extends PHPExcel_Best_Fit
         $slope = $this->getSlope();
         foreach ($slope as $key => $value) {
             if ($value != 0.0) {
-                $retVal += $value * pow($xValue, $key + 1);
+                $retVal += $value * \pow($xValue, $key + 1);
             }
         }
         return $retVal;
@@ -124,7 +126,7 @@ class PHPExcel_Polynomial_Best_Fit extends PHPExcel_Best_Fit
         if ($dp != 0) {
             $coefficients = array();
             foreach ($this->_slope as $coefficient) {
-                $coefficients[] = round($coefficient, $dp);
+                $coefficients[] = \round($coefficient, $dp);
             }
             return $coefficients;
         }
@@ -134,7 +136,7 @@ class PHPExcel_Polynomial_Best_Fit extends PHPExcel_Best_Fit
 
     public function getCoefficients($dp = 0)
     {
-        return array_merge(array($this->getIntersect($dp)), $this->getSlope($dp));
+        return \array_merge(array($this->getIntersect($dp)), $this->getSlope($dp));
     }
 
 
@@ -149,8 +151,8 @@ class PHPExcel_Polynomial_Best_Fit extends PHPExcel_Best_Fit
     private function polynomialRegression($order, $yValues, $xValues, $const)
     {
         // calculate sums
-        $x_sum = array_sum($xValues);
-        $y_sum = array_sum($yValues);
+        $x_sum = \array_sum($xValues);
+        $y_sum = \array_sum($yValues);
         $xx_sum = $xy_sum = 0;
         for ($i = 0; $i < $this->valueCount; ++$i) {
             $xy_sum += $xValues[$i] * $yValues[$i];
@@ -167,26 +169,26 @@ class PHPExcel_Polynomial_Best_Fit extends PHPExcel_Best_Fit
          */
         for ($i = 0; $i < $this->valueCount; ++$i) {
             for ($j = 0; $j <= $order; ++$j) {
-                $A[$i][$j] = pow($xValues[$i], $j);
+                $A[$i][$j] = \pow($xValues[$i], $j);
             }
         }
         for ($i=0; $i < $this->valueCount; ++$i) {
             $B[$i] = array($yValues[$i]);
         }
-        $matrixA = new Matrix($A);
-        $matrixB = new Matrix($B);
+        $matrixA = new \Matrix($A);
+        $matrixB = new \Matrix($B);
         $C = $matrixA->solve($matrixB);
 
         $coefficients = array();
         for ($i = 0; $i < $C->m; ++$i) {
             $r = $C->get($i, 0);
-            if (abs($r) <= pow(10, -9)) {
+            if (\abs($r) <= \pow(10, -9)) {
                 $r = 0;
             }
             $coefficients[] = $r;
         }
 
-        $this->intersect = array_shift($coefficients);
+        $this->intersect = \array_shift($coefficients);
         $this->_slope = $coefficients;
 
         $this->calculateGoodnessOfFit($x_sum, $y_sum, $xx_sum, $yy_sum, $xy_sum);
@@ -204,18 +206,18 @@ class PHPExcel_Polynomial_Best_Fit extends PHPExcel_Best_Fit
      * @param    float[]        $xValues    The set of X-values for this regression
      * @param    boolean        $const
      */
-    public function __construct($order, $yValues, $xValues = array(), $const = true)
+    public function __construct($order, $yValues, $xValues = array(), $const = \true)
     {
-        if (parent::__construct($yValues, $xValues) !== false) {
+        if (parent::__construct($yValues, $xValues) !== \false) {
             if ($order < $this->valueCount) {
                 $this->bestFitType .= '_'.$order;
                 $this->order = $order;
                 $this->polynomialRegression($order, $yValues, $xValues, $const);
                 if (($this->getGoodnessOfFit() < 0.0) || ($this->getGoodnessOfFit() > 1.0)) {
-                    $this->_error = true;
+                    $this->_error = \true;
                 }
             } else {
-                $this->_error = true;
+                $this->_error = \true;
             }
         }
     }

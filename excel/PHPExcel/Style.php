@@ -1,5 +1,7 @@
 <?php
 
+namespace PhpOffice\PhpSpreadsheet\Style;
+
 /**
  * PHPExcel_Style
  *
@@ -25,54 +27,54 @@
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
-class PHPExcel_Style extends PHPExcel_Style_Supervisor implements PHPExcel_IComparable
+class Style extends \PhpOffice\PhpSpreadsheet\Style\Supervisor implements \PhpOffice\PhpSpreadsheet\IComparable
 {
     /**
      * Font
      *
-     * @var PHPExcel_Style_Font
+     * @var \PhpOffice\PhpSpreadsheet\Style\Font
      */
     protected $font;
 
     /**
      * Fill
      *
-     * @var PHPExcel_Style_Fill
+     * @var \PhpOffice\PhpSpreadsheet\Style\Fill
      */
     protected $fill;
 
     /**
      * Borders
      *
-     * @var PHPExcel_Style_Borders
+     * @var \PhpOffice\PhpSpreadsheet\Style\Borders
      */
     protected $borders;
 
     /**
      * Alignment
      *
-     * @var PHPExcel_Style_Alignment
+     * @var \PhpOffice\PhpSpreadsheet\Style\Alignment
      */
     protected $alignment;
 
     /**
      * Number Format
      *
-     * @var PHPExcel_Style_NumberFormat
+     * @var \PhpOffice\PhpSpreadsheet\Style\NumberFormat
      */
     protected $numberFormat;
 
     /**
      * Conditional styles
      *
-     * @var PHPExcel_Style_Conditional[]
+     * @var \PhpOffice\PhpSpreadsheet\Style\Conditional[]
      */
     protected $conditionalStyles;
 
     /**
      * Protection
      *
-     * @var PHPExcel_Style_Protection
+     * @var \PhpOffice\PhpSpreadsheet\Style\Protection
      */
     protected $protection;
 
@@ -88,7 +90,7 @@ class PHPExcel_Style extends PHPExcel_Style_Supervisor implements PHPExcel_IComp
      *
      * @var boolean
      */
-    protected $quotePrefix = false;
+    protected $quotePrefix = \false;
 
     /**
      * Create a new PHPExcel_Style
@@ -100,19 +102,19 @@ class PHPExcel_Style extends PHPExcel_Style_Supervisor implements PHPExcel_IComp
      *       Leave this value at default unless you understand exactly what
      *    its ramifications are
      */
-    public function __construct($isSupervisor = false, $isConditional = false)
+    public function __construct($isSupervisor = \false, $isConditional = \false)
     {
         // Supervisor?
         $this->isSupervisor = $isSupervisor;
 
         // Initialise values
         $this->conditionalStyles = array();
-        $this->font         = new PHPExcel_Style_Font($isSupervisor, $isConditional);
-        $this->fill         = new PHPExcel_Style_Fill($isSupervisor, $isConditional);
-        $this->borders      = new PHPExcel_Style_Borders($isSupervisor, $isConditional);
-        $this->alignment    = new PHPExcel_Style_Alignment($isSupervisor, $isConditional);
-        $this->numberFormat = new PHPExcel_Style_NumberFormat($isSupervisor, $isConditional);
-        $this->protection   = new PHPExcel_Style_Protection($isSupervisor, $isConditional);
+        $this->font         = new \PhpOffice\PhpSpreadsheet\Style\Font($isSupervisor, $isConditional);
+        $this->fill         = new \PhpOffice\PhpSpreadsheet\Style\Fill($isSupervisor, $isConditional);
+        $this->borders      = new \PhpOffice\PhpSpreadsheet\Style\Borders($isSupervisor, $isConditional);
+        $this->alignment    = new \PhpOffice\PhpSpreadsheet\Style\Alignment($isSupervisor, $isConditional);
+        $this->numberFormat = new \PhpOffice\PhpSpreadsheet\Style\NumberFormat($isSupervisor, $isConditional);
+        $this->protection   = new \PhpOffice\PhpSpreadsheet\Style\Protection($isSupervisor, $isConditional);
 
         // bind parent if we are a supervisor
         if ($isSupervisor) {
@@ -129,7 +131,7 @@ class PHPExcel_Style extends PHPExcel_Style_Supervisor implements PHPExcel_IComp
      * Get the shared style component for the currently active cell in currently active sheet.
      * Only used for style supervisor
      *
-     * @return PHPExcel_Style
+     * @return \PhpOffice\PhpSpreadsheet\Style\Style
      */
     public function getSharedComponent()
     {
@@ -137,7 +139,7 @@ class PHPExcel_Style extends PHPExcel_Style_Supervisor implements PHPExcel_IComp
         $selectedCell = $this->getActiveCell(); // e.g. 'A1'
 
         if ($activeSheet->cellExists($selectedCell)) {
-            $xfIndex = $activeSheet->getCell($selectedCell)->getXfIndex();
+            $xfIndex = $activeSheet->getCell($selectedCell, true)->getXfIndex();
         } else {
             $xfIndex = 0;
         }
@@ -148,7 +150,7 @@ class PHPExcel_Style extends PHPExcel_Style_Supervisor implements PHPExcel_IComp
     /**
      * Get parent. Only used for style supervisor
      *
-     * @return PHPExcel
+     * @return \PhpOffice\PhpSpreadsheet\Spreadsheet
      */
     public function getParent()
     {
@@ -203,33 +205,33 @@ class PHPExcel_Style extends PHPExcel_Style_Supervisor implements PHPExcel_IComp
      *
      * @param    array    $pStyles    Array containing style information
      * @param     boolean        $pAdvanced    Advanced mode for setting borders.
-     * @throws    PHPExcel_Exception
-     * @return PHPExcel_Style
+     * @throws    \PhpOffice\PhpSpreadsheet\Exception
+     * @return \PhpOffice\PhpSpreadsheet\Style\Style
      */
-    public function applyFromArray($pStyles = null, $pAdvanced = true)
+    public function applyFromArray($pStyles = \null, $pAdvanced = \true)
     {
-        if (is_array($pStyles)) {
+        if (\is_array($pStyles)) {
             if ($this->isSupervisor) {
                 $pRange = $this->getSelectedCells();
 
                 // Uppercase coordinate
-                $pRange = strtoupper($pRange);
+                $pRange = \strtoupper($pRange);
 
                 // Is it a cell range or a single cell?
-                if (strpos($pRange, ':') === false) {
+                if (\strpos($pRange, ':') === \false) {
                     $rangeA = $pRange;
                     $rangeB = $pRange;
                 } else {
-                    list($rangeA, $rangeB) = explode(':', $pRange);
+                    list($rangeA, $rangeB) = \explode(':', $pRange);
                 }
 
                 // Calculate range outer borders
-                $rangeStart = PHPExcel_Cell::coordinateFromString($rangeA);
-                $rangeEnd   = PHPExcel_Cell::coordinateFromString($rangeB);
+                $rangeStart = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::coordinateFromString($rangeA);
+                $rangeEnd   = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::coordinateFromString($rangeB);
 
                 // Translate column into index
-                $rangeStart[0]    = PHPExcel_Cell::columnIndexFromString($rangeStart[0]) - 1;
-                $rangeEnd[0]    = PHPExcel_Cell::columnIndexFromString($rangeEnd[0]) - 1;
+                $rangeStart[0]    = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($rangeStart[0]) - 1;
+                $rangeEnd[0]    = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($rangeEnd[0]) - 1;
 
                 // Make sure we can loop upwards on rows and columns
                 if ($rangeStart[0] > $rangeEnd[0] && $rangeStart[1] > $rangeEnd[1]) {
@@ -271,19 +273,19 @@ class PHPExcel_Style extends PHPExcel_Style_Supervisor implements PHPExcel_IComp
                         unset($pStyles['borders']['inside']); // not needed any more
                     }
                     // width and height characteristics of selection, 1, 2, or 3 (for 3 or more)
-                    $xMax = min($rangeEnd[0] - $rangeStart[0] + 1, 3);
-                    $yMax = min($rangeEnd[1] - $rangeStart[1] + 1, 3);
+                    $xMax = \min($rangeEnd[0] - $rangeStart[0] + 1, 3);
+                    $yMax = \min($rangeEnd[1] - $rangeStart[1] + 1, 3);
 
                     // loop through up to 3 x 3 = 9 regions
                     for ($x = 1; $x <= $xMax; ++$x) {
                         // start column index for region
                         $colStart = ($x == 3) ?
-                            PHPExcel_Cell::stringFromColumnIndex($rangeEnd[0])
-                                : PHPExcel_Cell::stringFromColumnIndex($rangeStart[0] + $x - 1);
+                            \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($rangeEnd[0])
+                                : \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($rangeStart[0] + $x - 1);
                         // end column index for region
                         $colEnd = ($x == 1) ?
-                            PHPExcel_Cell::stringFromColumnIndex($rangeStart[0])
-                                : PHPExcel_Cell::stringFromColumnIndex($rangeEnd[0] - $xMax + $x);
+                            \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($rangeStart[0])
+                                : \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($rangeEnd[0] - $xMax + $x);
 
                         for ($y = 1; $y <= $yMax; ++$y) {
                             // which edges are touching the region
@@ -321,7 +323,7 @@ class PHPExcel_Style extends PHPExcel_Style_Supervisor implements PHPExcel_IComp
                             unset($regionStyles['borders']['inside']);
 
                             // what are the inner edges of the region when looking at the selection
-                            $innerEdges = array_diff(array('top', 'right', 'bottom', 'left'), $edges);
+                            $innerEdges = \array_diff(array('top', 'right', 'bottom', 'left'), $edges);
 
                             // inner edges that are not touching the region should take the 'inside' border properties if they have been set
                             foreach ($innerEdges as $innerEdge) {
@@ -348,7 +350,7 @@ class PHPExcel_Style extends PHPExcel_Style_Supervisor implements PHPExcel_IComp
                             }
 
                             // apply region style to region by calling applyFromArray() in simple mode
-                            $this->getActiveSheet()->getStyle($range)->applyFromArray($regionStyles, false);
+                            $this->getActiveSheet()->getStyle($range)->applyFromArray($regionStyles, \false);
                         }
                     }
                     return $this;
@@ -356,9 +358,9 @@ class PHPExcel_Style extends PHPExcel_Style_Supervisor implements PHPExcel_IComp
 
                 // SIMPLE MODE:
                 // Selection type, inspect
-                if (preg_match('/^[A-Z]+1:[A-Z]+1048576$/', $pRange)) {
+                if (\preg_match('/^[A-Z]+1:[A-Z]+1048576$/', $pRange)) {
                     $selectionType = 'COLUMN';
-                } elseif (preg_match('/^A[0-9]+:XFD[0-9]+$/', $pRange)) {
+                } elseif (\preg_match('/^A[0-9]+:XFD[0-9]+$/', $pRange)) {
                     $selectionType = 'ROW';
                 } else {
                     $selectionType = 'CELL';
@@ -369,16 +371,16 @@ class PHPExcel_Style extends PHPExcel_Style_Supervisor implements PHPExcel_IComp
                     case 'COLUMN':
                         $oldXfIndexes = array();
                         for ($col = $rangeStart[0]; $col <= $rangeEnd[0]; ++$col) {
-                            $oldXfIndexes[$this->getActiveSheet()->getColumnDimensionByColumn($col)->getXfIndex()] = true;
+                            $oldXfIndexes[$this->getActiveSheet()->getColumnDimensionByColumn($col)->getXfIndex()] = \true;
                         }
                         break;
                     case 'ROW':
                         $oldXfIndexes = array();
                         for ($row = $rangeStart[1]; $row <= $rangeEnd[1]; ++$row) {
-                            if ($this->getActiveSheet()->getRowDimension($row)->getXfIndex() == null) {
-                                $oldXfIndexes[0] = true; // row without explicit style should be formatted based on default style
+                            if ($this->getActiveSheet()->getRowDimension($row, true)->getXfIndex() == \null) {
+                                $oldXfIndexes[0] = \true; // row without explicit style should be formatted based on default style
                             } else {
-                                $oldXfIndexes[$this->getActiveSheet()->getRowDimension($row)->getXfIndex()] = true;
+                                $oldXfIndexes[$this->getActiveSheet()->getRowDimension($row, true)->getXfIndex()] = \true;
                             }
                         }
                         break;
@@ -386,7 +388,7 @@ class PHPExcel_Style extends PHPExcel_Style_Supervisor implements PHPExcel_IComp
                         $oldXfIndexes = array();
                         for ($col = $rangeStart[0]; $col <= $rangeEnd[0]; ++$col) {
                             for ($row = $rangeStart[1]; $row <= $rangeEnd[1]; ++$row) {
-                                $oldXfIndexes[$this->getActiveSheet()->getCellByColumnAndRow($col, $row)->getXfIndex()] = true;
+                                $oldXfIndexes[$this->getActiveSheet()->getCellByColumnAndRow($col + 1, $row, true)->getXfIndex()] = \true;
                             }
                         }
                         break;
@@ -397,7 +399,7 @@ class PHPExcel_Style extends PHPExcel_Style_Supervisor implements PHPExcel_IComp
                 foreach ($oldXfIndexes as $oldXfIndex => $dummy) {
                     $style = $workbook->getCellXfByIndex($oldXfIndex);
                     $newStyle = clone $style;
-                    $newStyle->applyFromArray($pStyles);
+                    $newStyle->applyFromArray($pStyles, true);
 
                     if ($existingStyle = $workbook->getCellXfByHashCode($newStyle->getHashCode())) {
                         // there is already such cell Xf in our collection
@@ -421,8 +423,8 @@ class PHPExcel_Style extends PHPExcel_Style_Supervisor implements PHPExcel_IComp
 
                     case 'ROW':
                         for ($row = $rangeStart[1]; $row <= $rangeEnd[1]; ++$row) {
-                            $rowDimension = $this->getActiveSheet()->getRowDimension($row);
-                            $oldXfIndex = $rowDimension->getXfIndex() === null ?
+                            $rowDimension = $this->getActiveSheet()->getRowDimension($row, true);
+                            $oldXfIndex = $rowDimension->getXfIndex() === \null ?
                                 0 : $rowDimension->getXfIndex(); // row without explicit style should be formatted based on default style
                             $rowDimension->setXfIndex($newXfIndexes[$oldXfIndex]);
                         }
@@ -431,7 +433,7 @@ class PHPExcel_Style extends PHPExcel_Style_Supervisor implements PHPExcel_IComp
                     case 'CELL':
                         for ($col = $rangeStart[0]; $col <= $rangeEnd[0]; ++$col) {
                             for ($row = $rangeStart[1]; $row <= $rangeEnd[1]; ++$row) {
-                                $cell = $this->getActiveSheet()->getCellByColumnAndRow($col, $row);
+                                $cell = $this->getActiveSheet()->getCellByColumnAndRow($col + 1, $row, true);
                                 $oldXfIndex = $cell->getXfIndex();
                                 $cell->setXfIndex($newXfIndexes[$oldXfIndex]);
                             }
@@ -441,30 +443,30 @@ class PHPExcel_Style extends PHPExcel_Style_Supervisor implements PHPExcel_IComp
 
             } else {
                 // not a supervisor, just apply the style array directly on style object
-                if (array_key_exists('fill', $pStyles)) {
+                if (\array_key_exists('fill', $pStyles)) {
                     $this->getFill()->applyFromArray($pStyles['fill']);
                 }
-                if (array_key_exists('font', $pStyles)) {
+                if (\array_key_exists('font', $pStyles)) {
                     $this->getFont()->applyFromArray($pStyles['font']);
                 }
-                if (array_key_exists('borders', $pStyles)) {
+                if (\array_key_exists('borders', $pStyles)) {
                     $this->getBorders()->applyFromArray($pStyles['borders']);
                 }
-                if (array_key_exists('alignment', $pStyles)) {
+                if (\array_key_exists('alignment', $pStyles)) {
                     $this->getAlignment()->applyFromArray($pStyles['alignment']);
                 }
-                if (array_key_exists('numberformat', $pStyles)) {
+                if (\array_key_exists('numberformat', $pStyles)) {
                     $this->getNumberFormat()->applyFromArray($pStyles['numberformat']);
                 }
-                if (array_key_exists('protection', $pStyles)) {
+                if (\array_key_exists('protection', $pStyles)) {
                     $this->getProtection()->applyFromArray($pStyles['protection']);
                 }
-                if (array_key_exists('quotePrefix', $pStyles)) {
+                if (\array_key_exists('quotePrefix', $pStyles)) {
                     $this->quotePrefix = $pStyles['quotePrefix'];
                 }
             }
         } else {
-            throw new PHPExcel_Exception("Invalid style array passed.");
+            throw new \PhpOffice\PhpSpreadsheet\Exception("Invalid style array passed.");
         }
         return $this;
     }
@@ -472,7 +474,7 @@ class PHPExcel_Style extends PHPExcel_Style_Supervisor implements PHPExcel_IComp
     /**
      * Get Fill
      *
-     * @return PHPExcel_Style_Fill
+     * @return \PhpOffice\PhpSpreadsheet\Style\Fill
      */
     public function getFill()
     {
@@ -482,7 +484,7 @@ class PHPExcel_Style extends PHPExcel_Style_Supervisor implements PHPExcel_IComp
     /**
      * Get Font
      *
-     * @return PHPExcel_Style_Font
+     * @return \PhpOffice\PhpSpreadsheet\Style\Font
      */
     public function getFont()
     {
@@ -492,10 +494,10 @@ class PHPExcel_Style extends PHPExcel_Style_Supervisor implements PHPExcel_IComp
     /**
      * Set font
      *
-     * @param PHPExcel_Style_Font $font
-     * @return PHPExcel_Style
+     * @param \PhpOffice\PhpSpreadsheet\Style\Font $font
+     * @return \PhpOffice\PhpSpreadsheet\Style\Style
      */
-    public function setFont(PHPExcel_Style_Font $font)
+    public function setFont(\PhpOffice\PhpSpreadsheet\Style\Font $font)
     {
         $this->font = $font;
         return $this;
@@ -504,7 +506,7 @@ class PHPExcel_Style extends PHPExcel_Style_Supervisor implements PHPExcel_IComp
     /**
      * Get Borders
      *
-     * @return PHPExcel_Style_Borders
+     * @return \PhpOffice\PhpSpreadsheet\Style\Borders
      */
     public function getBorders()
     {
@@ -514,7 +516,7 @@ class PHPExcel_Style extends PHPExcel_Style_Supervisor implements PHPExcel_IComp
     /**
      * Get Alignment
      *
-     * @return PHPExcel_Style_Alignment
+     * @return \PhpOffice\PhpSpreadsheet\Style\Alignment
      */
     public function getAlignment()
     {
@@ -524,7 +526,7 @@ class PHPExcel_Style extends PHPExcel_Style_Supervisor implements PHPExcel_IComp
     /**
      * Get Number Format
      *
-     * @return PHPExcel_Style_NumberFormat
+     * @return \PhpOffice\PhpSpreadsheet\Style\NumberFormat
      */
     public function getNumberFormat()
     {
@@ -534,7 +536,7 @@ class PHPExcel_Style extends PHPExcel_Style_Supervisor implements PHPExcel_IComp
     /**
      * Get Conditional Styles. Only used on supervisor.
      *
-     * @return PHPExcel_Style_Conditional[]
+     * @return \PhpOffice\PhpSpreadsheet\Style\Conditional[]
      */
     public function getConditionalStyles()
     {
@@ -544,12 +546,12 @@ class PHPExcel_Style extends PHPExcel_Style_Supervisor implements PHPExcel_IComp
     /**
      * Set Conditional Styles. Only used on supervisor.
      *
-     * @param PHPExcel_Style_Conditional[] $pValue Array of condtional styles
-     * @return PHPExcel_Style
+     * @param \PhpOffice\PhpSpreadsheet\Style\Conditional[] $pValue Array of condtional styles
+     * @return \PhpOffice\PhpSpreadsheet\Style\Style
      */
-    public function setConditionalStyles($pValue = null)
+    public function setConditionalStyles($pValue = \null)
     {
-        if (is_array($pValue)) {
+        if (\is_array($pValue)) {
             $this->getActiveSheet()->setConditionalStyles($this->getSelectedCells(), $pValue);
         }
         return $this;
@@ -558,7 +560,7 @@ class PHPExcel_Style extends PHPExcel_Style_Supervisor implements PHPExcel_IComp
     /**
      * Get Protection
      *
-     * @return PHPExcel_Style_Protection
+     * @return \PhpOffice\PhpSpreadsheet\Style\Protection
      */
     public function getProtection()
     {
@@ -586,11 +588,11 @@ class PHPExcel_Style extends PHPExcel_Style_Supervisor implements PHPExcel_IComp
     public function setQuotePrefix($pValue)
     {
         if ($pValue == '') {
-            $pValue = false;
+            $pValue = \false;
         }
         if ($this->isSupervisor) {
             $styleArray = array('quotePrefix' => $pValue);
-            $this->getActiveSheet()->getStyle($this->getSelectedCells())->applyFromArray($styleArray);
+            $this->getActiveSheet()->getStyle($this->getSelectedCells())->applyFromArray($styleArray, true);
         } else {
             $this->quotePrefix = (boolean) $pValue;
         }
@@ -609,7 +611,7 @@ class PHPExcel_Style extends PHPExcel_Style_Supervisor implements PHPExcel_IComp
             $hashConditionals .= $conditional->getHashCode();
         }
 
-        return md5(
+        return \md5(
             $this->fill->getHashCode() .
             $this->font->getHashCode() .
             $this->borders->getHashCode() .

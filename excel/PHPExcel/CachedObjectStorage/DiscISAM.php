@@ -25,7 +25,7 @@
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
-class PHPExcel_CachedObjectStorage_DiscISAM extends PHPExcel_CachedObjectStorage_CacheBase implements PHPExcel_CachedObjectStorage_ICache
+class PHPExcel_CachedObjectStorage_DiscISAM extends \PhpOffice\PhpSpreadsheet\Collection\Cells implements PHPExcel_CachedObjectStorage_ICache
 {
     /**
      * Name of the file for this cache
@@ -53,7 +53,7 @@ class PHPExcel_CachedObjectStorage_DiscISAM extends PHPExcel_CachedObjectStorage
      *     and the 'nullify' the current cell object
      *
      * @return    void
-     * @throws    PHPExcel_Exception
+     * @throws    \PhpOffice\PhpSpreadsheet\Exception
      */
     protected function storeData()
     {
@@ -75,11 +75,11 @@ class PHPExcel_CachedObjectStorage_DiscISAM extends PHPExcel_CachedObjectStorage
      * Add or Update a cell in cache identified by coordinate address
      *
      * @param    string            $pCoord        Coordinate address of the cell to update
-     * @param    PHPExcel_Cell    $cell        Cell to update
-     * @return    PHPExcel_Cell
-     * @throws    PHPExcel_Exception
+     * @param    \PhpOffice\PhpSpreadsheet\Cell\Cell    $cell        Cell to update
+     * @return    \PhpOffice\PhpSpreadsheet\Cell\Cell
+     * @throws    \PhpOffice\PhpSpreadsheet\Exception
      */
-    public function addCacheData($pCoord, PHPExcel_Cell $cell)
+    public function addCacheData($pCoord, \PhpOffice\PhpSpreadsheet\Cell\Cell $cell)
     {
         if (($pCoord !== $this->currentObjectID) && ($this->currentObjectID !== null)) {
             $this->storeData();
@@ -96,8 +96,8 @@ class PHPExcel_CachedObjectStorage_DiscISAM extends PHPExcel_CachedObjectStorage
      * Get cell at a specific coordinate
      *
      * @param     string             $pCoord        Coordinate of the cell
-     * @throws     PHPExcel_Exception
-     * @return     PHPExcel_Cell     Cell that was found, or null if not found
+     * @throws     \PhpOffice\PhpSpreadsheet\Exception
+     * @return     \PhpOffice\PhpSpreadsheet\Cell\Cell     Cell that was found, or null if not found
      */
     public function getCacheData($pCoord)
     {
@@ -140,9 +140,9 @@ class PHPExcel_CachedObjectStorage_DiscISAM extends PHPExcel_CachedObjectStorage
     /**
      * Clone the cell collection
      *
-     * @param    PHPExcel_Worksheet    $parent        The new worksheet
+     * @param    \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet    $parent        The new worksheet
      */
-    public function copyCellCollection(PHPExcel_Worksheet $parent)
+    public function copyCellCollection(\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet $parent)
     {
         parent::copyCellCollection($parent);
         //    Get a new id for the new file name
@@ -177,14 +177,14 @@ class PHPExcel_CachedObjectStorage_DiscISAM extends PHPExcel_CachedObjectStorage
     /**
      * Initialise this new cell collection
      *
-     * @param    PHPExcel_Worksheet    $parent        The worksheet for this cell collection
+     * @param    \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet    $parent        The worksheet for this cell collection
      * @param    array of mixed        $arguments    Additional initialisation arguments
      */
-    public function __construct(PHPExcel_Worksheet $parent, $arguments)
+    public function __construct(\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet $parent, $arguments)
     {
         $this->cacheDirectory    = ((isset($arguments['dir'])) && ($arguments['dir'] !== null))
                                     ? $arguments['dir']
-                                    : PHPExcel_Shared_File::sys_get_temp_dir();
+                                    : \PhpOffice\PhpSpreadsheet\Shared\File::sys_get_temp_dir();
 
         parent::__construct($parent);
         if (is_null($this->fileHandle)) {

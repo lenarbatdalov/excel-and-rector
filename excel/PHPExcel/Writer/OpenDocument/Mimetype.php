@@ -1,5 +1,7 @@
 <?php
 
+namespace PhpOffice\PhpSpreadsheet\Writer\Ods;
+
 /**
  * PHPExcel
  *
@@ -25,16 +27,16 @@
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
-class PHPExcel_Writer_OpenDocument_Mimetype extends PHPExcel_Writer_OpenDocument_WriterPart
+class Mimetype extends \PhpOffice\PhpSpreadsheet\Writer\Ods\WriterPart
 {
     /**
      * Write mimetype to plain text format
      *
-     * @param     PHPExcel    $pPHPExcel
+     * @param     \PhpOffice\PhpSpreadsheet\Spreadsheet    $pPHPExcel
      * @return     string         XML Output
-     * @throws     PHPExcel_Writer_Exception
+     * @throws     \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
-    public function write(PHPExcel $pPHPExcel = null)
+    public function write(\PhpOffice\PhpSpreadsheet\Spreadsheet $pPHPExcel = \null)
     {
         return 'application/vnd.oasis.opendocument.spreadsheet';
     }

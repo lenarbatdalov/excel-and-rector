@@ -9,6 +9,8 @@ if (!defined('PHPEXCEL_ROOT')) {
     require(PHPEXCEL_ROOT . 'PHPExcel/Autoloader.php');
 }
 
+namespace PhpOffice\PhpSpreadsheet;
+
 /**
  * PHPExcel_IOFactory
  *
@@ -34,7 +36,7 @@ if (!defined('PHPEXCEL_ROOT')) {
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
-class PHPExcel_IOFactory
+class IOFactory
 {
     /**
      * Search locations
@@ -91,14 +93,14 @@ class PHPExcel_IOFactory
      * @static
      * @access    public
      * @param    array $value
-     * @throws    PHPExcel_Reader_Exception
+     * @throws    \PhpOffice\PhpSpreadsheet\Reader\Exception
      */
     public static function setSearchLocations($value)
     {
-        if (is_array($value)) {
+        if (\is_array($value)) {
             self::$searchLocations = $value;
         } else {
-            throw new PHPExcel_Reader_Exception('Invalid parameter passed.');
+            throw new \PhpOffice\PhpSpreadsheet\Reader\Exception('Invalid parameter passed.');
         }
     }
 
@@ -121,12 +123,12 @@ class PHPExcel_IOFactory
      *
      * @static
      * @access    public
-     * @param    PHPExcel $phpExcel
+     * @param    \PhpOffice\PhpSpreadsheet\Spreadsheet $phpExcel
      * @param    string  $writerType    Example: Excel2007
-     * @return    PHPExcel_Writer_IWriter
-     * @throws    PHPExcel_Reader_Exception
+     * @return    \PhpOffice\PhpSpreadsheet\Writer\IWriter
+     * @throws    \PhpOffice\PhpSpreadsheet\Reader\Exception
      */
-    public static function createWriter(PHPExcel $phpExcel, $writerType = '')
+    public static function createWriter(\PhpOffice\PhpSpreadsheet\Spreadsheet $phpExcel, $writerType = '')
     {
         // Search type
         $searchType = 'IWriter';
@@ -134,17 +136,17 @@ class PHPExcel_IOFactory
         // Include class
         foreach (self::$searchLocations as $searchLocation) {
             if ($searchLocation['type'] == $searchType) {
-                $className = str_replace('{0}', $writerType, $searchLocation['class']);
+                $className = \str_replace('{0}', $writerType, $searchLocation['class']);
 
                 $instance = new $className($phpExcel);
-                if ($instance !== null) {
+                if ($instance !== \null) {
                     return $instance;
                 }
             }
         }
 
         // Nothing found...
-        throw new PHPExcel_Reader_Exception("No $searchType found for type $writerType");
+        throw new \PhpOffice\PhpSpreadsheet\Reader\Exception("No $searchType found for type $writerType");
     }
 
     /**
@@ -153,8 +155,8 @@ class PHPExcel_IOFactory
      * @static
      * @access    public
      * @param    string $readerType    Example: Excel2007
-     * @return    PHPExcel_Reader_IReader
-     * @throws    PHPExcel_Reader_Exception
+     * @return    \PhpOffice\PhpSpreadsheet\Reader\IReader
+     * @throws    \PhpOffice\PhpSpreadsheet\Reader\Exception
      */
     public static function createReader($readerType = '')
     {
@@ -164,17 +166,17 @@ class PHPExcel_IOFactory
         // Include class
         foreach (self::$searchLocations as $searchLocation) {
             if ($searchLocation['type'] == $searchType) {
-                $className = str_replace('{0}', $readerType, $searchLocation['class']);
+                $className = \str_replace('{0}', $readerType, $searchLocation['class']);
 
                 $instance = new $className();
-                if ($instance !== null) {
+                if ($instance !== \null) {
                     return $instance;
                 }
             }
         }
 
         // Nothing found...
-        throw new PHPExcel_Reader_Exception("No $searchType found for type $readerType");
+        throw new \PhpOffice\PhpSpreadsheet\Reader\Exception("No $searchType found for type $readerType");
     }
 
     /**
@@ -183,8 +185,8 @@ class PHPExcel_IOFactory
      * @static
      * @access public
      * @param     string         $pFilename        The name of the spreadsheet file
-     * @return    PHPExcel
-     * @throws    PHPExcel_Reader_Exception
+     * @return    \PhpOffice\PhpSpreadsheet\Spreadsheet
+     * @throws    \PhpOffice\PhpSpreadsheet\Reader\Exception
      */
     public static function load($pFilename)
     {
@@ -199,15 +201,15 @@ class PHPExcel_IOFactory
      * @access public
      * @param     string         $pFilename        The name of the spreadsheet file to identify
      * @return    string
-     * @throws    PHPExcel_Reader_Exception
+     * @throws    \PhpOffice\PhpSpreadsheet\Reader\Exception
      */
     public static function identify($pFilename)
     {
         $reader = self::createReaderForFile($pFilename);
-        $className = get_class($reader);
-        $classType = explode('_', $className);
+        $className = \get_class($reader);
+        $classType = \explode('_', $className);
         unset($reader);
-        return array_pop($classType);
+        return \array_pop($classType);
     }
 
     /**
@@ -216,17 +218,17 @@ class PHPExcel_IOFactory
      * @static
      * @access    public
      * @param     string         $pFilename        The name of the spreadsheet file
-     * @return    PHPExcel_Reader_IReader
-     * @throws    PHPExcel_Reader_Exception
+     * @return    \PhpOffice\PhpSpreadsheet\Reader\IReader
+     * @throws    \PhpOffice\PhpSpreadsheet\Reader\Exception
      */
     public static function createReaderForFile($pFilename)
     {
         // First, lucky guess by inspecting file extension
-        $pathinfo = pathinfo($pFilename);
+        $pathinfo = \pathinfo($pFilename);
 
-        $extensionType = null;
+        $extensionType = \null;
         if (isset($pathinfo['extension'])) {
-            switch (strtolower($pathinfo['extension'])) {
+            switch (\strtolower($pathinfo['extension'])) {
                 case 'xlsx':            //    Excel (OfficeOpenXML) Spreadsheet
                 case 'xlsm':            //    Excel (OfficeOpenXML) Macro Spreadsheet (macros will be discarded)
                 case 'xltx':            //    Excel (OfficeOpenXML) Template
@@ -263,7 +265,7 @@ class PHPExcel_IOFactory
                     break;
             }
 
-            if ($extensionType !== null) {
+            if ($extensionType !== \null) {
                 $reader = self::createReader($extensionType);
                 // Let's see if we are lucky
                 if (isset($reader) && $reader->canRead($pFilename)) {
@@ -284,6 +286,6 @@ class PHPExcel_IOFactory
             }
         }
 
-        throw new PHPExcel_Reader_Exception('Unable to identify a reader for this file');
+        throw new \PhpOffice\PhpSpreadsheet\Reader\Exception('Unable to identify a reader for this file');
     }
 }

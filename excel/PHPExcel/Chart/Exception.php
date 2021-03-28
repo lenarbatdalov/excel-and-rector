@@ -1,5 +1,7 @@
 <?php
 
+namespace PhpOffice\PhpSpreadsheet\Chart;
+
 /**
  * PHPExcel_Chart_Exception
  *
@@ -25,7 +27,7 @@
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
-class PHPExcel_Chart_Exception extends PHPExcel_Exception
+class Exception extends \PhpOffice\PhpSpreadsheet\Exception
 {
     /**
      * Error handler callback

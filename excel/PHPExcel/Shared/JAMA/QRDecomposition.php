@@ -1,4 +1,6 @@
 <?php
+namespace PhpOffice\PhpSpreadsheet\Shared\JAMA;
+
 /**
  *    @package JAMA
  *
@@ -16,7 +18,7 @@
  *    @license PHP v3.0
  *    @version 1.1
  */
-class PHPExcel_Shared_JAMA_QRDecomposition
+class QRDecomposition
 {
     const MATRIX_RANK_EXCEPTION  = "Can only perform operation on full-rank matrix.";
 
@@ -53,7 +55,7 @@ class PHPExcel_Shared_JAMA_QRDecomposition
      */
     public function __construct($A)
     {
-        if ($A instanceof PHPExcel_Shared_JAMA_Matrix) {
+        if ($A instanceof \PhpOffice\PhpSpreadsheet\Shared\JAMA\Matrix) {
             // Initialize.
             $this->QR = $A->getArrayCopy();
             $this->m  = $A->getRowDimension();
@@ -63,7 +65,7 @@ class PHPExcel_Shared_JAMA_QRDecomposition
                 // Compute 2-norm of k-th column without under/overflow.
                 $nrm = 0.0;
                 for ($i = $k; $i < $this->m; ++$i) {
-                    $nrm = hypo($nrm, $this->QR[$i][$k]);
+                    $nrm = \hypo($nrm, $this->QR[$i][$k]);
                 }
                 if ($nrm != 0.0) {
                     // Form k-th Householder vector.
@@ -89,7 +91,7 @@ class PHPExcel_Shared_JAMA_QRDecomposition
                 $this->Rdiag[$k] = -$nrm;
             }
         } else {
-            throw new PHPExcel_Calculation_Exception(PHPExcel_Shared_JAMA_Matrix::ARGUMENT_TYPE_EXCEPTION);
+            throw new \PhpOffice\PhpSpreadsheet\Calculation\Exception(\PhpOffice\PhpSpreadsheet\Shared\JAMA\Matrix::ARGUMENT_TYPE_EXCEPTION);
         }
     }    //    function __construct()
 
@@ -103,10 +105,10 @@ class PHPExcel_Shared_JAMA_QRDecomposition
     {
         for ($j = 0; $j < $this->n; ++$j) {
             if ($this->Rdiag[$j] == 0) {
-                return false;
+                return \false;
             }
         }
-        return true;
+        return \true;
     }    //    function isFullRank()
 
     /**
@@ -125,7 +127,7 @@ class PHPExcel_Shared_JAMA_QRDecomposition
                 }
             }
         }
-        return new PHPExcel_Shared_JAMA_Matrix($H);
+        return new \PhpOffice\PhpSpreadsheet\Shared\JAMA\Matrix($H);
     }    //    function getH()
 
     /**
@@ -146,7 +148,7 @@ class PHPExcel_Shared_JAMA_QRDecomposition
                 }
             }
         }
-        return new PHPExcel_Shared_JAMA_Matrix($R);
+        return new \PhpOffice\PhpSpreadsheet\Shared\JAMA\Matrix($R);
     }    //    function getR()
 
     /**
@@ -183,7 +185,7 @@ class PHPExcel_Shared_JAMA_QRDecomposition
             }
         }
         */
-        return new PHPExcel_Shared_JAMA_Matrix($Q);
+        return new \PhpOffice\PhpSpreadsheet\Shared\JAMA\Matrix($Q);
     }    //    function getQ()
 
     /**
@@ -223,13 +225,13 @@ class PHPExcel_Shared_JAMA_QRDecomposition
                         }
                     }
                 }
-                $X = new PHPExcel_Shared_JAMA_Matrix($X);
+                $X = new \PhpOffice\PhpSpreadsheet\Shared\JAMA\Matrix($X);
                 return ($X->getMatrix(0, $this->n-1, 0, $nx));
             } else {
-                throw new PHPExcel_Calculation_Exception(self::MATRIX_RANK_EXCEPTION);
+                throw new \PhpOffice\PhpSpreadsheet\Calculation\Exception(self::MATRIX_RANK_EXCEPTION);
             }
         } else {
-            throw new PHPExcel_Calculation_Exception(PHPExcel_Shared_JAMA_Matrix::MATRIX_DIMENSION_EXCEPTION);
+            throw new \PhpOffice\PhpSpreadsheet\Calculation\Exception(\PhpOffice\PhpSpreadsheet\Shared\JAMA\Matrix::MATRIX_DIMENSION_EXCEPTION);
         }
     }
 }

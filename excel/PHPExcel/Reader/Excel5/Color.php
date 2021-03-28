@@ -19,7 +19,7 @@ class PHPExcel_Reader_Excel5_Color
             return $palette[$color - 8];
         } else {
             // default color table
-            if ($version == PHPExcel_Reader_Excel5::XLS_BIFF8) {
+            if ($version == \PhpOffice\PhpSpreadsheet\Reader\Xls::XLS_BIFF8) {
                 return PHPExcel_Reader_Excel5_Color_BIFF8::lookup($color);
             } else {
                 // BIFF5

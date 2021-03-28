@@ -2,6 +2,8 @@
 
 require_once(PHPEXCEL_ROOT . 'PHPExcel/Shared/trend/bestFitClass.php');
 
+namespace PhpOffice\PhpSpreadsheet\Shared\Trend;
+
 /**
  * PHPExcel_Linear_Best_Fit
  *
@@ -27,7 +29,7 @@ require_once(PHPEXCEL_ROOT . 'PHPExcel/Shared/trend/bestFitClass.php');
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
-class PHPExcel_Linear_Best_Fit extends PHPExcel_Best_Fit
+class LinearBestFit extends \PhpOffice\PhpSpreadsheet\Shared\Trend\BestFit
 {
     /**
      * Algorithm type to use for best-fit
@@ -93,9 +95,9 @@ class PHPExcel_Linear_Best_Fit extends PHPExcel_Best_Fit
      * @param    float[]        $xValues    The set of X-values for this regression
      * @param    boolean        $const
      */
-    public function __construct($yValues, $xValues = array(), $const = true)
+    public function __construct($yValues, $xValues = array(), $const = \true)
     {
-        if (parent::__construct($yValues, $xValues) !== false) {
+        if (parent::__construct($yValues, $xValues) !== \false) {
             $this->linearRegression($yValues, $xValues, $const);
         }
     }

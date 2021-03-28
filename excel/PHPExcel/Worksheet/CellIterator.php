@@ -1,5 +1,7 @@
 <?php
 
+namespace PhpOffice\PhpSpreadsheet\Worksheet;
+
 /**
  * PHPExcel_Worksheet_CellIterator
  *
@@ -25,12 +27,12 @@
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
-abstract class PHPExcel_Worksheet_CellIterator
+abstract class CellIterator
 {
     /**
      * PHPExcel_Worksheet to iterate
      *
-     * @var PHPExcel_Worksheet
+     * @var \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet
      */
     protected $subject;
 
@@ -39,14 +41,14 @@ abstract class PHPExcel_Worksheet_CellIterator
      *
      * @var mixed
      */
-    protected $position = null;
+    protected $position = \null;
 
     /**
      * Iterate only existing cells
      *
      * @var boolean
      */
-    protected $onlyExistingCells = false;
+    protected $onlyExistingCells = \false;
 
     /**
      * Destructor
@@ -69,17 +71,17 @@ abstract class PHPExcel_Worksheet_CellIterator
     /**
      * Validate start/end values for "IterateOnlyExistingCells" mode, and adjust if necessary
      *
-     * @throws PHPExcel_Exception
-	 */
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     */
     abstract protected function adjustForExistingOnlyRange();
 
     /**
      * Set the iterator to loop only existing cells
      *
      * @param    boolean        $value
-     * @throws PHPExcel_Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
-    public function setIterateOnlyExistingCells($value = true)
+    public function setIterateOnlyExistingCells($value = \true)
     {
         $this->onlyExistingCells = (boolean) $value;
 

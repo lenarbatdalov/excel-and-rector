@@ -77,7 +77,7 @@ class PHPExcel_Shared_ZipStreamWrapper
     {
         // Check for mode
         if ($mode{0} != 'r') {
-            throw new PHPExcel_Reader_Exception('Mode ' . $mode . ' is not supported. Only read mode is supported.');
+            throw new \PhpOffice\PhpSpreadsheet\Reader\Exception('Mode ' . $mode . ' is not supported. Only read mode is supported.');
         }
 
         $pos = strrpos($path, '#');

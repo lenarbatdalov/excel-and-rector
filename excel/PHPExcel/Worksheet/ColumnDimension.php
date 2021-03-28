@@ -1,5 +1,7 @@
 <?php
 
+namespace PhpOffice\PhpSpreadsheet\Worksheet;
+
 /**
  * PHPExcel_Worksheet_ColumnDimension
  *
@@ -25,7 +27,7 @@
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
-class PHPExcel_Worksheet_ColumnDimension extends PHPExcel_Worksheet_Dimension
+class ColumnDimension extends \PHPExcel_Worksheet_Dimension
 {
     /**
      * Column index
@@ -48,7 +50,7 @@ class PHPExcel_Worksheet_ColumnDimension extends PHPExcel_Worksheet_Dimension
      *
      * @var bool
      */
-    private $autoSize = false;
+    private $autoSize = \false;
 
     /**
      * Create a new PHPExcel_Worksheet_ColumnDimension
@@ -78,7 +80,7 @@ class PHPExcel_Worksheet_ColumnDimension extends PHPExcel_Worksheet_Dimension
      * Set ColumnIndex
      *
      * @param string $pValue
-     * @return PHPExcel_Worksheet_ColumnDimension
+     * @return \PhpOffice\PhpSpreadsheet\Worksheet\ColumnDimension
      */
     public function setColumnIndex($pValue)
     {
@@ -100,7 +102,7 @@ class PHPExcel_Worksheet_ColumnDimension extends PHPExcel_Worksheet_Dimension
      * Set Width
      *
      * @param double $pValue
-     * @return PHPExcel_Worksheet_ColumnDimension
+     * @return \PhpOffice\PhpSpreadsheet\Worksheet\ColumnDimension
      */
     public function setWidth($pValue = -1)
     {
@@ -122,9 +124,9 @@ class PHPExcel_Worksheet_ColumnDimension extends PHPExcel_Worksheet_Dimension
      * Set Auto Size
      *
      * @param bool $pValue
-     * @return PHPExcel_Worksheet_ColumnDimension
+     * @return \PhpOffice\PhpSpreadsheet\Worksheet\ColumnDimension
      */
-    public function setAutoSize($pValue = false)
+    public function setAutoSize($pValue = \false)
     {
         $this->autoSize = $pValue;
         return $this;
