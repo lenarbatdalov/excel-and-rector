@@ -1,5 +1,7 @@
 <?php
 
+namespace PhpOffice\PhpSpreadsheet\Cell;
+
 /**
  * PHPExcel_Cell_Hyperlink
  *
@@ -25,7 +27,7 @@
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
-class PHPExcel_Cell_Hyperlink
+class Hyperlink
 {
     /**
      * URL to link the cell to
@@ -68,7 +70,7 @@ class PHPExcel_Cell_Hyperlink
      * Set URL
      *
      * @param  string    $value
-     * @return PHPExcel_Cell_Hyperlink
+     * @return \PhpOffice\PhpSpreadsheet\Cell\Hyperlink
      */
     public function setUrl($value = '')
     {
@@ -90,7 +92,7 @@ class PHPExcel_Cell_Hyperlink
      * Set tooltip
      *
      * @param  string    $value
-     * @return PHPExcel_Cell_Hyperlink
+     * @return \PhpOffice\PhpSpreadsheet\Cell\Hyperlink
      */
     public function setTooltip($value = '')
     {
@@ -105,7 +107,7 @@ class PHPExcel_Cell_Hyperlink
      */
     public function isInternal()
     {
-        return strpos($this->url, 'sheet://') !== false;
+        return \strpos($this->url, 'sheet://') !== \false;
     }
 
     /**
@@ -115,7 +117,7 @@ class PHPExcel_Cell_Hyperlink
      */
     public function getHashCode()
     {
-        return md5(
+        return \md5(
             $this->url .
             $this->tooltip .
             __CLASS__

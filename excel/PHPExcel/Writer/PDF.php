@@ -1,5 +1,7 @@
 <?php
 
+namespace PhpOffice\PhpSpreadsheet\Writer;
+
 /**
  *  PHPExcel_Writer_PDF
  *
@@ -25,41 +27,41 @@
  *  @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  *  @version     ##VERSION##, ##DATE##
  */
-class PHPExcel_Writer_PDF implements PHPExcel_Writer_IWriter
+class Pdf implements \PhpOffice\PhpSpreadsheet\Writer\IWriter
 {
 
     /**
      * The wrapper for the requested PDF rendering engine
      *
-     * @var PHPExcel_Writer_PDF_Core
+     * @var \PhpOffice\PhpSpreadsheet\Writer\Pdf
      */
-    private $renderer = null;
+    private $phpExcelWriterPDFCore;
 
     /**
      *  Instantiate a new renderer of the configured type within this container class
      *
-     *  @param  PHPExcel   $phpExcel         PHPExcel object
-     *  @throws PHPExcel_Writer_Exception    when PDF library is not configured
+     *  @param  \PhpOffice\PhpSpreadsheet\Spreadsheet   $phpExcel         PHPExcel object
+     *  @throws \PhpOffice\PhpSpreadsheet\Writer\Exception    when PDF library is not configured
      */
-    public function __construct(PHPExcel $phpExcel)
+    public function __construct(\PhpOffice\PhpSpreadsheet\Spreadsheet $phpExcel)
     {
-        $pdfLibraryName = PHPExcel_Settings::getPdfRendererName();
-        if (is_null($pdfLibraryName)) {
-            throw new PHPExcel_Writer_Exception("PDF Rendering library has not been defined.");
+        $pdfRendererName = \PhpOffice\PhpSpreadsheet\Settings::getPdfRendererName();
+        if (\is_null($pdfRendererName)) {
+            throw new \PhpOffice\PhpSpreadsheet\Writer\Exception("PDF Rendering library has not been defined.");
         }
 
-        $pdfLibraryPath = PHPExcel_Settings::getPdfRendererPath();
-        if (is_null($pdfLibraryName)) {
-            throw new PHPExcel_Writer_Exception("PDF Rendering library path has not been defined.");
+        $pdfRendererPath = \PhpOffice\PhpSpreadsheet\Settings::getPdfRendererPath();
+        if (\is_null($pdfRendererName)) {
+            throw new \PhpOffice\PhpSpreadsheet\Writer\Exception("PDF Rendering library path has not been defined.");
         }
-        $includePath = str_replace('\\', '/', get_include_path());
-        $rendererPath = str_replace('\\', '/', $pdfLibraryPath);
-        if (strpos($rendererPath, $includePath) === false) {
-            set_include_path(get_include_path() . PATH_SEPARATOR . $pdfLibraryPath);
+        $includePath = \str_replace('\\', '/', \get_include_path());
+        $rendererPath = \str_replace('\\', '/', $pdfRendererPath);
+        if (\strpos($rendererPath, $includePath) === \false) {
+            \set_include_path(\get_include_path() . \PATH_SEPARATOR . $pdfRendererPath);
         }
 
-        $rendererName = 'PHPExcel_Writer_PDF_' . $pdfLibraryName;
-        $this->renderer = new $rendererName($phpExcel);
+        $rendererName = 'PHPExcel_Writer_PDF_' . $pdfRendererName;
+        $this->phpExcelWriterPDFCore = new $rendererName($phpExcel);
     }
 
 
@@ -72,18 +74,18 @@ class PHPExcel_Writer_PDF implements PHPExcel_Writer_IWriter
      */
     public function __call($name, $arguments)
     {
-        if ($this->renderer === null) {
-            throw new PHPExcel_Writer_Exception("PDF Rendering library has not been defined.");
+        if ($this->phpExcelWriterPDFCore === \null) {
+            throw new \PhpOffice\PhpSpreadsheet\Writer\Exception("PDF Rendering library has not been defined.");
         }
 
-        return call_user_func_array(array($this->renderer, $name), $arguments);
+        return \call_user_func_array(array($this->phpExcelWriterPDFCore, $name), $arguments);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function save($pFilename = null)
+    public function save($pFilename = \null)
     {
-        $this->renderer->save($pFilename);
+        $this->phpExcelWriterPDFCore->save($pFilename);
     }
 }

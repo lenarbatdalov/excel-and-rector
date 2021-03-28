@@ -1,5 +1,7 @@
 <?php
 
+namespace PhpOffice\PhpSpreadsheet\Shared;
+
 /**
  * PHPExcel_Shared_String
  *
@@ -25,7 +27,7 @@
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
-class PHPExcel_Shared_String
+class StringHelper
 {
     /**    Constants                */
     /**    Regular Expressions        */
@@ -89,8 +91,8 @@ class PHPExcel_Shared_String
     {
         for ($i = 0; $i <= 31; ++$i) {
             if ($i != 9 && $i != 10 && $i != 13) {
-                $find = '_x' . sprintf('%04s', strtoupper(dechex($i))) . '_';
-                $replace = chr($i);
+                $find = '_x' . \sprintf('%04s', \strtoupper(\dechex($i))) . '_';
+                $replace = \chr($i);
                 self::$controlCharacters[$find] = $replace;
             }
         }
@@ -102,39 +104,38 @@ class PHPExcel_Shared_String
     private static function buildSYLKCharacters()
     {
         self::$SYLKCharacters = array(
-            "\x1B 0"  => chr(0),
-            "\x1B 1"  => chr(1),
-            "\x1B 2"  => chr(2),
-            "\x1B 3"  => chr(3),
-            "\x1B 4"  => chr(4),
-            "\x1B 5"  => chr(5),
-            "\x1B 6"  => chr(6),
-            "\x1B 7"  => chr(7),
-            "\x1B 8"  => chr(8),
-            "\x1B 9"  => chr(9),
-            "\x1B :"  => chr(10),
-            "\x1B ;"  => chr(11),
-            "\x1B <"  => chr(12),
-            "\x1B :"  => chr(13),
-            "\x1B >"  => chr(14),
-            "\x1B ?"  => chr(15),
-            "\x1B!0"  => chr(16),
-            "\x1B!1"  => chr(17),
-            "\x1B!2"  => chr(18),
-            "\x1B!3"  => chr(19),
-            "\x1B!4"  => chr(20),
-            "\x1B!5"  => chr(21),
-            "\x1B!6"  => chr(22),
-            "\x1B!7"  => chr(23),
-            "\x1B!8"  => chr(24),
-            "\x1B!9"  => chr(25),
-            "\x1B!:"  => chr(26),
-            "\x1B!;"  => chr(27),
-            "\x1B!<"  => chr(28),
-            "\x1B!="  => chr(29),
-            "\x1B!>"  => chr(30),
-            "\x1B!?"  => chr(31),
-            "\x1B'?"  => chr(127),
+            "\x1B 0"  => \chr(0),
+            "\x1B 1"  => \chr(1),
+            "\x1B 2"  => \chr(2),
+            "\x1B 3"  => \chr(3),
+            "\x1B 4"  => \chr(4),
+            "\x1B 5"  => \chr(5),
+            "\x1B 6"  => \chr(6),
+            "\x1B 7"  => \chr(7),
+            "\x1B 8"  => \chr(8),
+            "\x1B 9"  => \chr(9),
+            "\x1B ;"  => \chr(11),
+            "\x1B <"  => \chr(12),
+            "\x1B :"  => \chr(13),
+            "\x1B >"  => \chr(14),
+            "\x1B ?"  => \chr(15),
+            "\x1B!0"  => \chr(16),
+            "\x1B!1"  => \chr(17),
+            "\x1B!2"  => \chr(18),
+            "\x1B!3"  => \chr(19),
+            "\x1B!4"  => \chr(20),
+            "\x1B!5"  => \chr(21),
+            "\x1B!6"  => \chr(22),
+            "\x1B!7"  => \chr(23),
+            "\x1B!8"  => \chr(24),
+            "\x1B!9"  => \chr(25),
+            "\x1B!:"  => \chr(26),
+            "\x1B!;"  => \chr(27),
+            "\x1B!<"  => \chr(28),
+            "\x1B!="  => \chr(29),
+            "\x1B!>"  => \chr(30),
+            "\x1B!?"  => \chr(31),
+            "\x1B'?"  => \chr(127),
             "\x1B(0"  => '€', // 128 in CP1252
             "\x1B(2"  => '‚', // 130 in CP1252
             "\x1B(3"  => 'ƒ', // 131 in CP1252
@@ -272,8 +273,7 @@ class PHPExcel_Shared_String
             return self::$isMbstringEnabled;
         }
 
-        self::$isMbstringEnabled = function_exists('mb_convert_encoding') ?
-            true : false;
+        self::$isMbstringEnabled = \function_exists('mb_convert_encoding');
 
         return self::$isMbstringEnabled;
     }
@@ -290,33 +290,33 @@ class PHPExcel_Shared_String
         }
 
         // Fail if iconv doesn't exist
-        if (!function_exists('iconv')) {
-            self::$isIconvEnabled = false;
-            return false;
+        if (!\function_exists('iconv')) {
+            self::$isIconvEnabled = \false;
+            return \false;
         }
 
         // Sometimes iconv is not working, and e.g. iconv('UTF-8', 'UTF-16LE', 'x') just returns false,
-        if (!@iconv('UTF-8', 'UTF-16LE', 'x')) {
-            self::$isIconvEnabled = false;
-            return false;
+        if (!@\iconv('UTF-8', 'UTF-16LE', 'x')) {
+            self::$isIconvEnabled = \false;
+            return \false;
         }
 
         // Sometimes iconv_substr('A', 0, 1, 'UTF-8') just returns false in PHP 5.2.0
         // we cannot use iconv in that case either (http://bugs.php.net/bug.php?id=37773)
-        if (!@iconv_substr('A', 0, 1, 'UTF-8')) {
-            self::$isIconvEnabled = false;
-            return false;
+        if (!@\iconv_substr('A', 0, 1, 'UTF-8')) {
+            self::$isIconvEnabled = \false;
+            return \false;
         }
 
         // CUSTOM: IBM AIX iconv() does not work
-        if (defined('PHP_OS') && @stristr(PHP_OS, 'AIX') && defined('ICONV_IMPL') && (@strcasecmp(ICONV_IMPL, 'unknown') == 0) && defined('ICONV_VERSION') && (@strcasecmp(ICONV_VERSION, 'unknown') == 0)) {
-            self::$isIconvEnabled = false;
-            return false;
+        if (\defined('PHP_OS') && @\stristr(\PHP_OS, 'AIX') && \defined('ICONV_IMPL') && (@\strcasecmp(\ICONV_IMPL, 'unknown') == 0) && \defined('ICONV_VERSION') && (@\strcasecmp(\ICONV_VERSION, 'unknown') == 0)) {
+            self::$isIconvEnabled = \false;
+            return \false;
         }
 
         // If we reach here no problems were detected with iconv
-        self::$isIconvEnabled = true;
-        return true;
+        self::$isIconvEnabled = \true;
+        return \true;
     }
 
     public static function buildCharacterSets()
@@ -345,7 +345,7 @@ class PHPExcel_Shared_String
      */
     public static function ControlCharacterOOXML2PHP($value = '')
     {
-        return str_replace(array_keys(self::$controlCharacters), array_values(self::$controlCharacters), $value);
+        return \str_replace(\array_keys(self::$controlCharacters), \array_values(self::$controlCharacters), $value);
     }
 
     /**
@@ -364,7 +364,7 @@ class PHPExcel_Shared_String
      */
     public static function ControlCharacterPHP2OOXML($value = '')
     {
-        return str_replace(array_values(self::$controlCharacters), array_keys(self::$controlCharacters), $value);
+        return \str_replace(\array_values(self::$controlCharacters), \array_keys(self::$controlCharacters), $value);
     }
 
     /**
@@ -376,13 +376,11 @@ class PHPExcel_Shared_String
     public static function SanitizeUTF8($value)
     {
         if (self::getIsIconvEnabled()) {
-            $value = @iconv('UTF-8', 'UTF-8', $value);
-            return $value;
+            return @\iconv('UTF-8', 'UTF-8', $value);
         }
 
         if (self::getIsMbstringEnabled()) {
-            $value = mb_convert_encoding($value, 'UTF-8', 'UTF-8');
-            return $value;
+            return \mb_convert_encoding($value, 'UTF-8', 'UTF-8');
         }
 
         // else, no conversion
@@ -397,7 +395,7 @@ class PHPExcel_Shared_String
      */
     public static function IsUTF8($value = '')
     {
-        return $value === '' || preg_match('/^./su', $value) === 1;
+        return $value === '' || \preg_match('/^./su', $value) === 1;
     }
 
     /**
@@ -409,8 +407,8 @@ class PHPExcel_Shared_String
      */
     public static function FormatNumber($value)
     {
-        if (is_float($value)) {
-            return str_replace(',', '.', $value);
+        if (\is_float($value)) {
+            return \str_replace(',', '.', $value);
         }
         return (string) $value;
     }
@@ -429,22 +427,22 @@ class PHPExcel_Shared_String
     public static function UTF8toBIFF8UnicodeShort($value, $arrcRuns = array())
     {
         // character count
-        $ln = self::CountCharacters($value, 'UTF-8');
+        $ln = self::CountCharacters($value);
         // option flags
         if (empty($arrcRuns)) {
             $opt = (self::getIsIconvEnabled() || self::getIsMbstringEnabled()) ?
                 0x0001 : 0x0000;
-            $data = pack('CC', $ln, $opt);
+            $data = \pack('CC', $ln, $opt);
             // characters
             $data .= self::ConvertEncoding($value, 'UTF-16LE', 'UTF-8');
         } else {
-            $data = pack('vC', $ln, 0x09);
-            $data .= pack('v', count($arrcRuns));
+            $data = \pack('vC', $ln, 0x09);
+            $data .= \pack('v', \count($arrcRuns));
             // characters
             $data .= self::ConvertEncoding($value, 'UTF-16LE', 'UTF-8');
-            foreach ($arrcRuns as $cRun) {
-                $data .= pack('v', $cRun['strlen']);
-                $data .= pack('v', $cRun['fontidx']);
+            foreach ($arrcRuns as $arrcRun) {
+                $data .= \pack('v', $arrcRun['strlen']);
+                $data .= \pack('v', $arrcRun['fontidx']);
             }
         }
         return $data;
@@ -463,7 +461,7 @@ class PHPExcel_Shared_String
     public static function UTF8toBIFF8UnicodeLong($value)
     {
         // character count
-        $ln = self::CountCharacters($value, 'UTF-8');
+        $ln = self::CountCharacters($value);
 
         // option flags
         $opt = (self::getIsIconvEnabled() || self::getIsMbstringEnabled()) ?
@@ -471,9 +469,7 @@ class PHPExcel_Shared_String
 
         // characters
         $chars = self::ConvertEncoding($value, 'UTF-16LE', 'UTF-8');
-
-        $data = pack('vC', $ln, $opt) . $chars;
-        return $data;
+        return \pack('vC', $ln, $opt) . $chars;
     }
 
     /**
@@ -487,15 +483,15 @@ class PHPExcel_Shared_String
     public static function ConvertEncoding($value, $to, $from)
     {
         if (self::getIsIconvEnabled()) {
-            return iconv($from, $to, $value);
+            return \iconv($from, $to, $value);
         }
 
         if (self::getIsMbstringEnabled()) {
-            return mb_convert_encoding($value, $to, $from);
+            return \mb_convert_encoding($value, $to, $from);
         }
 
         if ($from == 'UTF-16LE') {
-            return self::utf16_decode($value, false);
+            return self::utf16_decode($value, \false);
         } elseif ($from == 'UTF-16BE') {
             return self::utf16_decode($value);
         }
@@ -518,30 +514,30 @@ class PHPExcel_Shared_String
      * @author  Rasmus Andersson {@link http://rasmusandersson.se/}
      * @author vadik56
      */
-    public static function utf16_decode($str, $bom_be = true)
+    public static function utf16_decode($str, $bom_be = \true)
     {
-        if (strlen($str) < 2) {
+        if (\strlen($str) < 2) {
             return $str;
         }
-        $c0 = ord($str{0});
-        $c1 = ord($str{1});
+        $c0 = \ord($str{0});
+        $c1 = \ord($str{1});
         if ($c0 == 0xfe && $c1 == 0xff) {
-            $str = substr($str, 2);
+            $str = \substr($str, 2);
         } elseif ($c0 == 0xff && $c1 == 0xfe) {
-            $str = substr($str, 2);
-            $bom_be = false;
+            $str = \substr($str, 2);
+            $bom_be = \false;
         }
-        $len = strlen($str);
+        $len = \strlen($str);
         $newstr = '';
         for ($i=0; $i<$len; $i+=2) {
             if ($bom_be) {
-                $val = ord($str{$i})   << 4;
-                $val += ord($str{$i+1});
+                $val = \ord($str{$i})   << 4;
+                $val += \ord($str{$i+1});
             } else {
-                $val = ord($str{$i+1}) << 4;
-                $val += ord($str{$i});
+                $val = \ord($str{$i+1}) << 4;
+                $val += \ord($str{$i});
             }
-            $newstr .= ($val == 0x228) ? "\n" : chr($val);
+            $newstr .= ($val == 0x228) ? "\n" : \chr($val);
         }
         return $newstr;
     }
@@ -556,15 +552,15 @@ class PHPExcel_Shared_String
     public static function CountCharacters($value, $enc = 'UTF-8')
     {
         if (self::getIsMbstringEnabled()) {
-            return mb_strlen($value, $enc);
+            return \mb_strlen($value, $enc);
         }
 
         if (self::getIsIconvEnabled()) {
-            return iconv_strlen($value, $enc);
+            return \iconv_strlen($value, $enc);
         }
 
         // else strlen
-        return strlen($value);
+        return \strlen($value);
     }
 
     /**
@@ -578,15 +574,15 @@ class PHPExcel_Shared_String
     public static function Substring($pValue = '', $pStart = 0, $pLength = 0)
     {
         if (self::getIsMbstringEnabled()) {
-            return mb_substr($pValue, $pStart, $pLength, 'UTF-8');
+            return \mb_substr($pValue, $pStart, $pLength, 'UTF-8');
         }
 
         if (self::getIsIconvEnabled()) {
-            return iconv_substr($pValue, $pStart, $pLength, 'UTF-8');
+            return \iconv_substr($pValue, $pStart, $pLength, 'UTF-8');
         }
 
         // else substr
-        return substr($pValue, $pStart, $pLength);
+        return \substr($pValue, $pStart, $pLength);
     }
 
     /**
@@ -597,10 +593,10 @@ class PHPExcel_Shared_String
      */
     public static function StrToUpper($pValue = '')
     {
-        if (function_exists('mb_convert_case')) {
-            return mb_convert_case($pValue, MB_CASE_UPPER, "UTF-8");
+        if (\function_exists('mb_convert_case')) {
+            return \mb_convert_case($pValue, \MB_CASE_UPPER, "UTF-8");
         }
-        return strtoupper($pValue);
+        return \strtoupper($pValue);
     }
 
     /**
@@ -611,10 +607,10 @@ class PHPExcel_Shared_String
      */
     public static function StrToLower($pValue = '')
     {
-        if (function_exists('mb_convert_case')) {
-            return mb_convert_case($pValue, MB_CASE_LOWER, "UTF-8");
+        if (\function_exists('mb_convert_case')) {
+            return \mb_convert_case($pValue, \MB_CASE_LOWER, "UTF-8");
         }
-        return strtolower($pValue);
+        return \strtolower($pValue);
     }
 
     /**
@@ -626,22 +622,22 @@ class PHPExcel_Shared_String
      */
     public static function StrToTitle($pValue = '')
     {
-        if (function_exists('mb_convert_case')) {
-            return mb_convert_case($pValue, MB_CASE_TITLE, "UTF-8");
+        if (\function_exists('mb_convert_case')) {
+            return \mb_convert_case($pValue, \MB_CASE_TITLE, "UTF-8");
         }
-        return ucwords($pValue);
+        return \ucwords($pValue);
     }
 
     public static function mb_is_upper($char)
     {
-        return mb_strtolower($char, "UTF-8") != $char;
+        return \mb_strtolower($char, "UTF-8") != $char;
     }
 
     public static function mb_str_split($string)
     {
         # Split at all position not after the start: ^
         # and not before the end: $
-        return preg_split('/(?<!^)(?!$)/u', $string);
+        return \preg_split('/(?<!^)(?!$)/u', $string);
     }
 
     /**
@@ -656,15 +652,11 @@ class PHPExcel_Shared_String
         if (self::getIsMbstringEnabled()) {
             $characters = self::mb_str_split($pValue);
             foreach ($characters as &$character) {
-                if (self::mb_is_upper($character)) {
-                    $character = mb_strtolower($character, 'UTF-8');
-                } else {
-                    $character = mb_strtoupper($character, 'UTF-8');
-                }
+                $character = self::mb_is_upper($character) ? \mb_strtolower($character, 'UTF-8') : \mb_strtoupper($character, 'UTF-8');
             }
-            return implode('', $characters);
+            return \implode('', $characters);
         }
-        return strtolower($pValue) ^ strtoupper($pValue) ^ $pValue;
+        return \strtolower($pValue) ^ \strtoupper($pValue) ^ $pValue;
     }
 
     /**
@@ -676,13 +668,13 @@ class PHPExcel_Shared_String
      */
     public static function convertToNumberIfFraction(&$operand)
     {
-        if (preg_match('/^'.self::STRING_REGEXP_FRACTION.'$/i', $operand, $match)) {
+        if (\preg_match('/^'.self::STRING_REGEXP_FRACTION.'$/i', $operand, $match)) {
             $sign = ($match[1] == '-') ? '-' : '+';
             $fractionFormula = '='.$sign.$match[2].$sign.$match[3];
-            $operand = PHPExcel_Calculation::getInstance()->_calculateFormulaValue($fractionFormula);
-            return true;
+            $operand = \PhpOffice\PhpSpreadsheet\Calculation\Calculation::getInstance()->_calculateFormulaValue($fractionFormula);
+            return \true;
         }
-        return false;
+        return \false;
     }    //    function convertToNumberIfFraction()
 
     /**
@@ -694,7 +686,7 @@ class PHPExcel_Shared_String
     public static function getDecimalSeparator()
     {
         if (!isset(self::$decimalSeparator)) {
-            $localeconv = localeconv();
+            $localeconv = \localeconv();
             self::$decimalSeparator = ($localeconv['decimal_point'] != '')
                 ? $localeconv['decimal_point'] : $localeconv['mon_decimal_point'];
 
@@ -726,7 +718,7 @@ class PHPExcel_Shared_String
     public static function getThousandsSeparator()
     {
         if (!isset(self::$thousandsSeparator)) {
-            $localeconv = localeconv();
+            $localeconv = \localeconv();
             self::$thousandsSeparator = ($localeconv['thousands_sep'] != '')
                 ? $localeconv['thousands_sep'] : $localeconv['mon_thousands_sep'];
 
@@ -758,7 +750,7 @@ class PHPExcel_Shared_String
     public static function getCurrencyCode()
     {
         if (!isset(self::$currencyCode)) {
-            $localeconv = localeconv();
+            $localeconv = \localeconv();
             self::$currencyCode = ($localeconv['currency_symbol'] != '')
                 ? $localeconv['currency_symbol'] : $localeconv['int_curr_symbol'];
 
@@ -790,12 +782,12 @@ class PHPExcel_Shared_String
     public static function SYLKtoUTF8($pValue = '')
     {
         // If there is no escape character in the string there is nothing to do
-        if (strpos($pValue, '') === false) {
+        if (\strpos($pValue, '') === \false) {
             return $pValue;
         }
 
         foreach (self::$SYLKCharacters as $k => $v) {
-            $pValue = str_replace($k, $v, $pValue);
+            $pValue = \str_replace($k, $v, $pValue);
         }
 
         return $pValue;
@@ -810,10 +802,10 @@ class PHPExcel_Shared_String
      */
     public static function testStringAsNumeric($value)
     {
-        if (is_numeric($value)) {
+        if (\is_numeric($value)) {
             return $value;
         }
-        $v = floatval($value);
-        return (is_numeric(substr($value, 0, strlen($v)))) ? $v : $value;
+        $v = \floatval($value);
+        return (\is_numeric(\substr($value, 0, \strlen($v)))) ? $v : $value;
     }
 }

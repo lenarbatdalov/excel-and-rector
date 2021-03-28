@@ -1,12 +1,14 @@
 <?php
 
 /**  Require mPDF library */
-$pdfRendererClassFile = PHPExcel_Settings::getPdfRendererPath() . '/mpdf.php';
+$pdfRendererClassFile = \PhpOffice\PhpSpreadsheet\Settings::getPdfRendererPath() . '/mpdf.php';
 if (file_exists($pdfRendererClassFile)) {
     require_once $pdfRendererClassFile;
 } else {
-    throw new PHPExcel_Writer_Exception('Unable to load PDF Rendering library');
+    throw new \PhpOffice\PhpSpreadsheet\Writer\Exception('Unable to load PDF Rendering library');
 }
+
+namespace PhpOffice\PhpSpreadsheet\Writer\Pdf;
 
 /**
  *  PHPExcel_Writer_PDF_mPDF
@@ -33,25 +35,15 @@ if (file_exists($pdfRendererClassFile)) {
  *  @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  *  @version     ##VERSION##, ##DATE##
  */
-class PHPExcel_Writer_PDF_mPDF extends PHPExcel_Writer_PDF_Core implements PHPExcel_Writer_IWriter
+class Mpdf extends \PhpOffice\PhpSpreadsheet\Writer\Pdf implements \PhpOffice\PhpSpreadsheet\Writer\IWriter
 {
-    /**
-     *  Create a new PHPExcel_Writer_PDF
-     *
-     *  @param  PHPExcel  $phpExcel  PHPExcel object
-     */
-    public function __construct(PHPExcel $phpExcel)
-    {
-        parent::__construct($phpExcel);
-    }
-
     /**
      *  Save PHPExcel to file
      *
      *  @param     string     $pFilename   Name of the file to save as
-     *  @throws    PHPExcel_Writer_Exception
+     *  @throws    \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
-    public function save($pFilename = null)
+    public function save($pFilename = \null)
     {
         $fileHandle = parent::prepareForSave($pFilename);
 
@@ -59,29 +51,29 @@ class PHPExcel_Writer_PDF_mPDF extends PHPExcel_Writer_PDF_Core implements PHPEx
         $paperSize = 'LETTER';    //    Letter    (8.5 in. by 11 in.)
 
         //  Check for paper size and page orientation
-        if (is_null($this->getSheetIndex())) {
+        if (\is_null($this->getSheetIndex())) {
             $orientation = ($this->phpExcel->getSheet(0)->getPageSetup()->getOrientation()
-                == PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE) ? 'L' : 'P';
+                == \PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_LANDSCAPE) ? 'L' : 'P';
             $printPaperSize = $this->phpExcel->getSheet(0)->getPageSetup()->getPaperSize();
             $printMargins = $this->phpExcel->getSheet(0)->getPageMargins();
         } else {
             $orientation = ($this->phpExcel->getSheet($this->getSheetIndex())->getPageSetup()->getOrientation()
-                == PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE) ? 'L' : 'P';
+                == \PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_LANDSCAPE) ? 'L' : 'P';
             $printPaperSize = $this->phpExcel->getSheet($this->getSheetIndex())->getPageSetup()->getPaperSize();
             $printMargins = $this->phpExcel->getSheet($this->getSheetIndex())->getPageMargins();
         }
         $this->setOrientation($orientation);
 
         //  Override Page Orientation
-        if (!is_null($this->getOrientation())) {
-            $orientation = ($this->getOrientation() == PHPExcel_Worksheet_PageSetup::ORIENTATION_DEFAULT)
-                ? PHPExcel_Worksheet_PageSetup::ORIENTATION_PORTRAIT
+        if (!\is_null($this->getOrientation())) {
+            $orientation = ($this->getOrientation() == \PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_DEFAULT)
+                ? \PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_PORTRAIT
                 : $this->getOrientation();
         }
-        $orientation = strtoupper($orientation);
+        $orientation = \strtoupper($orientation);
 
         //  Override Paper Size
-        if (!is_null($this->getPaperSize())) {
+        if (!\is_null($this->getPaperSize())) {
             $printPaperSize = $this->getPaperSize();
         }
 
@@ -91,27 +83,27 @@ class PHPExcel_Writer_PDF_mPDF extends PHPExcel_Writer_PDF_Core implements PHPEx
 
 
         //  Create PDF
-        $pdf = new mpdf();
+        $mpdf = new \mpdf();
         $ortmp = $orientation;
-        $pdf->_setPageSize(strtoupper($paperSize), $ortmp);
-        $pdf->DefOrientation = $orientation;
-        $pdf->AddPage($orientation);
+        $mpdf->_setPageSize(\strtoupper($paperSize), $ortmp);
+        $mpdf->DefOrientation = $orientation;
+        $mpdf->AddPage($orientation);
 
         //  Document info
-        $pdf->SetTitle($this->phpExcel->getProperties()->getTitle());
-        $pdf->SetAuthor($this->phpExcel->getProperties()->getCreator());
-        $pdf->SetSubject($this->phpExcel->getProperties()->getSubject());
-        $pdf->SetKeywords($this->phpExcel->getProperties()->getKeywords());
-        $pdf->SetCreator($this->phpExcel->getProperties()->getCreator());
+        $mpdf->SetTitle($this->phpExcel->getProperties()->getTitle());
+        $mpdf->SetAuthor($this->phpExcel->getProperties()->getCreator());
+        $mpdf->SetSubject($this->phpExcel->getProperties()->getSubject());
+        $mpdf->SetKeywords($this->phpExcel->getProperties()->getKeywords());
+        $mpdf->SetCreator($this->phpExcel->getProperties()->getCreator());
 
-        $pdf->WriteHTML(
-            $this->generateHTMLHeader(false) .
+        $mpdf->WriteHTML(
+            $this->generateHTMLHeader() .
             $this->generateSheetData() .
             $this->generateHTMLFooter()
         );
 
         //  Write to file
-        fwrite($fileHandle, $pdf->Output('', 'S'));
+        \fwrite($fileHandle, $mpdf->Output('', 'S'));
 
         parent::restoreStateAfterSave($fileHandle);
     }

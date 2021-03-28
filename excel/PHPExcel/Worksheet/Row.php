@@ -1,5 +1,7 @@
 <?php
 
+namespace PhpOffice\PhpSpreadsheet\Worksheet;
+
 /**
  * PHPExcel_Worksheet_Row
  *
@@ -25,14 +27,14 @@
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
-class PHPExcel_Worksheet_Row
+class Row
 {
     /**
      * PHPExcel_Worksheet
      *
-     * @var PHPExcel_Worksheet
+     * @var \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet
      */
-    private $parent;
+    private $phpExcelWorksheet;
 
     /**
      * Row index
@@ -44,13 +46,12 @@ class PHPExcel_Worksheet_Row
     /**
      * Create a new row
      *
-     * @param PHPExcel_Worksheet         $parent
      * @param int                        $rowIndex
      */
-    public function __construct(PHPExcel_Worksheet $parent = null, $rowIndex = 1)
+    public function __construct(\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet $phpExcelWorksheet = \null, $rowIndex = 1)
     {
         // Set parent and row index
-        $this->parent   = $parent;
+        $this->phpExcelWorksheet   = $phpExcelWorksheet;
         $this->rowIndex = $rowIndex;
     }
 
@@ -59,7 +60,7 @@ class PHPExcel_Worksheet_Row
      */
     public function __destruct()
     {
-        unset($this->parent);
+        unset($this->phpExcelWorksheet);
     }
 
     /**
@@ -77,10 +78,10 @@ class PHPExcel_Worksheet_Row
      *
      * @param    string                $startColumn    The column address at which to start iterating
      * @param    string                $endColumn        Optionally, the column address at which to stop iterating
-     * @return PHPExcel_Worksheet_CellIterator
+     * @return \PhpOffice\PhpSpreadsheet\Worksheet\CellIterator
      */
-    public function getCellIterator($startColumn = 'A', $endColumn = null)
+    public function getCellIterator($startColumn = 'A', $endColumn = \null)
     {
-        return new PHPExcel_Worksheet_RowCellIterator($this->parent, $this->rowIndex, $startColumn, $endColumn);
+        return new \PhpOffice\PhpSpreadsheet\Worksheet\RowCellIterator($this->phpExcelWorksheet, $this->rowIndex, $startColumn, $endColumn);
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+namespace PhpOffice\PhpSpreadsheet\Reader;
+
 /**
  * PHPExcel_Reader_IReader
  *
@@ -25,7 +27,7 @@
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
-interface PHPExcel_Reader_IReader
+interface IReader
 {
     /**
      * Can the current PHPExcel_Reader_IReader read the file?
@@ -39,8 +41,8 @@ interface PHPExcel_Reader_IReader
      * Loads PHPExcel from file
      *
      * @param     string         $pFilename
-     * @return  PHPExcel
-     * @throws     PHPExcel_Reader_Exception
+     * @return  \PhpOffice\PhpSpreadsheet\Spreadsheet
+     * @throws     \PhpOffice\PhpSpreadsheet\Reader\Exception
      */
     public function load($pFilename);
 }

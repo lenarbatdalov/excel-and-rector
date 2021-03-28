@@ -1,5 +1,7 @@
 <?php
 
+namespace PhpOffice\PhpSpreadsheet\Calculation\Engine;
+
 /**
  * PHPExcel_CalcEngine_CyclicReferenceStack
  *
@@ -25,7 +27,7 @@
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
-class PHPExcel_CalcEngine_CyclicReferenceStack
+class CyclicReferenceStack
 {
     /**
      *  The call stack for calculated cells
@@ -41,7 +43,7 @@ class PHPExcel_CalcEngine_CyclicReferenceStack
      */
     public function count()
     {
-        return count($this->stack);
+        return \count($this->stack);
     }
 
     /**
@@ -61,7 +63,7 @@ class PHPExcel_CalcEngine_CyclicReferenceStack
      */
     public function pop()
     {
-        return array_pop($this->stack);
+        return \array_pop($this->stack);
     }
 
     /**
@@ -87,7 +89,7 @@ class PHPExcel_CalcEngine_CyclicReferenceStack
      *
      * @return  mixed[]
      */
-    public function showStack()
+    public function getStack()
     {
         return $this->stack;
     }

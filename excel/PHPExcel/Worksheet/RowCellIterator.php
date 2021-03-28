@@ -1,5 +1,7 @@
 <?php
 
+namespace PhpOffice\PhpSpreadsheet\Worksheet;
+
 /**
  * PHPExcel_Worksheet_RowCellIterator
  *
@@ -25,7 +27,7 @@
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
-class PHPExcel_Worksheet_RowCellIterator extends PHPExcel_Worksheet_CellIterator implements Iterator
+class RowCellIterator extends \PhpOffice\PhpSpreadsheet\Worksheet\CellIterator implements \Iterator
 {
     /**
      * Row index
@@ -51,15 +53,15 @@ class PHPExcel_Worksheet_RowCellIterator extends PHPExcel_Worksheet_CellIterator
     /**
      * Create a new column iterator
      *
-     * @param    PHPExcel_Worksheet    $subject        The worksheet to iterate over
+     * @param \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet    $phpExcelWorksheet        The worksheet to iterate over
      * @param   integer             $rowIndex       The row that we want to iterate
      * @param    string                $startColumn    The column address at which to start iterating
      * @param    string                $endColumn        Optionally, the column address at which to stop iterating
      */
-    public function __construct(PHPExcel_Worksheet $subject = null, $rowIndex = 1, $startColumn = 'A', $endColumn = null)
+    public function __construct(\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet $phpExcelWorksheet = \null, $rowIndex = 1, $startColumn = 'A', $endColumn = \null)
     {
         // Set subject and row index
-        $this->subject = $subject;
+        $this->subject = $phpExcelWorksheet;
         $this->rowIndex = $rowIndex;
         $this->resetEnd($endColumn);
         $this->resetStart($startColumn);
@@ -77,15 +79,15 @@ class PHPExcel_Worksheet_RowCellIterator extends PHPExcel_Worksheet_CellIterator
      * (Re)Set the start column and the current column pointer
      *
      * @param integer    $startColumn    The column address at which to start iterating
-     * @return PHPExcel_Worksheet_RowCellIterator
-     * @throws PHPExcel_Exception
+     * @return \PhpOffice\PhpSpreadsheet\Worksheet\RowCellIterator
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
     public function resetStart($startColumn = 'A')
     {
-        $startColumnIndex = PHPExcel_Cell::columnIndexFromString($startColumn) - 1;
+        $startColumnIndex = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($startColumn) - 1;
         $this->startColumn = $startColumnIndex;
         $this->adjustForExistingOnlyRange();
-        $this->seek(PHPExcel_Cell::stringFromColumnIndex($this->startColumn));
+        $this->seek(\PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($this->startColumn));
 
         return $this;
     }
@@ -94,13 +96,13 @@ class PHPExcel_Worksheet_RowCellIterator extends PHPExcel_Worksheet_CellIterator
      * (Re)Set the end column
      *
      * @param string    $endColumn    The column address at which to stop iterating
-     * @return PHPExcel_Worksheet_RowCellIterator
-     * @throws PHPExcel_Exception
+     * @return \PhpOffice\PhpSpreadsheet\Worksheet\RowCellIterator
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
-    public function resetEnd($endColumn = null)
+    public function resetEnd($endColumn = \null)
     {
         $endColumn = ($endColumn) ? $endColumn : $this->subject->getHighestColumn();
-        $this->endColumn = PHPExcel_Cell::columnIndexFromString($endColumn) - 1;
+        $this->endColumn = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($endColumn) - 1;
         $this->adjustForExistingOnlyRange();
 
         return $this;
@@ -110,16 +112,16 @@ class PHPExcel_Worksheet_RowCellIterator extends PHPExcel_Worksheet_CellIterator
      * Set the column pointer to the selected column
      *
      * @param string    $column    The column address to set the current pointer at
-     * @return PHPExcel_Worksheet_RowCellIterator
-     * @throws PHPExcel_Exception
+     * @return \PhpOffice\PhpSpreadsheet\Worksheet\RowCellIterator
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
     public function seek($column = 'A')
     {
-        $column = PHPExcel_Cell::columnIndexFromString($column) - 1;
+        $column = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($column) - 1;
         if (($column < $this->startColumn) || ($column > $this->endColumn)) {
-            throw new PHPExcel_Exception("Column $column is out of range ({$this->startColumn} - {$this->endColumn})");
-        } elseif ($this->onlyExistingCells && !($this->subject->cellExistsByColumnAndRow($column, $this->rowIndex))) {
-            throw new PHPExcel_Exception('In "IterateOnlyExistingCells" mode and Cell does not exist');
+            throw new \PhpOffice\PhpSpreadsheet\Exception("Column $column is out of range ({$this->startColumn} - {$this->endColumn})");
+        } elseif ($this->onlyExistingCells && !($this->subject->cellExistsByColumnAndRow($column + 1, $this->rowIndex))) {
+            throw new \PhpOffice\PhpSpreadsheet\Exception('In "IterateOnlyExistingCells" mode and Cell does not exist');
         }
         $this->position = $column;
 
@@ -137,11 +139,11 @@ class PHPExcel_Worksheet_RowCellIterator extends PHPExcel_Worksheet_CellIterator
     /**
      * Return the current cell in this worksheet row
      *
-     * @return PHPExcel_Cell
+     * @return \PhpOffice\PhpSpreadsheet\Cell\Cell
      */
     public function current()
     {
-        return $this->subject->getCellByColumnAndRow($this->position, $this->rowIndex);
+        return $this->subject->getCellByColumnAndRow($this->position, $this->rowIndex, true);
     }
 
     /**
@@ -151,7 +153,7 @@ class PHPExcel_Worksheet_RowCellIterator extends PHPExcel_Worksheet_CellIterator
      */
     public function key()
     {
-        return PHPExcel_Cell::stringFromColumnIndex($this->position);
+        return \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($this->position);
     }
 
     /**
@@ -169,15 +171,15 @@ class PHPExcel_Worksheet_RowCellIterator extends PHPExcel_Worksheet_CellIterator
     /**
      * Set the iterator to its previous value
      *
-     * @throws PHPExcel_Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
     public function prev()
     {
         if ($this->position <= $this->startColumn) {
-            throw new PHPExcel_Exception(
+            throw new \PhpOffice\PhpSpreadsheet\Exception(
                 "Column is already at the beginning of range (" .
-                PHPExcel_Cell::stringFromColumnIndex($this->endColumn) . " - " .
-                PHPExcel_Cell::stringFromColumnIndex($this->endColumn) . ")"
+                \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($this->endColumn) . " - " .
+                \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($this->endColumn) . ")"
             );
         }
 
@@ -201,7 +203,7 @@ class PHPExcel_Worksheet_RowCellIterator extends PHPExcel_Worksheet_CellIterator
     /**
      * Validate start/end values for "IterateOnlyExistingCells" mode, and adjust if necessary
      *
-     * @throws PHPExcel_Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
     protected function adjustForExistingOnlyRange()
     {
@@ -211,14 +213,14 @@ class PHPExcel_Worksheet_RowCellIterator extends PHPExcel_Worksheet_CellIterator
                 ++$this->startColumn;
             }
             if ($this->startColumn > $this->endColumn) {
-                throw new PHPExcel_Exception('No cells exist within the specified range');
+                throw new \PhpOffice\PhpSpreadsheet\Exception('No cells exist within the specified range');
             }
             while ((!$this->subject->cellExistsByColumnAndRow($this->endColumn, $this->rowIndex)) &&
                 ($this->endColumn >= $this->startColumn)) {
                 --$this->endColumn;
             }
             if ($this->endColumn < $this->startColumn) {
-                throw new PHPExcel_Exception('No cells exist within the specified range');
+                throw new \PhpOffice\PhpSpreadsheet\Exception('No cells exist within the specified range');
             }
         }
     }

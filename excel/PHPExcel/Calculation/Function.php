@@ -1,5 +1,7 @@
 <?php
 
+namespace PhpOffice\PhpSpreadsheet\Calculation;
+
 /**
  * PHPExcel_Calculation_Function
  *
@@ -25,7 +27,7 @@
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
-class PHPExcel_Calculation_Function
+class Category
 {
     /* Function categories */
     const CATEGORY_CUBE                 = 'Cube';
@@ -67,17 +69,17 @@ class PHPExcel_Calculation_Function
      * @param     string        $pCategory         Category (represented by CATEGORY_*)
      * @param     string        $pExcelName        Excel function name
      * @param     string        $pPHPExcelName    PHPExcel function mapping
-     * @throws     PHPExcel_Calculation_Exception
+     * @throws     \PhpOffice\PhpSpreadsheet\Calculation\Exception
      */
-    public function __construct($pCategory = null, $pExcelName = null, $pPHPExcelName = null)
+    public function __construct($pCategory = \null, $pExcelName = \null, $pPHPExcelName = \null)
     {
-        if (($pCategory !== null) && ($pExcelName !== null) && ($pPHPExcelName !== null)) {
+        if (($pCategory !== \null) && ($pExcelName !== \null) && ($pPHPExcelName !== \null)) {
             // Initialise values
             $this->category     = $pCategory;
             $this->excelName    = $pExcelName;
             $this->phpExcelName = $pPHPExcelName;
         } else {
-            throw new PHPExcel_Calculation_Exception("Invalid parameters passed.");
+            throw new \PhpOffice\PhpSpreadsheet\Calculation\Exception("Invalid parameters passed.");
         }
     }
 
@@ -95,14 +97,14 @@ class PHPExcel_Calculation_Function
      * Set Category (represented by CATEGORY_*)
      *
      * @param     string        $value
-     * @throws     PHPExcel_Calculation_Exception
+     * @throws     \PhpOffice\PhpSpreadsheet\Calculation\Exception
      */
-    public function setCategory($value = null)
+    public function setCategory($value = \null)
     {
-        if (!is_null($value)) {
+        if (!\is_null($value)) {
             $this->category = $value;
         } else {
-            throw new PHPExcel_Calculation_Exception("Invalid parameter passed.");
+            throw new \PhpOffice\PhpSpreadsheet\Calculation\Exception("Invalid parameter passed.");
         }
     }
 

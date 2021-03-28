@@ -1,5 +1,7 @@
 <?php
 
+namespace PhpOffice\PhpSpreadsheet\Shared\Escher\DggContainer\BstoreContainer;
+
 /**
  * PHPExcel_Shared_Escher_DggContainer_BstoreContainer_BSE
  *
@@ -25,7 +27,7 @@
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
-class PHPExcel_Shared_Escher_DggContainer_BstoreContainer_BSE
+class BSE
 {
     const BLIPTYPE_ERROR    = 0x00;
     const BLIPTYPE_UNKNOWN  = 0x01;
@@ -39,18 +41,11 @@ class PHPExcel_Shared_Escher_DggContainer_BstoreContainer_BSE
     const BLIPTYPE_CMYKJPEG = 0x12;
 
     /**
-     * The parent BLIP Store Entry Container
-     *
-     * @var PHPExcel_Shared_Escher_DggContainer_BstoreContainer
-     */
-    private $parent;
-
-    /**
      * The BLIP (Big Large Image or Picture)
      *
-     * @var PHPExcel_Shared_Escher_DggContainer_BstoreContainer_BSE_Blip
+     * @var \PhpOffice\PhpSpreadsheet\Shared\Escher\DggContainer\BstoreContainer\BSE\Blip
      */
-    private $blip;
+    private $phpExcelSharedEscherDggContainerBstoreContainerBSEBlip;
 
     /**
      * The BLIP type
@@ -62,31 +57,30 @@ class PHPExcel_Shared_Escher_DggContainer_BstoreContainer_BSE
     /**
      * Set parent BLIP Store Entry Container
      *
-     * @param PHPExcel_Shared_Escher_DggContainer_BstoreContainer $parent
+     * @param \PhpOffice\PhpSpreadsheet\Shared\Escher\DggContainer\BstoreContainer $parent
      */
     public function setParent($parent)
     {
-        $this->parent = $parent;
     }
 
     /**
      * Get the BLIP
      *
-     * @return PHPExcel_Shared_Escher_DggContainer_BstoreContainer_BSE_Blip
+     * @return \PhpOffice\PhpSpreadsheet\Shared\Escher\DggContainer\BstoreContainer\BSE\Blip
      */
     public function getBlip()
     {
-        return $this->blip;
+        return $this->phpExcelSharedEscherDggContainerBstoreContainerBSEBlip;
     }
 
     /**
      * Set the BLIP
      *
-     * @param PHPExcel_Shared_Escher_DggContainer_BstoreContainer_BSE_Blip $blip
+     * @param \PhpOffice\PhpSpreadsheet\Shared\Escher\DggContainer\BstoreContainer\BSE\Blip $blip
      */
     public function setBlip($blip)
     {
-        $this->blip = $blip;
+        $this->phpExcelSharedEscherDggContainerBstoreContainerBSEBlip = $blip;
         $blip->setParent($this);
     }
 

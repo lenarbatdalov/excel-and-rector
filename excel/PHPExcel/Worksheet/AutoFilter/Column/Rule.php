@@ -1,5 +1,7 @@
 <?php
 
+namespace PhpOffice\PhpSpreadsheet\Worksheet\AutoFilter\Column;
+
 /**
  * PHPExcel_Worksheet_AutoFilter_Column_Rule
  *
@@ -25,7 +27,7 @@
  * @license        http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version        ##VERSION##, ##DATE##
  */
-class PHPExcel_Worksheet_AutoFilter_Column_Rule
+class Rule
 {
     const AUTOFILTER_RULETYPE_FILTER        = 'filter';
     const AUTOFILTER_RULETYPE_DATEGROUP     = 'dateGroupItem';
@@ -188,45 +190,44 @@ class PHPExcel_Worksheet_AutoFilter_Column_Rule
 
 
     /* Rule Operators (Numeric, Boolean etc) */
-//    const AUTOFILTER_COLUMN_RULE_BETWEEN            = 'between';        //    greaterThanOrEqual 1 && lessThanOrEqual 2
+    //    const AUTOFILTER_COLUMN_RULE_BETWEEN            = 'between';        //    greaterThanOrEqual 1 && lessThanOrEqual 2
     /* Rule Operators (Numeric Special) which are translated to standard numeric operators with calculated values */
-//    const AUTOFILTER_COLUMN_RULE_TOPTEN                = 'topTen';            //    greaterThan calculated value
-//    const AUTOFILTER_COLUMN_RULE_TOPTENPERCENT        = 'topTenPercent';    //    greaterThan calculated value
-//    const AUTOFILTER_COLUMN_RULE_ABOVEAVERAGE        = 'aboveAverage';    //    Value is calculated as the average
-//    const AUTOFILTER_COLUMN_RULE_BELOWAVERAGE        = 'belowAverage';    //    Value is calculated as the average
+    //    const AUTOFILTER_COLUMN_RULE_TOPTEN                = 'topTen';            //    greaterThan calculated value
+    //    const AUTOFILTER_COLUMN_RULE_TOPTENPERCENT        = 'topTenPercent';    //    greaterThan calculated value
+    //    const AUTOFILTER_COLUMN_RULE_ABOVEAVERAGE        = 'aboveAverage';    //    Value is calculated as the average
+    //    const AUTOFILTER_COLUMN_RULE_BELOWAVERAGE        = 'belowAverage';    //    Value is calculated as the average
     /* Rule Operators (String) which are set as wild-carded values */
-//    const AUTOFILTER_COLUMN_RULE_BEGINSWITH            = 'beginsWith';            // A*
-//    const AUTOFILTER_COLUMN_RULE_ENDSWITH            = 'endsWith';            // *Z
-//    const AUTOFILTER_COLUMN_RULE_CONTAINS            = 'contains';            // *B*
-//    const AUTOFILTER_COLUMN_RULE_DOESNTCONTAIN        = 'notEqual';            //    notEqual *B*
+    //    const AUTOFILTER_COLUMN_RULE_BEGINSWITH            = 'beginsWith';            // A*
+    //    const AUTOFILTER_COLUMN_RULE_ENDSWITH            = 'endsWith';            // *Z
+    //    const AUTOFILTER_COLUMN_RULE_CONTAINS            = 'contains';            // *B*
+    //    const AUTOFILTER_COLUMN_RULE_DOESNTCONTAIN        = 'notEqual';            //    notEqual *B*
     /* Rule Operators (Date Special) which are translated to standard numeric operators with calculated values */
-//    const AUTOFILTER_COLUMN_RULE_BEFORE                = 'lessThan';
-//    const AUTOFILTER_COLUMN_RULE_AFTER                = 'greaterThan';
-//    const AUTOFILTER_COLUMN_RULE_YESTERDAY            = 'yesterday';
-//    const AUTOFILTER_COLUMN_RULE_TODAY                = 'today';
-//    const AUTOFILTER_COLUMN_RULE_TOMORROW            = 'tomorrow';
-//    const AUTOFILTER_COLUMN_RULE_LASTWEEK            = 'lastWeek';
-//    const AUTOFILTER_COLUMN_RULE_THISWEEK            = 'thisWeek';
-//    const AUTOFILTER_COLUMN_RULE_NEXTWEEK            = 'nextWeek';
-//    const AUTOFILTER_COLUMN_RULE_LASTMONTH            = 'lastMonth';
-//    const AUTOFILTER_COLUMN_RULE_THISMONTH            = 'thisMonth';
-//    const AUTOFILTER_COLUMN_RULE_NEXTMONTH            = 'nextMonth';
-//    const AUTOFILTER_COLUMN_RULE_LASTQUARTER        = 'lastQuarter';
-//    const AUTOFILTER_COLUMN_RULE_THISQUARTER        = 'thisQuarter';
-//    const AUTOFILTER_COLUMN_RULE_NEXTQUARTER        = 'nextQuarter';
-//    const AUTOFILTER_COLUMN_RULE_LASTYEAR            = 'lastYear';
-//    const AUTOFILTER_COLUMN_RULE_THISYEAR            = 'thisYear';
-//    const AUTOFILTER_COLUMN_RULE_NEXTYEAR            = 'nextYear';
-//    const AUTOFILTER_COLUMN_RULE_YEARTODATE            = 'yearToDate';            //    <dynamicFilter val="40909" type="yearToDate" maxVal="41113"/>
-//    const AUTOFILTER_COLUMN_RULE_ALLDATESINMONTH    = 'allDatesInMonth';    //    <dynamicFilter type="M2"/> for Month/February
-//    const AUTOFILTER_COLUMN_RULE_ALLDATESINQUARTER    = 'allDatesInQuarter';    //    <dynamicFilter type="Q2"/> for Quarter 2
-
+    //    const AUTOFILTER_COLUMN_RULE_BEFORE                = 'lessThan';
+    //    const AUTOFILTER_COLUMN_RULE_AFTER                = 'greaterThan';
+    //    const AUTOFILTER_COLUMN_RULE_YESTERDAY            = 'yesterday';
+    //    const AUTOFILTER_COLUMN_RULE_TODAY                = 'today';
+    //    const AUTOFILTER_COLUMN_RULE_TOMORROW            = 'tomorrow';
+    //    const AUTOFILTER_COLUMN_RULE_LASTWEEK            = 'lastWeek';
+    //    const AUTOFILTER_COLUMN_RULE_THISWEEK            = 'thisWeek';
+    //    const AUTOFILTER_COLUMN_RULE_NEXTWEEK            = 'nextWeek';
+    //    const AUTOFILTER_COLUMN_RULE_LASTMONTH            = 'lastMonth';
+    //    const AUTOFILTER_COLUMN_RULE_THISMONTH            = 'thisMonth';
+    //    const AUTOFILTER_COLUMN_RULE_NEXTMONTH            = 'nextMonth';
+    //    const AUTOFILTER_COLUMN_RULE_LASTQUARTER        = 'lastQuarter';
+    //    const AUTOFILTER_COLUMN_RULE_THISQUARTER        = 'thisQuarter';
+    //    const AUTOFILTER_COLUMN_RULE_NEXTQUARTER        = 'nextQuarter';
+    //    const AUTOFILTER_COLUMN_RULE_LASTYEAR            = 'lastYear';
+    //    const AUTOFILTER_COLUMN_RULE_THISYEAR            = 'thisYear';
+    //    const AUTOFILTER_COLUMN_RULE_NEXTYEAR            = 'nextYear';
+    //    const AUTOFILTER_COLUMN_RULE_YEARTODATE            = 'yearToDate';            //    <dynamicFilter val="40909" type="yearToDate" maxVal="41113"/>
+    //    const AUTOFILTER_COLUMN_RULE_ALLDATESINMONTH    = 'allDatesInMonth';    //    <dynamicFilter type="M2"/> for Month/February
+    //    const AUTOFILTER_COLUMN_RULE_ALLDATESINQUARTER    = 'allDatesInQuarter';    //    <dynamicFilter type="Q2"/> for Quarter 2
     /**
      * Autofilter Column
      *
-     * @var PHPExcel_Worksheet_AutoFilter_Column
+     * @var \PhpOffice\PhpSpreadsheet\Worksheet\AutoFilter\Column
      */
-    private $parent = null;
+    private $phpExcelWorksheetAutoFilterColumn;
 
 
     /**
@@ -261,12 +262,10 @@ class PHPExcel_Worksheet_AutoFilter_Column_Rule
 
     /**
      * Create a new PHPExcel_Worksheet_AutoFilter_Column_Rule
-     *
-     * @param PHPExcel_Worksheet_AutoFilter_Column $pParent
      */
-    public function __construct(PHPExcel_Worksheet_AutoFilter_Column $pParent = null)
+    public function __construct(\PhpOffice\PhpSpreadsheet\Worksheet\AutoFilter\Column $phpExcelWorksheetAutoFilterColumn = \null)
     {
-        $this->parent = $pParent;
+        $this->phpExcelWorksheetAutoFilterColumn = $phpExcelWorksheetAutoFilterColumn;
     }
 
     /**
@@ -283,13 +282,13 @@ class PHPExcel_Worksheet_AutoFilter_Column_Rule
      *    Set AutoFilter Rule Type
      *
      *    @param    string        $pRuleType
-     *    @throws    PHPExcel_Exception
-     *    @return PHPExcel_Worksheet_AutoFilter_Column
+     *    @throws    \PhpOffice\PhpSpreadsheet\Exception
+     *    @return \PhpOffice\PhpSpreadsheet\Worksheet\AutoFilter\Column
      */
     public function setRuleType($pRuleType = self::AUTOFILTER_RULETYPE_FILTER)
     {
-        if (!in_array($pRuleType, self::$ruleTypes)) {
-            throw new PHPExcel_Exception('Invalid rule type for column AutoFilter Rule.');
+        if (!\in_array($pRuleType, self::$ruleTypes)) {
+            throw new \PhpOffice\PhpSpreadsheet\Exception('Invalid rule type for column AutoFilter Rule.');
         }
 
         $this->ruleType = $pRuleType;
@@ -311,25 +310,25 @@ class PHPExcel_Worksheet_AutoFilter_Column_Rule
      *    Set AutoFilter Rule Value
      *
      *    @param    string|string[]        $pValue
-     *    @throws    PHPExcel_Exception
-     *    @return PHPExcel_Worksheet_AutoFilter_Column_Rule
+     *    @throws    \PhpOffice\PhpSpreadsheet\Exception
+     *    @return \PhpOffice\PhpSpreadsheet\Worksheet\AutoFilter\Column\Rule
      */
     public function setValue($pValue = '')
     {
-        if (is_array($pValue)) {
+        if (\is_array($pValue)) {
             $grouping = -1;
-            foreach ($pValue as $key => $value) {
+            foreach (array_keys($pValue) as $key) {
                 //    Validate array entries
-                if (!in_array($key, self::$dateTimeGroups)) {
+                if (!\in_array($key, self::$dateTimeGroups)) {
                     //    Remove any invalid entries from the value array
                     unset($pValue[$key]);
                 } else {
                     //    Work out what the dateTime grouping will be
-                    $grouping = max($grouping, array_search($key, self::$dateTimeGroups));
+                    $grouping = \max($grouping, \array_search($key, self::$dateTimeGroups));
                 }
             }
-            if (count($pValue) == 0) {
-                throw new PHPExcel_Exception('Invalid rule value for column AutoFilter Rule.');
+            if (\count($pValue) == 0) {
+                throw new \PhpOffice\PhpSpreadsheet\Exception('Invalid rule value for column AutoFilter Rule.');
             }
             //    Set the dateTime grouping that we've anticipated
             $this->setGrouping(self::$dateTimeGroups[$grouping]);
@@ -353,17 +352,17 @@ class PHPExcel_Worksheet_AutoFilter_Column_Rule
      *    Set AutoFilter Rule Operator
      *
      *    @param    string        $pOperator
-     *    @throws    PHPExcel_Exception
-     *    @return PHPExcel_Worksheet_AutoFilter_Column_Rule
+     *    @throws    \PhpOffice\PhpSpreadsheet\Exception
+     *    @return \PhpOffice\PhpSpreadsheet\Worksheet\AutoFilter\Column\Rule
      */
     public function setOperator($pOperator = self::AUTOFILTER_COLUMN_RULE_EQUAL)
     {
         if (empty($pOperator)) {
             $pOperator = self::AUTOFILTER_COLUMN_RULE_EQUAL;
         }
-        if ((!in_array($pOperator, self::$operators)) &&
-            (!in_array($pOperator, self::$topTenValue))) {
-            throw new PHPExcel_Exception('Invalid operator for column AutoFilter Rule.');
+        if ((!\in_array($pOperator, self::$operators)) &&
+            (!\in_array($pOperator, self::$topTenValue))) {
+            throw new \PhpOffice\PhpSpreadsheet\Exception('Invalid operator for column AutoFilter Rule.');
         }
         $this->operator = $pOperator;
 
@@ -384,16 +383,16 @@ class PHPExcel_Worksheet_AutoFilter_Column_Rule
      *    Set AutoFilter Rule Grouping
      *
      *    @param    string        $pGrouping
-     *    @throws    PHPExcel_Exception
-     *    @return PHPExcel_Worksheet_AutoFilter_Column_Rule
+     *    @throws    \PhpOffice\PhpSpreadsheet\Exception
+     *    @return \PhpOffice\PhpSpreadsheet\Worksheet\AutoFilter\Column\Rule
      */
-    public function setGrouping($pGrouping = null)
+    public function setGrouping($pGrouping = \null)
     {
-        if (($pGrouping !== null) &&
-            (!in_array($pGrouping, self::$dateTimeGroups)) &&
-            (!in_array($pGrouping, self::$dynamicTypes)) &&
-            (!in_array($pGrouping, self::$topTenType))) {
-            throw new PHPExcel_Exception('Invalid rule type for column AutoFilter Rule.');
+        if (($pGrouping !== \null) &&
+            (!\in_array($pGrouping, self::$dateTimeGroups)) &&
+            (!\in_array($pGrouping, self::$dynamicTypes)) &&
+            (!\in_array($pGrouping, self::$topTenType))) {
+            throw new \PhpOffice\PhpSpreadsheet\Exception('Invalid rule type for column AutoFilter Rule.');
         }
         $this->grouping = $pGrouping;
 
@@ -406,17 +405,17 @@ class PHPExcel_Worksheet_AutoFilter_Column_Rule
      *    @param    string                $pOperator
      *    @param    string|string[]        $pValue
      *    @param    string                $pGrouping
-     *    @throws    PHPExcel_Exception
-     *    @return PHPExcel_Worksheet_AutoFilter_Column_Rule
+     *    @throws    \PhpOffice\PhpSpreadsheet\Exception
+     *    @return \PhpOffice\PhpSpreadsheet\Worksheet\AutoFilter\Column\Rule
      */
-    public function setRule($pOperator = self::AUTOFILTER_COLUMN_RULE_EQUAL, $pValue = '', $pGrouping = null)
+    public function setRule($pOperator = self::AUTOFILTER_COLUMN_RULE_EQUAL, $pValue = '', $pGrouping = \null)
     {
         $this->setOperator($pOperator);
         $this->setValue($pValue);
         //    Only set grouping if it's been passed in as a user-supplied argument,
         //        otherwise we're calculating it when we setValue() and don't want to overwrite that
         //        If the user supplies an argumnet for grouping, then on their own head be it
-        if ($pGrouping !== null) {
+        if ($pGrouping !== \null) {
             $this->setGrouping($pGrouping);
         }
 
@@ -426,22 +425,22 @@ class PHPExcel_Worksheet_AutoFilter_Column_Rule
     /**
      * Get this Rule's AutoFilter Column Parent
      *
-     * @return PHPExcel_Worksheet_AutoFilter_Column
+     * @return \PhpOffice\PhpSpreadsheet\Worksheet\AutoFilter\Column
      */
     public function getParent()
     {
-        return $this->parent;
+        return $this->phpExcelWorksheetAutoFilterColumn;
     }
 
     /**
      * Set this Rule's AutoFilter Column Parent
      *
      * @param PHPExcel_Worksheet_AutoFilter_Column
-     * @return PHPExcel_Worksheet_AutoFilter_Column_Rule
+     * @return \PhpOffice\PhpSpreadsheet\Worksheet\AutoFilter\Column\Rule
      */
-    public function setParent(PHPExcel_Worksheet_AutoFilter_Column $pParent = null)
+    public function setParent(\PhpOffice\PhpSpreadsheet\Worksheet\AutoFilter\Column $phpExcelWorksheetAutoFilterColumn = \null)
     {
-        $this->parent = $pParent;
+        $this->phpExcelWorksheetAutoFilterColumn = $phpExcelWorksheetAutoFilterColumn;
 
         return $this;
     }
@@ -451,15 +450,10 @@ class PHPExcel_Worksheet_AutoFilter_Column_Rule
      */
     public function __clone()
     {
-        $vars = get_object_vars($this);
+        $vars = \get_object_vars($this);
         foreach ($vars as $key => $value) {
-            if (is_object($value)) {
-                if ($key == 'parent') {
-                    //    Detach from autofilter column parent
-                    $this->$key = null;
-                } else {
-                    $this->$key = clone $value;
-                }
+            if (\is_object($value)) {
+                $this->$key = $key == 'parent' ? \null : clone $value;
             } else {
                 $this->$key = $value;
             }

@@ -1,5 +1,7 @@
 <?php
 
+namespace PhpOffice\PhpSpreadsheet\Worksheet;
+
 /**
  * PHPExcel_Worksheet_ColumnIterator
  *
@@ -25,14 +27,14 @@
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
-class PHPExcel_Worksheet_ColumnIterator implements Iterator
+class ColumnIterator implements \Iterator
 {
     /**
      * PHPExcel_Worksheet to iterate
      *
-     * @var PHPExcel_Worksheet
+     * @var \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet
      */
-    private $subject;
+    private $phpExcelWorksheet;
 
     /**
      * Current iterator position
@@ -60,14 +62,14 @@ class PHPExcel_Worksheet_ColumnIterator implements Iterator
     /**
      * Create a new column iterator
      *
-     * @param    PHPExcel_Worksheet    $subject    The worksheet to iterate over
+     * @param \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet    $phpExcelWorksheet    The worksheet to iterate over
      * @param    string                $startColumn    The column address at which to start iterating
      * @param    string                $endColumn        Optionally, the column address at which to stop iterating
      */
-    public function __construct(PHPExcel_Worksheet $subject = null, $startColumn = 'A', $endColumn = null)
+    public function __construct(\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet $phpExcelWorksheet = \null, $startColumn = 'A', $endColumn = \null)
     {
         // Set subject
-        $this->subject = $subject;
+        $this->phpExcelWorksheet = $phpExcelWorksheet;
         $this->resetEnd($endColumn);
         $this->resetStart($startColumn);
     }
@@ -77,21 +79,21 @@ class PHPExcel_Worksheet_ColumnIterator implements Iterator
      */
     public function __destruct()
     {
-        unset($this->subject);
+        unset($this->phpExcelWorksheet);
     }
 
     /**
      * (Re)Set the start column and the current column pointer
      *
      * @param integer    $startColumn    The column address at which to start iterating
-     * @return PHPExcel_Worksheet_ColumnIterator
-     * @throws PHPExcel_Exception
+     * @return \PhpOffice\PhpSpreadsheet\Worksheet\ColumnIterator
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
     public function resetStart($startColumn = 'A')
     {
-        $startColumnIndex = PHPExcel_Cell::columnIndexFromString($startColumn) - 1;
-        if ($startColumnIndex > PHPExcel_Cell::columnIndexFromString($this->subject->getHighestColumn()) - 1) {
-            throw new PHPExcel_Exception("Start column ({$startColumn}) is beyond highest column ({$this->subject->getHighestColumn()})");
+        $startColumnIndex = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($startColumn) - 1;
+        if ($startColumnIndex > \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($this->phpExcelWorksheet->getHighestColumn()) - 1) {
+            throw new \PhpOffice\PhpSpreadsheet\Exception("Start column ({$startColumn}) is beyond highest column ({$this->phpExcelWorksheet->getHighestColumn()})");
         }
 
         $this->startColumn = $startColumnIndex;
@@ -107,12 +109,12 @@ class PHPExcel_Worksheet_ColumnIterator implements Iterator
      * (Re)Set the end column
      *
      * @param string    $endColumn    The column address at which to stop iterating
-     * @return PHPExcel_Worksheet_ColumnIterator
+     * @return \PhpOffice\PhpSpreadsheet\Worksheet\ColumnIterator
      */
-    public function resetEnd($endColumn = null)
+    public function resetEnd($endColumn = \null)
     {
-        $endColumn = ($endColumn) ? $endColumn : $this->subject->getHighestColumn();
-        $this->endColumn = PHPExcel_Cell::columnIndexFromString($endColumn) - 1;
+        $endColumn = ($endColumn) ? $endColumn : $this->phpExcelWorksheet->getHighestColumn();
+        $this->endColumn = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($endColumn) - 1;
 
         return $this;
     }
@@ -121,14 +123,14 @@ class PHPExcel_Worksheet_ColumnIterator implements Iterator
      * Set the column pointer to the selected column
      *
      * @param string    $column    The column address to set the current pointer at
-     * @return PHPExcel_Worksheet_ColumnIterator
-     * @throws PHPExcel_Exception
+     * @return \PhpOffice\PhpSpreadsheet\Worksheet\ColumnIterator
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
     public function seek($column = 'A')
     {
-        $column = PHPExcel_Cell::columnIndexFromString($column) - 1;
+        $column = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($column) - 1;
         if (($column < $this->startColumn) || ($column > $this->endColumn)) {
-            throw new PHPExcel_Exception("Column $column is out of range ({$this->startColumn} - {$this->endColumn})");
+            throw new \PhpOffice\PhpSpreadsheet\Exception("Column $column is out of range ({$this->startColumn} - {$this->endColumn})");
         }
         $this->position = $column;
 
@@ -146,11 +148,11 @@ class PHPExcel_Worksheet_ColumnIterator implements Iterator
     /**
      * Return the current column in this worksheet
      *
-     * @return PHPExcel_Worksheet_Column
+     * @return \PhpOffice\PhpSpreadsheet\Worksheet\Column
      */
     public function current()
     {
-        return new PHPExcel_Worksheet_Column($this->subject, PHPExcel_Cell::stringFromColumnIndex($this->position));
+        return new \PhpOffice\PhpSpreadsheet\Worksheet\Column($this->phpExcelWorksheet, \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($this->position));
     }
 
     /**
@@ -160,7 +162,7 @@ class PHPExcel_Worksheet_ColumnIterator implements Iterator
      */
     public function key()
     {
-        return PHPExcel_Cell::stringFromColumnIndex($this->position);
+        return \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($this->position);
     }
 
     /**
@@ -174,15 +176,15 @@ class PHPExcel_Worksheet_ColumnIterator implements Iterator
     /**
      * Set the iterator to its previous value
      *
-     * @throws PHPExcel_Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
     public function prev()
     {
         if ($this->position <= $this->startColumn) {
-            throw new PHPExcel_Exception(
+            throw new \PhpOffice\PhpSpreadsheet\Exception(
                 "Column is already at the beginning of range (" .
-                PHPExcel_Cell::stringFromColumnIndex($this->endColumn) . " - " .
-                PHPExcel_Cell::stringFromColumnIndex($this->endColumn) . ")"
+                \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($this->endColumn) . " - " .
+                \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($this->endColumn) . ")"
             );
         }
 

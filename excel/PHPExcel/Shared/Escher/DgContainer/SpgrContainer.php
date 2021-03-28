@@ -1,5 +1,7 @@
 <?php
 
+namespace PhpOffice\PhpSpreadsheet\Shared\Escher\DgContainer;
+
 /**
  * PHPExcel_Shared_Escher_DgContainer_SpgrContainer
  *
@@ -25,14 +27,14 @@
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
-class PHPExcel_Shared_Escher_DgContainer_SpgrContainer
+class SpgrContainer
 {
     /**
      * Parent Shape Group Container
      *
-     * @var PHPExcel_Shared_Escher_DgContainer_SpgrContainer
+     * @var \PhpOffice\PhpSpreadsheet\Shared\Escher\DgContainer\SpgrContainer
      */
-    private $parent;
+    private $phpExcelSharedEscherDgContainerSpgrContainer;
 
     /**
      * Shape Container collection
@@ -44,21 +46,21 @@ class PHPExcel_Shared_Escher_DgContainer_SpgrContainer
     /**
      * Set parent Shape Group Container
      *
-     * @param PHPExcel_Shared_Escher_DgContainer_SpgrContainer $parent
+     * @param \PhpOffice\PhpSpreadsheet\Shared\Escher\DgContainer\SpgrContainer $parent
      */
     public function setParent($parent)
     {
-        $this->parent = $parent;
+        $this->phpExcelSharedEscherDgContainerSpgrContainer = $parent;
     }
 
     /**
      * Get the parent Shape Group Container if any
      *
-     * @return PHPExcel_Shared_Escher_DgContainer_SpgrContainer|null
+     * @return \PhpOffice\PhpSpreadsheet\Shared\Escher\DgContainer\SpgrContainer|null
      */
     public function getParent()
     {
-        return $this->parent;
+        return $this->phpExcelSharedEscherDgContainerSpgrContainer;
     }
 
     /**
@@ -83,15 +85,15 @@ class PHPExcel_Shared_Escher_DgContainer_SpgrContainer
     /**
      * Recursively get all spContainers within this spgrContainer
      *
-     * @return PHPExcel_Shared_Escher_DgContainer_SpgrContainer_SpContainer[]
+     * @return \PhpOffice\PhpSpreadsheet\Shared\Escher\DgContainer\SpgrContainer\SpContainer[]
      */
     public function getAllSpContainers()
     {
         $allSpContainers = array();
 
         foreach ($this->children as $child) {
-            if ($child instanceof PHPExcel_Shared_Escher_DgContainer_SpgrContainer) {
-                $allSpContainers = array_merge($allSpContainers, $child->getAllSpContainers());
+            if ($child instanceof \PhpOffice\PhpSpreadsheet\Shared\Escher\DgContainer\SpgrContainer) {
+                $allSpContainers = \array_merge($allSpContainers, $child->getAllSpContainers());
             } else {
                 $allSpContainers[] = $child;
             }

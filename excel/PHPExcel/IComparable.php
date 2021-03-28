@@ -1,5 +1,7 @@
 <?php
 
+namespace PhpOffice\PhpSpreadsheet;
+
 /**
  * PHPExcel_IComparable
  *
@@ -23,7 +25,7 @@
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
-interface PHPExcel_IComparable
+interface IComparable
 {
     /**
      * Get hash code

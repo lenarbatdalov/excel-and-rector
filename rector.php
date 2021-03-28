@@ -14,6 +14,13 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     // Define what rule sets will be applied
     $parameters->set(Option::SETS, [
         SetList::DEAD_CODE,
+        SetList::PHP_72,
+        SetList::PHPEXCEL_TO_PHPSPREADSHEET,
+        SetList::CODE_QUALITY,
+        SetList::MYSQL_TO_MYSQLI,
+        SetList::NAMING,
+        SetList::PSR_4,
+        SetList::GMAGICK_TO_IMAGICK
     ]);
 
     // get services (needed for register a single rule)

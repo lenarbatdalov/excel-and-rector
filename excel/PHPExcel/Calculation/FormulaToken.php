@@ -1,5 +1,7 @@
 <?php
 
+namespace PhpOffice\PhpSpreadsheet\Calculation;
+
 /*
 PARTLY BASED ON:
     Copyright (c) 2007 E. W. Bachtal, Inc.
@@ -22,7 +24,6 @@ PARTLY BASED ON:
     http://ewbi.blogs.com/develops/2007/03/excel_formula_p.html
     http://ewbi.blogs.com/develops/2004/12/excel_formula_p.html
 */
-
 /**
  * PHPExcel_Calculation_FormulaToken
  *
@@ -48,9 +49,7 @@ PARTLY BASED ON:
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
-
-
-class PHPExcel_Calculation_FormulaToken
+class FormulaToken
 {
     /* Token types */
     const TOKEN_TYPE_NOOP            = 'Noop';
@@ -106,7 +105,7 @@ class PHPExcel_Calculation_FormulaToken
      * @param string    $pTokenType     Token type (represented by TOKEN_TYPE_*)
      * @param string    $pTokenSubType     Token Subtype (represented by TOKEN_SUBTYPE_*)
      */
-    public function __construct($pValue, $pTokenType = PHPExcel_Calculation_FormulaToken::TOKEN_TYPE_UNKNOWN, $pTokenSubType = PHPExcel_Calculation_FormulaToken::TOKEN_SUBTYPE_NOTHING)
+    public function __construct($pValue, $pTokenType = \PhpOffice\PhpSpreadsheet\Calculation\FormulaToken::TOKEN_TYPE_UNKNOWN, $pTokenSubType = \PhpOffice\PhpSpreadsheet\Calculation\FormulaToken::TOKEN_SUBTYPE_NOTHING)
     {
         // Initialise values
         $this->value       = $pValue;
@@ -149,7 +148,7 @@ class PHPExcel_Calculation_FormulaToken
      *
      * @param string    $value
      */
-    public function setTokenType($value = PHPExcel_Calculation_FormulaToken::TOKEN_TYPE_UNKNOWN)
+    public function setTokenType($value = \PhpOffice\PhpSpreadsheet\Calculation\FormulaToken::TOKEN_TYPE_UNKNOWN)
     {
         $this->tokenType = $value;
     }
@@ -169,7 +168,7 @@ class PHPExcel_Calculation_FormulaToken
      *
      * @param string    $value
      */
-    public function setTokenSubType($value = PHPExcel_Calculation_FormulaToken::TOKEN_SUBTYPE_NOTHING)
+    public function setTokenSubType($value = \PhpOffice\PhpSpreadsheet\Calculation\FormulaToken::TOKEN_SUBTYPE_NOTHING)
     {
         $this->tokenSubType = $value;
     }

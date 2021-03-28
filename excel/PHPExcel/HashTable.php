@@ -1,5 +1,7 @@
 <?php
 
+namespace PhpOffice\PhpSpreadsheet;
+
 /**
  * PHPExcel_HashTable
  *
@@ -25,7 +27,7 @@
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
-class PHPExcel_HashTable
+class HashTable
 {
     /**
      * HashTable elements
@@ -44,12 +46,12 @@ class PHPExcel_HashTable
     /**
      * Create a new PHPExcel_HashTable
      *
-     * @param    PHPExcel_IComparable[] $pSource    Optional source array to create HashTable from
-     * @throws    PHPExcel_Exception
+     * @param    \PhpOffice\PhpSpreadsheet\IComparable[] $pSource    Optional source array to create HashTable from
+     * @throws    \PhpOffice\PhpSpreadsheet\Exception
      */
-    public function __construct($pSource = null)
+    public function __construct($pSource = \null)
     {
-        if ($pSource !== null) {
+        if ($pSource !== \null) {
             // Create HashTable
             $this->addFromSource($pSource);
         }
@@ -58,47 +60,47 @@ class PHPExcel_HashTable
     /**
      * Add HashTable items from source
      *
-     * @param    PHPExcel_IComparable[] $pSource    Source array to create HashTable from
-     * @throws    PHPExcel_Exception
+     * @param    \PhpOffice\PhpSpreadsheet\IComparable[] $pSource    Source array to create HashTable from
+     * @throws    \PhpOffice\PhpSpreadsheet\Exception
      */
-    public function addFromSource($pSource = null)
+    public function addFromSource($pSource = \null)
     {
         // Check if an array was passed
-        if ($pSource == null) {
+        if ($pSource == \null) {
             return;
-        } elseif (!is_array($pSource)) {
-            throw new PHPExcel_Exception('Invalid array parameter passed.');
+        } elseif (!\is_array($pSource)) {
+            throw new \PhpOffice\PhpSpreadsheet\Exception('Invalid array parameter passed.');
         }
 
-        foreach ($pSource as $item) {
-            $this->add($item);
+        foreach ($pSource as $singlePSource) {
+            $this->add($singlePSource);
         }
     }
 
     /**
      * Add HashTable item
      *
-     * @param    PHPExcel_IComparable $pSource    Item to add
-     * @throws    PHPExcel_Exception
+     * @param \PhpOffice\PhpSpreadsheet\IComparable $phpExcelIComparable    Item to add
+     * @throws    \PhpOffice\PhpSpreadsheet\Exception
      */
-    public function add(PHPExcel_IComparable $pSource = null)
+    public function add(\PhpOffice\PhpSpreadsheet\IComparable $phpExcelIComparable = \null)
     {
-        $hash = $pSource->getHashCode();
+        $hash = $phpExcelIComparable->getHashCode();
         if (!isset($this->items[$hash])) {
-            $this->items[$hash] = $pSource;
-            $this->keyMap[count($this->items) - 1] = $hash;
+            $this->items[$hash] = $phpExcelIComparable;
+            $this->keyMap[\count($this->items) - 1] = $hash;
         }
     }
 
     /**
      * Remove HashTable item
      *
-     * @param    PHPExcel_IComparable $pSource    Item to remove
-     * @throws    PHPExcel_Exception
+     * @param \PhpOffice\PhpSpreadsheet\IComparable $phpExcelIComparable    Item to remove
+     * @throws    \PhpOffice\PhpSpreadsheet\Exception
      */
-    public function remove(PHPExcel_IComparable $pSource = null)
+    public function remove(\PhpOffice\PhpSpreadsheet\IComparable $phpExcelIComparable = \null)
     {
-        $hash = $pSource->getHashCode();
+        $hash = $phpExcelIComparable->getHashCode();
         if (isset($this->items[$hash])) {
             unset($this->items[$hash]);
 
@@ -112,7 +114,7 @@ class PHPExcel_HashTable
                     $deleteKey = $key;
                 }
             }
-            unset($this->keyMap[count($this->keyMap) - 1]);
+            unset($this->keyMap[\count($this->keyMap) - 1]);
         }
     }
 
@@ -133,7 +135,7 @@ class PHPExcel_HashTable
      */
     public function count()
     {
-        return count($this->items);
+        return \count($this->items);
     }
 
     /**
@@ -144,15 +146,14 @@ class PHPExcel_HashTable
      */
     public function getIndexForHashCode($pHashCode = '')
     {
-        return array_search($pHashCode, $this->keyMap);
+        return \array_search($pHashCode, $this->keyMap);
     }
 
     /**
      * Get by index
      *
      * @param    int    $pIndex
-     * @return    PHPExcel_IComparable
-     *
+     * @return    \PhpOffice\PhpSpreadsheet\IComparable
      */
     public function getByIndex($pIndex = 0)
     {
@@ -160,15 +161,14 @@ class PHPExcel_HashTable
             return $this->getByHashCode($this->keyMap[$pIndex]);
         }
 
-        return null;
+        return \null;
     }
 
     /**
      * Get by hashcode
      *
      * @param    string    $pHashCode
-     * @return    PHPExcel_IComparable
-     *
+     * @return    \PhpOffice\PhpSpreadsheet\IComparable
      */
     public function getByHashCode($pHashCode = '')
     {
@@ -176,15 +176,15 @@ class PHPExcel_HashTable
             return $this->items[$pHashCode];
         }
 
-        return null;
+        return \null;
     }
 
     /**
      * HashTable to array
      *
-     * @return PHPExcel_IComparable[]
+     * @return \PhpOffice\PhpSpreadsheet\IComparable[]
      */
-    public function toArray()
+    public function getItems()
     {
         return $this->items;
     }
@@ -194,9 +194,9 @@ class PHPExcel_HashTable
      */
     public function __clone()
     {
-        $vars = get_object_vars($this);
+        $vars = \get_object_vars($this);
         foreach ($vars as $key => $value) {
-            if (is_object($value)) {
+            if (\is_object($value)) {
                 $this->$key = clone $value;
             }
         }

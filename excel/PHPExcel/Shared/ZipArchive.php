@@ -1,7 +1,7 @@
 <?php
 
 if (!defined('PCLZIP_TEMPORARY_DIR')) {
-    define('PCLZIP_TEMPORARY_DIR', PHPExcel_Shared_File::sys_get_temp_dir() . DIRECTORY_SEPARATOR);
+    define('PCLZIP_TEMPORARY_DIR', \PhpOffice\PhpSpreadsheet\Shared\File::sys_get_temp_dir() . DIRECTORY_SEPARATOR);
 }
 require_once PHPEXCEL_ROOT . 'PHPExcel/Shared/PCLZip/pclzip.lib.php';
 
@@ -61,7 +61,7 @@ class PHPExcel_Shared_ZipArchive
      */
     public function open($fileName)
     {
-        $this->tempDir = PHPExcel_Shared_File::sys_get_temp_dir();
+        $this->tempDir = \PhpOffice\PhpSpreadsheet\Shared\File::sys_get_temp_dir();
         $this->zip = new PclZip($fileName);
 
         return true;
@@ -93,7 +93,7 @@ class PHPExcel_Shared_ZipArchive
 
         $res = $this->zip->add($this->tempDir.'/'.$filenameParts["basename"], PCLZIP_OPT_REMOVE_PATH, $this->tempDir, PCLZIP_OPT_ADD_PATH, $filenameParts["dirname"]);
         if ($res == 0) {
-            throw new PHPExcel_Writer_Exception("Error zipping files : " . $this->zip->errorInfo(true));
+            throw new \PhpOffice\PhpSpreadsheet\Writer\Exception("Error zipping files : " . $this->zip->errorInfo(true));
         }
 
         unlink($this->tempDir.'/'.$filenameParts["basename"]);
@@ -113,8 +113,8 @@ class PHPExcel_Shared_ZipArchive
         $listCount = count($list);
         $index = -1;
         for ($i = 0; $i < $listCount; ++$i) {
-            if (strtolower($list[$i]["filename"]) == $fileName ||
-                strtolower($list[$i]["stored_filename"]) == $fileName) {
+            if (strtolower($list[$i]["filename"]) === $fileName ||
+                strtolower($list[$i]["stored_filename"]) === $fileName) {
                 $index = $i;
                 break;
             }
@@ -132,12 +132,12 @@ class PHPExcel_Shared_ZipArchive
     {
         $index = $this->locateName($fileName);
 
-        if ($index !== false) {
+        if ($index) {
             $extracted = $this->getFromIndex($index);
         } else {
             $fileName = substr($fileName, 1);
             $index = $this->locateName($fileName);
-            if ($index === false) {
+            if (!$index) {
                 return false;
             }
             $extracted = $this->zip->getFromIndex($index);
