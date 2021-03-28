@@ -1,5 +1,7 @@
 <?php
 
+namespace PhpOffice\PhpSpreadsheet\Reader;
+
 /**
  * PHPExcel_Reader_Exception
  *
@@ -25,7 +27,7 @@
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
-class PHPExcel_Reader_Exception extends PHPExcel_Exception
+class Exception extends \PhpOffice\PhpSpreadsheet\Exception
 {
     /**
      * Error handler callback
@@ -38,9 +40,9 @@ class PHPExcel_Reader_Exception extends PHPExcel_Exception
      */
     public static function errorHandlerCallback($code, $string, $file, $line, $context)
     {
-        $e = new self($string, $code);
-        $e->line = $line;
-        $e->file = $file;
-        throw $e;
+        $self = new self($string, $code);
+        $self->line = $line;
+        $self->file = $file;
+        throw $self;
     }
 }

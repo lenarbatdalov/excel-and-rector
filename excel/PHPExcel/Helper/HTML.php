@@ -1,6 +1,8 @@
 <?php
 
-class PHPExcel_Helper_HTML
+namespace PhpOffice\PhpSpreadsheet\Helper;
+
+class Html
 {
     protected static $colourMap = array(
         'aliceblue' => 'f0f8ff',
@@ -526,12 +528,12 @@ class PHPExcel_Helper_HTML
     protected $size;
     protected $color;
 
-    protected $bold = false;
-    protected $italic = false;
-    protected $underline = false;
-    protected $superscript = false;
-    protected $subscript = false;
-    protected $strikethrough = false;
+    protected $bold = \false;
+    protected $italic = \false;
+    protected $underline = \false;
+    protected $superscript = \false;
+    protected $subscript = \false;
+    protected $strikethrough = \false;
 
     protected $startTagCallbacks = array(
         'font' => 'startFontTag',
@@ -575,8 +577,8 @@ class PHPExcel_Helper_HTML
 
     protected function initialise()
     {
-        $this->face = $this->size = $this->color = null;
-        $this->bold = $this->italic = $this->underline = $this->superscript = $this->subscript = $this->strikethrough = false;
+        $this->face = $this->size = $this->color = \null;
+        $this->bold = $this->italic = $this->underline = $this->superscript = $this->subscript = $this->strikethrough = \false;
 
         $this->stack = array();
 
@@ -588,16 +590,16 @@ class PHPExcel_Helper_HTML
         $this->initialise();
 
         //  Create a new DOM object
-        $dom = new \DOMDocument;
+        $domDocument = new \DOMDocument;
         //  Load the HTML file into the DOM object
         //  Note the use of error suppression, because typically this will be an html fragment, so not fully valid markup
-        $loaded = @$dom->loadHTML($html);
+        $loaded = @$domDocument->loadHTML($html);
 
         //  Discard excess white space
-        $dom->preserveWhiteSpace = false;
+        $domDocument->preserveWhiteSpace = \false;
 
-        $this->richTextObject = new PHPExcel_RichText();;
-        $this->parseElements($dom);
+        $this->richTextObject = new \PhpOffice\PhpSpreadsheet\RichText\RichText();;
+        $this->parseElements($domDocument);
 
         // Clean any further spurious whitespace
         $this->cleanWhitespace();
@@ -607,22 +609,22 @@ class PHPExcel_Helper_HTML
 
     protected function cleanWhitespace()
     {
-        foreach ($this->richTextObject->getRichTextElements() as $key => $element) {
-            $text = $element->getText();
+        foreach ($this->richTextObject->getRichTextElements() as $key => $richTextElement) {
+            $text = $richTextElement->getText();
             // Trim any leading spaces on the first run
             if ($key == 0) {
-                $text = ltrim($text);
+                $text = \ltrim($text);
             }
             // Trim any spaces immediately after a line break
-            $text = preg_replace('/\n */mu', "\n", $text);
-            $element->setText($text);
+            $text = \preg_replace('/\n */mu', "\n", $text);
+            $richTextElement->setText($text);
         }
     }
 
     protected function buildTextRun()
     {
         $text = $this->stringData;
-        if (trim($text) === '') {
+        if (\trim($text) === '') {
             return;
         }
 
@@ -634,36 +636,36 @@ class PHPExcel_Helper_HTML
             $richtextRun->getFont()->setSize($this->size);
         }
         if ($this->color) {
-            $richtextRun->getFont()->setColor(new PHPExcel_Style_Color('ff' . $this->color));
+            $richtextRun->getFont()->setColor(new \PhpOffice\PhpSpreadsheet\Style\Color('ff' . $this->color));
         }
         if ($this->bold) {
-            $richtextRun->getFont()->setBold(true);
+            $richtextRun->getFont()->setBold(\true);
         }
         if ($this->italic) {
-            $richtextRun->getFont()->setItalic(true);
+            $richtextRun->getFont()->setItalic(\true);
         }
         if ($this->underline) {
-            $richtextRun->getFont()->setUnderline(PHPExcel_Style_Font::UNDERLINE_SINGLE);
+            $richtextRun->getFont()->setUnderline(\PhpOffice\PhpSpreadsheet\Style\Font::UNDERLINE_SINGLE);
         }
         if ($this->superscript) {
-            $richtextRun->getFont()->setSuperScript(true);
+            $richtextRun->getFont()->setSuperScript(\true);
         }
         if ($this->subscript) {
-            $richtextRun->getFont()->setSubScript(true);
+            $richtextRun->getFont()->setSubScript(\true);
         }
         if ($this->strikethrough) {
-            $richtextRun->getFont()->setStrikethrough(true);
+            $richtextRun->getFont()->setStrikethrough(\true);
         }
         $this->stringData = '';
     }
 
     protected function rgbToColour($rgb)
     {
-        preg_match_all('/\d+/', $rgb, $values);
+        \preg_match_all('/\d+/', $rgb, $values);
         foreach ($values[0] as &$value) {
-            $value = str_pad(dechex($value), 2, '0', STR_PAD_LEFT);
+            $value = \str_pad(\dechex($value), 2, '0', \STR_PAD_LEFT);
         }
-        return implode($values[0]);
+        return \implode($values[0]);
     }
 
     protected function colourNameLookup($rgb)
@@ -674,14 +676,14 @@ class PHPExcel_Helper_HTML
     protected function startFontTag($tag)
     {
         foreach ($tag->attributes as $attribute) {
-            $attributeName = strtolower($attribute->name);
+            $attributeName = \strtolower($attribute->name);
             $attributeValue = $attribute->value;
 
             if ($attributeName == 'color') {
-                if (preg_match('/rgb\s*\(/', $attributeValue)) {
+                if (\preg_match('/rgb\s*\(/', $attributeValue)) {
                     $this->$attributeName = $this->rgbToColour($attributeValue);
-                } elseif (strpos(trim($attributeValue), '#') === 0) {
-                    $this->$attributeName = ltrim($attributeValue, '#');
+                } elseif (\strpos(\trim($attributeValue), '#') === 0) {
+                    $this->$attributeName = \ltrim($attributeValue, '#');
                 } else {
                     $this->$attributeName = $this->colourNameLookup($attributeValue);
                 }
@@ -693,67 +695,67 @@ class PHPExcel_Helper_HTML
 
     protected function endFontTag()
     {
-        $this->face = $this->size = $this->color = null;
+        $this->face = $this->size = $this->color = \null;
     }
 
     protected function startBoldTag()
     {
-        $this->bold = true;
+        $this->bold = \true;
     }
 
     protected function endBoldTag()
     {
-        $this->bold = false;
+        $this->bold = \false;
     }
 
     protected function startItalicTag()
     {
-        $this->italic = true;
+        $this->italic = \true;
     }
 
     protected function endItalicTag()
     {
-        $this->italic = false;
+        $this->italic = \false;
     }
 
     protected function startUnderlineTag()
     {
-        $this->underline = true;
+        $this->underline = \true;
     }
 
     protected function endUnderlineTag()
     {
-        $this->underline = false;
+        $this->underline = \false;
     }
 
     protected function startSubscriptTag()
     {
-        $this->subscript = true;
+        $this->subscript = \true;
     }
 
     protected function endSubscriptTag()
     {
-        $this->subscript = false;
+        $this->subscript = \false;
     }
 
     protected function startSuperscriptTag()
     {
-        $this->superscript = true;
+        $this->superscript = \true;
     }
 
     protected function endSuperscriptTag()
     {
-        $this->superscript = false;
+        $this->superscript = \false;
     }
 
     protected function startStrikethruTag()
     {
-        $this->strikethrough = true;
+        $this->strikethrough = \true;
     }
 
     protected function endStrikethruTag()
     {
-        $this->strikethrough = false;
+        $this->strikethrough = \false;
     }
 
     protected function breakTag()
@@ -761,12 +763,12 @@ class PHPExcel_Helper_HTML
         $this->stringData .= "\n";
     }
 
-    protected function parseTextNode(DOMText $textNode)
+    protected function parseTextNode(\DOMText $textNode)
     {
-        $domText = preg_replace(
+        $domText = \preg_replace(
             '/\s+/u',
             ' ',
-            str_replace(array("\r", "\n"), ' ', $textNode->nodeValue)
+            \str_replace(array("\r", "\n"), ' ', $textNode->nodeValue)
         );
         $this->stringData .= $domText;
         $this->buildTextRun();
@@ -776,31 +778,31 @@ class PHPExcel_Helper_HTML
     {
         if (isset($callbacks[$callbackTag])) {
             $elementHandler = $callbacks[$callbackTag];
-            if (method_exists($this, $elementHandler)) {
-                call_user_func(array($this, $elementHandler), $element);
+            if (\method_exists($this, $elementHandler)) {
+                \call_user_func(array($this, $elementHandler), $element);
             }
         }
     }
 
-    protected function parseElementNode(DOMElement $element)
+    protected function parseElementNode(\DOMElement $domElement)
     {
-        $callbackTag = strtolower($element->nodeName);
+        $callbackTag = \strtolower($domElement->nodeName);
         $this->stack[] = $callbackTag;
 
-        $this->handleCallback($element, $callbackTag, $this->startTagCallbacks);
+        $this->handleCallback($domElement, $callbackTag, $this->startTagCallbacks);
 
-        $this->parseElements($element);
-        array_pop($this->stack);
+        $this->parseElements($domElement);
+        \array_pop($this->stack);
 
-        $this->handleCallback($element, $callbackTag, $this->endTagCallbacks);
+        $this->handleCallback($domElement, $callbackTag, $this->endTagCallbacks);
     }
 
-    protected function parseElements(DOMNode $element)
+    protected function parseElements(\DOMNode $domNode)
     {
-        foreach ($element->childNodes as $child) {
-            if ($child instanceof DOMText) {
+        foreach ($domNode->childNodes as $child) {
+            if ($child instanceof \DOMText) {
                 $this->parseTextNode($child);
-            } elseif ($child instanceof DOMElement) {
+            } elseif ($child instanceof \DOMElement) {
                 $this->parseElementNode($child);
             }
         }

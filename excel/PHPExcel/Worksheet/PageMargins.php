@@ -1,4 +1,6 @@
 <?php
+namespace PhpOffice\PhpSpreadsheet\Worksheet;
+
 /**
  * PHPExcel
  *
@@ -24,8 +26,6 @@
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
-
-
 /**
  * PHPExcel_Worksheet_PageMargins
  *
@@ -33,7 +33,7 @@
  * @package    PHPExcel_Worksheet
  * @copyright  Copyright (c) 2006 - 2015 PHPExcel (http://www.codeplex.com/PHPExcel)
  */
-class PHPExcel_Worksheet_PageMargins
+class PageMargins
 {
     /**
      * Left
@@ -78,13 +78,6 @@ class PHPExcel_Worksheet_PageMargins
     private $footer     = 0.3;
 
     /**
-     * Create a new PHPExcel_Worksheet_PageMargins
-     */
-    public function __construct()
-    {
-    }
-
-    /**
      * Get Left
      *
      * @return double
@@ -98,7 +91,7 @@ class PHPExcel_Worksheet_PageMargins
      * Set Left
      *
      * @param double $pValue
-     * @return PHPExcel_Worksheet_PageMargins
+     * @return \PhpOffice\PhpSpreadsheet\Worksheet\PageMargins
      */
     public function setLeft($pValue)
     {
@@ -120,7 +113,7 @@ class PHPExcel_Worksheet_PageMargins
      * Set Right
      *
      * @param double $pValue
-     * @return PHPExcel_Worksheet_PageMargins
+     * @return \PhpOffice\PhpSpreadsheet\Worksheet\PageMargins
      */
     public function setRight($pValue)
     {
@@ -142,7 +135,7 @@ class PHPExcel_Worksheet_PageMargins
      * Set Top
      *
      * @param double $pValue
-     * @return PHPExcel_Worksheet_PageMargins
+     * @return \PhpOffice\PhpSpreadsheet\Worksheet\PageMargins
      */
     public function setTop($pValue)
     {
@@ -164,7 +157,7 @@ class PHPExcel_Worksheet_PageMargins
      * Set Bottom
      *
      * @param double $pValue
-     * @return PHPExcel_Worksheet_PageMargins
+     * @return \PhpOffice\PhpSpreadsheet\Worksheet\PageMargins
      */
     public function setBottom($pValue)
     {
@@ -186,7 +179,7 @@ class PHPExcel_Worksheet_PageMargins
      * Set Header
      *
      * @param double $pValue
-     * @return PHPExcel_Worksheet_PageMargins
+     * @return \PhpOffice\PhpSpreadsheet\Worksheet\PageMargins
      */
     public function setHeader($pValue)
     {
@@ -208,7 +201,7 @@ class PHPExcel_Worksheet_PageMargins
      * Set Footer
      *
      * @param double $pValue
-     * @return PHPExcel_Worksheet_PageMargins
+     * @return \PhpOffice\PhpSpreadsheet\Worksheet\PageMargins
      */
     public function setFooter($pValue)
     {
@@ -221,13 +214,9 @@ class PHPExcel_Worksheet_PageMargins
      */
     public function __clone()
     {
-        $vars = get_object_vars($this);
+        $vars = \get_object_vars($this);
         foreach ($vars as $key => $value) {
-            if (is_object($value)) {
-                $this->$key = clone $value;
-            } else {
-                $this->$key = $value;
-            }
+            $this->$key = \is_object($value) ? clone $value : $value;
         }
     }
 }

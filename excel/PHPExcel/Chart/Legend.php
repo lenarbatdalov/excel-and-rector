@@ -1,5 +1,7 @@
 <?php
 
+namespace PhpOffice\PhpSpreadsheet\Chart;
+
 /**
  * PHPExcel_Chart_Legend
  *
@@ -25,7 +27,7 @@
  * @license        http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version        ##VERSION##, ##DATE##
  */
-class PHPExcel_Chart_Legend
+class Legend
 {
     /** Legend positions */
     const xlLegendPositionBottom = -4107;    //    Below the chart.
@@ -62,23 +64,23 @@ class PHPExcel_Chart_Legend
      *
      * @var    boolean
      */
-    private $overlay = true;
+    private $overlay = \true;
 
     /**
      * Legend Layout
      *
-     * @var    PHPExcel_Chart_Layout
+     * @var    \PhpOffice\PhpSpreadsheet\Chart\Layout
      */
-    private $layout = null;
+    private $phpExcelChartLayout;
 
 
     /**
      *    Create a new PHPExcel_Chart_Legend
      */
-    public function __construct($position = self::POSITION_RIGHT, PHPExcel_Chart_Layout $layout = null, $overlay = false)
+    public function __construct($position = self::POSITION_RIGHT, \PhpOffice\PhpSpreadsheet\Chart\Layout $phpExcelChartLayout = \null, $overlay = \false)
     {
         $this->setPosition($position);
-        $this->layout = $layout;
+        $this->phpExcelChartLayout = $phpExcelChartLayout;
         $this->setOverlay($overlay);
     }
 
@@ -99,12 +101,12 @@ class PHPExcel_Chart_Legend
      */
     public function setPosition($position = self::POSITION_RIGHT)
     {
-        if (!in_array($position, self::$positionXLref)) {
-            return false;
+        if (!\in_array($position, self::$positionXLref)) {
+            return \false;
         }
 
         $this->position = $position;
-        return true;
+        return \true;
     }
 
     /**
@@ -114,7 +116,7 @@ class PHPExcel_Chart_Legend
      */
     public function getPositionXL()
     {
-        return array_search($this->position, self::$positionXLref);
+        return \array_search($this->position, self::$positionXLref);
     }
 
     /**
@@ -124,12 +126,12 @@ class PHPExcel_Chart_Legend
      */
     public function setPositionXL($positionXL = self::xlLegendPositionRight)
     {
-        if (!array_key_exists($positionXL, self::$positionXLref)) {
-            return false;
+        if (!\array_key_exists($positionXL, self::$positionXLref)) {
+            return \false;
         }
 
         $this->position = self::$positionXLref[$positionXL];
-        return true;
+        return \true;
     }
 
     /**
@@ -137,7 +139,7 @@ class PHPExcel_Chart_Legend
      *
      * @return    boolean
      */
-    public function getOverlay()
+    public function isOverlay()
     {
         return $this->overlay;
     }
@@ -148,23 +150,23 @@ class PHPExcel_Chart_Legend
      * @param    boolean    $overlay
      * @return    boolean
      */
-    public function setOverlay($overlay = false)
+    public function setOverlay($overlay = \false)
     {
-        if (!is_bool($overlay)) {
-            return false;
+        if (!\is_bool($overlay)) {
+            return \false;
         }
 
         $this->overlay = $overlay;
-        return true;
+        return \true;
     }
 
     /**
      * Get Layout
      *
-     * @return PHPExcel_Chart_Layout
+     * @return \PhpOffice\PhpSpreadsheet\Chart\Layout
      */
     public function getLayout()
     {
-        return $this->layout;
+        return $this->phpExcelChartLayout;
     }
 }

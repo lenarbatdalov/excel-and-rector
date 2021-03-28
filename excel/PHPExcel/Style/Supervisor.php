@@ -1,5 +1,7 @@
 <?php
 
+namespace PhpOffice\PhpSpreadsheet\Style;
+
 /**
  * PHPExcel_Style_Supervisor
  *
@@ -25,7 +27,7 @@
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
-abstract class PHPExcel_Style_Supervisor
+abstract class Supervisor
 {
     /**
      * Supervisor?
@@ -37,7 +39,7 @@ abstract class PHPExcel_Style_Supervisor
     /**
      * Parent. Only used for supervisor
      *
-     * @var PHPExcel_Style
+     * @var \PhpOffice\PhpSpreadsheet\Style\Style
      */
     protected $parent;
 
@@ -48,7 +50,7 @@ abstract class PHPExcel_Style_Supervisor
      *                                    Leave this value at default unless you understand exactly what
      *                                        its ramifications are
      */
-    public function __construct($isSupervisor = false)
+    public function __construct($isSupervisor = \false)
     {
         // Supervisor?
         $this->isSupervisor = $isSupervisor;
@@ -57,10 +59,10 @@ abstract class PHPExcel_Style_Supervisor
     /**
      * Bind parent. Only used for supervisor
      *
-     * @param PHPExcel $parent
-     * @return PHPExcel_Style_Supervisor
+     * @param \PhpOffice\PhpSpreadsheet\Spreadsheet $parent
+     * @return \PhpOffice\PhpSpreadsheet\Style\Supervisor
      */
-    public function bindParent($parent, $parentPropertyName = null)
+    public function bindParent($parent, $parentPropertyName = \null)
     {
         $this->parent = $parent;
         return $this;
@@ -71,7 +73,7 @@ abstract class PHPExcel_Style_Supervisor
      *
      * @return boolean
      */
-    public function getIsSupervisor()
+    public function isSupervisor()
     {
         return $this->isSupervisor;
     }
@@ -79,7 +81,7 @@ abstract class PHPExcel_Style_Supervisor
     /**
      * Get the currently active sheet. Only used for supervisor
      *
-     * @return PHPExcel_Worksheet
+     * @return \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet
      */
     public function getActiveSheet()
     {
@@ -113,13 +115,9 @@ abstract class PHPExcel_Style_Supervisor
      */
     public function __clone()
     {
-        $vars = get_object_vars($this);
+        $vars = \get_object_vars($this);
         foreach ($vars as $key => $value) {
-            if ((is_object($value)) && ($key != 'parent')) {
-                $this->$key = clone $value;
-            } else {
-                $this->$key = $value;
-            }
+            $this->$key = (\is_object($value)) && ($key != 'parent') ? clone $value : $value;
         }
     }
 }

@@ -1,4 +1,6 @@
 <?php
+namespace PhpOffice\PhpSpreadsheet\Writer\Ods;
+
 /**
  * PHPExcel
  *
@@ -24,8 +26,6 @@
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
-
-
 /**
  * PHPExcel_Writer_OpenDocument_Content
  *
@@ -34,7 +34,7 @@
  * @copyright  Copyright (c) 2006 - 2015 PHPExcel (http://www.codeplex.com/PHPExcel)
  * @author     Alexander Pervakov <frost-nzcr4@jagmort.com>
  */
-class PHPExcel_Writer_OpenDocument_Content extends PHPExcel_Writer_OpenDocument_WriterPart
+class Content extends \PhpOffice\PhpSpreadsheet\Writer\Ods\WriterPart
 {
     const NUMBER_COLS_REPEATED_MAX = 1024;
     const NUMBER_ROWS_REPEATED_MAX = 1048576;
@@ -42,21 +42,20 @@ class PHPExcel_Writer_OpenDocument_Content extends PHPExcel_Writer_OpenDocument_
     /**
      * Write content.xml to XML format
      *
-     * @param   PHPExcel                   $pPHPExcel
      * @return  string                     XML Output
-     * @throws  PHPExcel_Writer_Exception
+     * @throws  \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
-    public function write(PHPExcel $pPHPExcel = null)
+    public function write(\PhpOffice\PhpSpreadsheet\Spreadsheet $phpExcel = \null)
     {
-        if (!$pPHPExcel) {
-            $pPHPExcel = $this->getParentWriter()->getPHPExcel(); /* @var $pPHPExcel PHPExcel */
+        if (!$phpExcel) {
+            $phpExcel = $this->getParentWriter()->getPHPExcel(); /* @var $pPHPExcel PHPExcel */
         }
 
-        $objWriter = null;
+        $objWriter = \null;
         if ($this->getParentWriter()->getUseDiskCaching()) {
-            $objWriter = new PHPExcel_Shared_XMLWriter(PHPExcel_Shared_XMLWriter::STORAGE_DISK, $this->getParentWriter()->getDiskCachingDirectory());
+            $objWriter = new \PhpOffice\PhpSpreadsheet\Shared\XMLWriter(\PhpOffice\PhpSpreadsheet\Shared\XMLWriter::STORAGE_DISK, $this->getParentWriter()->getDiskCachingDirectory());
         } else {
-            $objWriter = new PHPExcel_Shared_XMLWriter(PHPExcel_Shared_XMLWriter::STORAGE_MEMORY);
+            $objWriter = new \PhpOffice\PhpSpreadsheet\Shared\XMLWriter(\PhpOffice\PhpSpreadsheet\Shared\XMLWriter::STORAGE_MEMORY);
         }
 
         // XML header
@@ -116,56 +115,51 @@ class PHPExcel_Writer_OpenDocument_Content extends PHPExcel_Writer_OpenDocument_
 
     /**
      * Write sheets
-     *
-     * @param PHPExcel_Shared_XMLWriter $objWriter
      */
-    private function writeSheets(PHPExcel_Shared_XMLWriter $objWriter)
+    private function writeSheets(\PhpOffice\PhpSpreadsheet\Shared\XMLWriter $phpExcelSharedXMLWriter)
     {
         $pPHPExcel = $this->getParentWriter()->getPHPExcel(); /* @var $pPHPExcel PHPExcel */
 
         $sheet_count = $pPHPExcel->getSheetCount();
         for ($i = 0; $i < $sheet_count; $i++) {
             //$this->getWriterPart('Worksheet')->writeWorksheet());
-            $objWriter->startElement('table:table');
-                $objWriter->writeAttribute('table:name', $pPHPExcel->getSheet($i)->getTitle());
-                $objWriter->writeElement('office:forms');
-                $objWriter->startElement('table:table-column');
-                    $objWriter->writeAttribute('table:number-columns-repeated', self::NUMBER_COLS_REPEATED_MAX);
-                $objWriter->endElement();
-                $this->writeRows($objWriter, $pPHPExcel->getSheet($i));
-            $objWriter->endElement();
+            $phpExcelSharedXMLWriter->startElement('table:table');
+                $phpExcelSharedXMLWriter->writeAttribute('table:name', $pPHPExcel->getSheet($i)->getTitle());
+                $phpExcelSharedXMLWriter->writeElement('office:forms');
+                $phpExcelSharedXMLWriter->startElement('table:table-column');
+                    $phpExcelSharedXMLWriter->writeAttribute('table:number-columns-repeated', self::NUMBER_COLS_REPEATED_MAX);
+                $phpExcelSharedXMLWriter->endElement();
+                $this->writeRows($phpExcelSharedXMLWriter, $pPHPExcel->getSheet($i));
+            $phpExcelSharedXMLWriter->endElement();
         }
     }
 
     /**
      * Write rows of the specified sheet
-     *
-     * @param PHPExcel_Shared_XMLWriter $objWriter
-     * @param PHPExcel_Worksheet $sheet
      */
-    private function writeRows(PHPExcel_Shared_XMLWriter $objWriter, PHPExcel_Worksheet $sheet)
+    private function writeRows(\PhpOffice\PhpSpreadsheet\Shared\XMLWriter $phpExcelSharedXMLWriter, \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet $phpExcelWorksheet)
     {
         $number_rows_repeated = self::NUMBER_ROWS_REPEATED_MAX;
         $span_row = 0;
-        $rows = $sheet->getRowIterator();
+        $rows = $phpExcelWorksheet->getRowIterator();
         while ($rows->valid()) {
             $number_rows_repeated--;
             $row = $rows->current();
             if ($row->getCellIterator()->valid()) {
-                if ($span_row) {
-                    $objWriter->startElement('table:table-row');
+                if ($span_row !== 0) {
+                    $phpExcelSharedXMLWriter->startElement('table:table-row');
                     if ($span_row > 1) {
-                        $objWriter->writeAttribute('table:number-rows-repeated', $span_row);
+                        $phpExcelSharedXMLWriter->writeAttribute('table:number-rows-repeated', $span_row);
                     }
-                    $objWriter->startElement('table:table-cell');
-                        $objWriter->writeAttribute('table:number-columns-repeated', self::NUMBER_COLS_REPEATED_MAX);
-                    $objWriter->endElement();
-                    $objWriter->endElement();
+                    $phpExcelSharedXMLWriter->startElement('table:table-cell');
+                        $phpExcelSharedXMLWriter->writeAttribute('table:number-columns-repeated', self::NUMBER_COLS_REPEATED_MAX);
+                    $phpExcelSharedXMLWriter->endElement();
+                    $phpExcelSharedXMLWriter->endElement();
                     $span_row = 0;
                 }
-                $objWriter->startElement('table:table-row');
-                $this->writeCells($objWriter, $row);
-                $objWriter->endElement();
+                $phpExcelSharedXMLWriter->startElement('table:table-row');
+                $this->writeCells($phpExcelSharedXMLWriter, $row);
+                $phpExcelSharedXMLWriter->endElement();
             } else {
                 $span_row++;
             }
@@ -176,77 +170,73 @@ class PHPExcel_Writer_OpenDocument_Content extends PHPExcel_Writer_OpenDocument_
     /**
      * Write cells of the specified row
      *
-     * @param PHPExcel_Shared_XMLWriter $objWriter
-     * @param PHPExcel_Worksheet_Row $row
-     * @throws PHPExcel_Writer_Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
-    private function writeCells(PHPExcel_Shared_XMLWriter $objWriter, PHPExcel_Worksheet_Row $row)
+    private function writeCells(\PhpOffice\PhpSpreadsheet\Shared\XMLWriter $phpExcelSharedXMLWriter, \PhpOffice\PhpSpreadsheet\Worksheet\Row $phpExcelWorksheetRow)
     {
         $number_cols_repeated = self::NUMBER_COLS_REPEATED_MAX;
         $prev_column = -1;
-        $cells = $row->getCellIterator();
+        $cells = $phpExcelWorksheetRow->getCellIterator();
         while ($cells->valid()) {
             $cell = $cells->current();
-            $column = PHPExcel_Cell::columnIndexFromString($cell->getColumn()) - 1;
+            $column = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($cell->getColumn()) - 1;
 
-            $this->writeCellSpan($objWriter, $column, $prev_column);
-            $objWriter->startElement('table:table-cell');
+            $this->writeCellSpan($phpExcelSharedXMLWriter, $column, $prev_column);
+            $phpExcelSharedXMLWriter->startElement('table:table-cell');
 
             switch ($cell->getDataType()) {
-                case PHPExcel_Cell_DataType::TYPE_BOOL:
-                    $objWriter->writeAttribute('office:value-type', 'boolean');
-                    $objWriter->writeAttribute('office:value', $cell->getValue());
-                    $objWriter->writeElement('text:p', $cell->getValue());
+                case \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_BOOL:
+                    $phpExcelSharedXMLWriter->writeAttribute('office:value-type', 'boolean');
+                    $phpExcelSharedXMLWriter->writeAttribute('office:value', $cell->getValue());
+                    $phpExcelSharedXMLWriter->writeElement('text:p', $cell->getValue());
                     break;
 
-                case PHPExcel_Cell_DataType::TYPE_ERROR:
-                    throw new PHPExcel_Writer_Exception('Writing of error not implemented yet.');
-                    break;
+                case \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_ERROR:
+                    throw new \PhpOffice\PhpSpreadsheet\Writer\Exception('Writing of error not implemented yet.');
 
-                case PHPExcel_Cell_DataType::TYPE_FORMULA:
+                case \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_FORMULA:
                     try {
                         $formula_value = $cell->getCalculatedValue();
-                    } catch (Exception $e) {
+                    } catch (\Exception $e) {
                         $formula_value = $cell->getValue();
                     }
-                    $objWriter->writeAttribute('table:formula', 'of:' . $cell->getValue());
-                    if (is_numeric($formula_value)) {
-                        $objWriter->writeAttribute('office:value-type', 'float');
+                    $phpExcelSharedXMLWriter->writeAttribute('table:formula', 'of:' . $cell->getValue());
+                    if (\is_numeric($formula_value)) {
+                        $phpExcelSharedXMLWriter->writeAttribute('office:value-type', 'float');
                     } else {
-                        $objWriter->writeAttribute('office:value-type', 'string');
+                        $phpExcelSharedXMLWriter->writeAttribute('office:value-type', 'string');
                     }
-                    $objWriter->writeAttribute('office:value', $formula_value);
-                    $objWriter->writeElement('text:p', $formula_value);
+                    $phpExcelSharedXMLWriter->writeAttribute('office:value', $formula_value);
+                    $phpExcelSharedXMLWriter->writeElement('text:p', $formula_value);
                     break;
 
-                case PHPExcel_Cell_DataType::TYPE_INLINE:
-                    throw new PHPExcel_Writer_Exception('Writing of inline not implemented yet.');
+                case \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_INLINE:
+                    throw new \PhpOffice\PhpSpreadsheet\Writer\Exception('Writing of inline not implemented yet.');
+
+                case \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_NUMERIC:
+                    $phpExcelSharedXMLWriter->writeAttribute('office:value-type', 'float');
+                    $phpExcelSharedXMLWriter->writeAttribute('office:value', $cell->getValue());
+                    $phpExcelSharedXMLWriter->writeElement('text:p', $cell->getValue());
                     break;
 
-                case PHPExcel_Cell_DataType::TYPE_NUMERIC:
-                    $objWriter->writeAttribute('office:value-type', 'float');
-                    $objWriter->writeAttribute('office:value', $cell->getValue());
-                    $objWriter->writeElement('text:p', $cell->getValue());
-                    break;
-
-                case PHPExcel_Cell_DataType::TYPE_STRING:
-                    $objWriter->writeAttribute('office:value-type', 'string');
-                    $objWriter->writeElement('text:p', $cell->getValue());
+                case \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING:
+                    $phpExcelSharedXMLWriter->writeAttribute('office:value-type', 'string');
+                    $phpExcelSharedXMLWriter->writeElement('text:p', $cell->getValue());
                     break;
             }
-            PHPExcel_Writer_OpenDocument_Cell_Comment::write($objWriter, $cell);
-            $objWriter->endElement();
+            \PhpOffice\PhpSpreadsheet\Writer\Ods\Cell\Comment::write($phpExcelSharedXMLWriter, $cell);
+            $phpExcelSharedXMLWriter->endElement();
             $prev_column = $column;
             $cells->next();
         }
         $number_cols_repeated = $number_cols_repeated - $prev_column - 1;
         if ($number_cols_repeated > 0) {
             if ($number_cols_repeated > 1) {
-                $objWriter->startElement('table:table-cell');
-                $objWriter->writeAttribute('table:number-columns-repeated', $number_cols_repeated);
-                $objWriter->endElement();
+                $phpExcelSharedXMLWriter->startElement('table:table-cell');
+                $phpExcelSharedXMLWriter->writeAttribute('table:number-columns-repeated', $number_cols_repeated);
+                $phpExcelSharedXMLWriter->endElement();
             } else {
-                $objWriter->writeElement('table:table-cell');
+                $phpExcelSharedXMLWriter->writeElement('table:table-cell');
             }
         }
     }
@@ -254,19 +244,18 @@ class PHPExcel_Writer_OpenDocument_Content extends PHPExcel_Writer_OpenDocument_
     /**
      * Write span
      *
-     * @param PHPExcel_Shared_XMLWriter $objWriter
      * @param integer $curColumn
      * @param integer $prevColumn
      */
-    private function writeCellSpan(PHPExcel_Shared_XMLWriter $objWriter, $curColumn, $prevColumn)
+    private function writeCellSpan(\PhpOffice\PhpSpreadsheet\Shared\XMLWriter $phpExcelSharedXMLWriter, $curColumn, $prevColumn)
     {
         $diff = $curColumn - $prevColumn - 1;
         if (1 === $diff) {
-            $objWriter->writeElement('table:table-cell');
+            $phpExcelSharedXMLWriter->writeElement('table:table-cell');
         } elseif ($diff > 1) {
-            $objWriter->startElement('table:table-cell');
-                $objWriter->writeAttribute('table:number-columns-repeated', $diff);
-            $objWriter->endElement();
+            $phpExcelSharedXMLWriter->startElement('table:table-cell');
+                $phpExcelSharedXMLWriter->writeAttribute('table:number-columns-repeated', $diff);
+            $phpExcelSharedXMLWriter->endElement();
         }
     }
 }

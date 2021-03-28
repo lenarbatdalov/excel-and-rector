@@ -1,4 +1,6 @@
 <?php
+namespace PhpOffice\PhpSpreadsheet\Shared\JAMA;
+
 /**
  *    @package JAMA
  *
@@ -24,16 +26,14 @@
 class EigenvalueDecomposition
 {
     /**
+     * @var mixed|mixed[]
+     */
+    public $A;
+    /**
      *    Row and column dimension (square matrix).
      *    @var int
      */
     private $n;
-
-    /**
-     *    Internal symmetry flag.
-     *    @var int
-     */
-    private $issymmetric;
 
     /**
      *    Arrays for internal storage of eigenvalues.
@@ -84,10 +84,10 @@ class EigenvalueDecomposition
             $i_ = $i -1;
             // Scale to avoid under/overflow.
             $h = $scale = 0.0;
-            $scale += array_sum(array_map(abs, $this->d));
+            $scale += \array_sum(\array_map(\abs, $this->d));
             if ($scale == 0.0) {
                 $this->e[$i] = $this->d[$i_];
-                $this->d = array_slice($this->V[$i_], 0, $i_);
+                $this->d = \array_slice($this->V[$i_], 0, $i_);
                 for ($j = 0; $j < $i; ++$j) {
                     $this->V[$j][$i] = $this->V[$i][$j] = 0.0;
                 }
@@ -95,15 +95,15 @@ class EigenvalueDecomposition
                 // Generate Householder vector.
                 for ($k = 0; $k < $i; ++$k) {
                     $this->d[$k] /= $scale;
-                    $h += pow($this->d[$k], 2);
+                    $h += \pow($this->d[$k], 2);
                 }
                 $f = $this->d[$i_];
-                $g = sqrt($h);
+                $g = \sqrt($h);
                 if ($f > 0) {
                     $g = -$g;
                 }
                 $this->e[$i] = $scale * $g;
-                $h = $h - $f * $g;
+                $h -= $f * $g;
                 $this->d[$i_] = $f - $g;
                 for ($j = 0; $j < $i; ++$j) {
                     $this->e[$j] = 0.0;
@@ -166,7 +166,7 @@ class EigenvalueDecomposition
         }
 
         $this->d = $this->V[$this->n-1];
-        $this->V[$this->n-1] = array_fill(0, $j, 0.0);
+        $this->V[$this->n-1] = \array_fill(0, $j, 0.0);
         $this->V[$this->n-1][$this->n-1] = 1.0;
         $this->e[0] = 0.0;
     }
@@ -189,14 +189,14 @@ class EigenvalueDecomposition
         $this->e[$this->n-1] = 0.0;
         $f = 0.0;
         $tst1 = 0.0;
-        $eps  = pow(2.0, -52.0);
+        $eps  = \pow(2.0, -52.0);
 
         for ($l = 0; $l < $this->n; ++$l) {
             // Find small subdiagonal element
-            $tst1 = max($tst1, abs($this->d[$l]) + abs($this->e[$l]));
+            $tst1 = \max($tst1, \abs($this->d[$l]) + \abs($this->e[$l]));
             $m = $l;
             while ($m < $this->n) {
-                if (abs($this->e[$m]) <= $eps * $tst1) {
+                if (\abs($this->e[$m]) <= $eps * $tst1) {
                     break;
                 }
                 ++$m;
@@ -211,7 +211,7 @@ class EigenvalueDecomposition
                     // Compute implicit shift
                     $g = $this->d[$l];
                     $p = ($this->d[$l+1] - $g) / (2.0 * $this->e[$l]);
-                    $r = hypo($p, 1.0);
+                    $r = \hypo($p, 1.0);
                     if ($p < 0) {
                         $r *= -1;
                     }
@@ -235,7 +235,7 @@ class EigenvalueDecomposition
                         $s2 = $s;
                         $g  = $c * $this->e[$i];
                         $h  = $c * $p;
-                        $r  = hypo($p, $this->e[$i]);
+                        $r  = \hypo($p, $this->e[$i]);
                         $this->e[$i+1] = $s * $r;
                         $s = $this->e[$i] / $r;
                         $c = $p / $r;
@@ -252,9 +252,9 @@ class EigenvalueDecomposition
                     $this->e[$l] = $s * $p;
                     $this->d[$l] = $c * $p;
                 // Check for convergence.
-                } while (abs($this->e[$l]) > $eps * $tst1);
+                } while (\abs($this->e[$l]) > $eps * $tst1);
             }
-            $this->d[$l] = $this->d[$l] + $f;
+            $this->d[$l] += $f;
             $this->e[$l] = 0.0;
         }
 
@@ -268,7 +268,7 @@ class EigenvalueDecomposition
                     $p = $this->d[$j];
                 }
             }
-            if ($k != $i) {
+            if ($k !== $i) {
                 $this->d[$k] = $this->d[$i];
                 $this->d[$i] = $p;
                 for ($j = 0; $j < $this->n; ++$j) {
@@ -299,7 +299,7 @@ class EigenvalueDecomposition
             // Scale column.
             $scale = 0.0;
             for ($i = $m; $i <= $high; ++$i) {
-                $scale = $scale + abs($this->H[$i][$m-1]);
+                $scale += \abs($this->H[$i][$m-1]);
             }
             if ($scale != 0.0) {
                 // Compute Householder transformation.
@@ -308,7 +308,7 @@ class EigenvalueDecomposition
                     $this->ort[$i] = $this->H[$i][$m-1] / $scale;
                     $h += $this->ort[$i] * $this->ort[$i];
                 }
-                $g = sqrt($h);
+                $g = \sqrt($h);
                 if ($this->ort[$m] > 0) {
                     $g *= -1;
                 }
@@ -331,7 +331,7 @@ class EigenvalueDecomposition
                     for ($j = $high; $j >= $m; --$j) {
                         $f += $this->ort[$j] * $this->H[$i][$j];
                     }
-                    $f = $f / $h;
+                    $f /= $h;
                     for ($j = $m; $j <= $high; ++$j) {
                         $this->H[$i][$j] -= $f * $this->ort[$j];
                     }
@@ -344,7 +344,7 @@ class EigenvalueDecomposition
         // Accumulate transformations (Algol's ortran).
         for ($i = 0; $i < $this->n; ++$i) {
             for ($j = 0; $j < $this->n; ++$j) {
-                $this->V[$i][$j] = ($i == $j ? 1.0 : 0.0);
+                $this->V[$i][$j] = ($i === $j ? 1.0 : 0.0);
             }
         }
         for ($m = $high-1; $m >= $low+1; --$m) {
@@ -374,7 +374,7 @@ class EigenvalueDecomposition
      */
     private function cdiv($xr, $xi, $yr, $yi)
     {
-        if (abs($yr) > abs($yi)) {
+        if (\abs($yr) > \abs($yi)) {
             $r = $yi / $yr;
             $d = $yr + $r * $yi;
             $this->cdivr = ($xr + $r * $xi) / $d;
@@ -404,19 +404,19 @@ class EigenvalueDecomposition
         $n  = $nn - 1;
         $low = 0;
         $high = $nn - 1;
-        $eps = pow(2.0, -52.0);
+        $eps = \pow(2.0, -52.0);
         $exshift = 0.0;
         $p = $q = $r = $s = $z = 0;
         // Store roots isolated by balanc and compute matrix norm
         $norm = 0.0;
 
         for ($i = 0; $i < $nn; ++$i) {
-            if (($i < $low) or ($i > $high)) {
+            if ($i < $low || $i > $high) {
                 $this->d[$i] = $this->H[$i][$i];
                 $this->e[$i] = 0.0;
             }
-            for ($j = max($i-1, 0); $j < $nn; ++$j) {
-                $norm = $norm + abs($this->H[$i][$j]);
+            for ($j = \max($i-1, 0); $j < $nn; ++$j) {
+                $norm += \abs($this->H[$i][$j]);
             }
         }
 
@@ -426,19 +426,19 @@ class EigenvalueDecomposition
             // Look for single small sub-diagonal element
             $l = $n;
             while ($l > $low) {
-                $s = abs($this->H[$l-1][$l-1]) + abs($this->H[$l][$l]);
+                $s = \abs($this->H[$l-1][$l-1]) + \abs($this->H[$l][$l]);
                 if ($s == 0.0) {
                     $s = $norm;
                 }
-                if (abs($this->H[$l][$l-1]) < $eps * $s) {
+                if (\abs($this->H[$l][$l-1]) < $eps * $s) {
                     break;
                 }
                 --$l;
             }
             // Check for convergence
             // One root found
-            if ($l == $n) {
-                $this->H[$n][$n] = $this->H[$n][$n] + $exshift;
+            if ($l === $n) {
+                $this->H[$n][$n] += $exshift;
                 $this->d[$n] = $this->H[$n][$n];
                 $this->e[$n] = 0.0;
                 --$n;
@@ -448,17 +448,13 @@ class EigenvalueDecomposition
                 $w = $this->H[$n][$n-1] * $this->H[$n-1][$n];
                 $p = ($this->H[$n-1][$n-1] - $this->H[$n][$n]) / 2.0;
                 $q = $p * $p + $w;
-                $z = sqrt(abs($q));
-                $this->H[$n][$n] = $this->H[$n][$n] + $exshift;
-                $this->H[$n-1][$n-1] = $this->H[$n-1][$n-1] + $exshift;
+                $z = \sqrt(\abs($q));
+                $this->H[$n][$n] += $exshift;
+                $this->H[$n-1][$n-1] += $exshift;
                 $x = $this->H[$n][$n];
                 // Real pair
                 if ($q >= 0) {
-                    if ($p >= 0) {
-                        $z = $p + $z;
-                    } else {
-                        $z = $p - $z;
-                    }
+                    $z = $p >= 0 ? $p + $z : $p - $z;
                     $this->d[$n-1] = $x + $z;
                     $this->d[$n] = $this->d[$n-1];
                     if ($z != 0.0) {
@@ -467,12 +463,12 @@ class EigenvalueDecomposition
                     $this->e[$n-1] = 0.0;
                     $this->e[$n] = 0.0;
                     $x = $this->H[$n][$n-1];
-                    $s = abs($x) + abs($z);
+                    $s = \abs($x) + \abs($z);
                     $p = $x / $s;
                     $q = $z / $s;
-                    $r = sqrt($p * $p + $q * $q);
-                    $p = $p / $r;
-                    $q = $q / $r;
+                    $r = \sqrt($p * $p + $q * $q);
+                    $p /= $r;
+                    $q /= $r;
                     // Row modification
                     for ($j = $n-1; $j < $nn; ++$j) {
                         $z = $this->H[$n-1][$j];
@@ -498,7 +494,7 @@ class EigenvalueDecomposition
                     $this->e[$n-1] = $z;
                     $this->e[$n] = -$z;
                 }
-                $n = $n - 2;
+                $n -= 2;
                 $iter = 0;
             // No convergence yet
             } else {
@@ -516,7 +512,7 @@ class EigenvalueDecomposition
                     for ($i = $low; $i <= $n; ++$i) {
                         $this->H[$i][$i] -= $x;
                     }
-                    $s = abs($this->H[$n][$n-1]) + abs($this->H[$n-1][$n-2]);
+                    $s = \abs($this->H[$n][$n-1]) + \abs($this->H[$n-1][$n-2]);
                     $x = $y = 0.75 * $s;
                     $w = -0.4375 * $s * $s;
                 }
@@ -525,7 +521,7 @@ class EigenvalueDecomposition
                     $s = ($y - $x) / 2.0;
                     $s = $s * $s + $w;
                     if ($s > 0) {
-                        $s = sqrt($s);
+                        $s = \sqrt($s);
                         if ($y < $x) {
                             $s = -$s;
                         }
@@ -538,7 +534,7 @@ class EigenvalueDecomposition
                     }
                 }
                 // Could check iteration count here.
-                $iter = $iter + 1;
+                $iter += 1;
                 // Look for two consecutive small sub-diagonal elements
                 $m = $n - 2;
                 while ($m >= $l) {
@@ -548,15 +544,15 @@ class EigenvalueDecomposition
                     $p = ($r * $s - $w) / $this->H[$m+1][$m] + $this->H[$m][$m+1];
                     $q = $this->H[$m+1][$m+1] - $z - $r - $s;
                     $r = $this->H[$m+2][$m+1];
-                    $s = abs($p) + abs($q) + abs($r);
-                    $p = $p / $s;
-                    $q = $q / $s;
-                    $r = $r / $s;
-                    if ($m == $l) {
+                    $s = \abs($p) + \abs($q) + \abs($r);
+                    $p /= $s;
+                    $q /= $s;
+                    $r /= $s;
+                    if ($m === $l) {
                         break;
                     }
-                    if (abs($this->H[$m][$m-1]) * (abs($q) + abs($r)) <
-                        $eps * (abs($p) * (abs($this->H[$m-1][$m-1]) + abs($z) + abs($this->H[$m+1][$m+1])))) {
+                    if (\abs($this->H[$m][$m-1]) * (\abs($q) + \abs($r)) <
+                        $eps * (\abs($p) * (\abs($this->H[$m-1][$m-1]) + \abs($z) + \abs($this->H[$m+1][$m+1])))) {
                         break;
                     }
                     --$m;
@@ -569,66 +565,66 @@ class EigenvalueDecomposition
                 }
                 // Double QR step involving rows l:n and columns m:n
                 for ($k = $m; $k <= $n-1; ++$k) {
-                    $notlast = ($k != $n-1);
-                    if ($k != $m) {
+                    $notlast = ($k !== $n-1);
+                    if ($k !== $m) {
                         $p = $this->H[$k][$k-1];
                         $q = $this->H[$k+1][$k-1];
                         $r = ($notlast ? $this->H[$k+2][$k-1] : 0.0);
-                        $x = abs($p) + abs($q) + abs($r);
+                        $x = \abs($p) + \abs($q) + \abs($r);
                         if ($x != 0.0) {
-                            $p = $p / $x;
-                            $q = $q / $x;
-                            $r = $r / $x;
+                            $p /= $x;
+                            $q /= $x;
+                            $r /= $x;
                         }
                     }
                     if ($x == 0.0) {
                         break;
                     }
-                    $s = sqrt($p * $p + $q * $q + $r * $r);
+                    $s = \sqrt($p * $p + $q * $q + $r * $r);
                     if ($p < 0) {
                         $s = -$s;
                     }
                     if ($s != 0) {
-                        if ($k != $m) {
+                        if ($k !== $m) {
                             $this->H[$k][$k-1] = -$s * $x;
                         } elseif ($l != $m) {
                             $this->H[$k][$k-1] = -$this->H[$k][$k-1];
                         }
-                        $p = $p + $s;
+                        $p += $s;
                         $x = $p / $s;
                         $y = $q / $s;
                         $z = $r / $s;
-                        $q = $q / $p;
-                        $r = $r / $p;
+                        $q /= $p;
+                        $r /= $p;
                         // Row modification
                         for ($j = $k; $j < $nn; ++$j) {
                             $p = $this->H[$k][$j] + $q * $this->H[$k+1][$j];
                             if ($notlast) {
-                                $p = $p + $r * $this->H[$k+2][$j];
-                                $this->H[$k+2][$j] = $this->H[$k+2][$j] - $p * $z;
+                                $p += $r * $this->H[$k+2][$j];
+                                $this->H[$k+2][$j] -= $p * $z;
                             }
-                            $this->H[$k][$j] = $this->H[$k][$j] - $p * $x;
-                            $this->H[$k+1][$j] = $this->H[$k+1][$j] - $p * $y;
+                            $this->H[$k][$j] -= $p * $x;
+                            $this->H[$k+1][$j] -= $p * $y;
                         }
                         // Column modification
-                        for ($i = 0; $i <= min($n, $k+3); ++$i) {
+                        for ($i = 0; $i <= \min($n, $k+3); ++$i) {
                             $p = $x * $this->H[$i][$k] + $y * $this->H[$i][$k+1];
                             if ($notlast) {
-                                $p = $p + $z * $this->H[$i][$k+2];
-                                $this->H[$i][$k+2] = $this->H[$i][$k+2] - $p * $r;
+                                $p += $z * $this->H[$i][$k+2];
+                                $this->H[$i][$k+2] -= $p * $r;
                             }
-                            $this->H[$i][$k] = $this->H[$i][$k] - $p;
-                            $this->H[$i][$k+1] = $this->H[$i][$k+1] - $p * $q;
+                            $this->H[$i][$k] -= $p;
+                            $this->H[$i][$k+1] -= $p * $q;
                         }
                         // Accumulate transformations
                         for ($i = $low; $i <= $high; ++$i) {
                             $p = $x * $this->V[$i][$k] + $y * $this->V[$i][$k+1];
                             if ($notlast) {
-                                $p = $p + $z * $this->V[$i][$k+2];
-                                $this->V[$i][$k+2] = $this->V[$i][$k+2] - $p * $r;
+                                $p += $z * $this->V[$i][$k+2];
+                                $this->V[$i][$k+2] -= $p * $r;
                             }
-                            $this->V[$i][$k] = $this->V[$i][$k] - $p;
-                            $this->V[$i][$k+1] = $this->V[$i][$k+1] - $p * $q;
+                            $this->V[$i][$k] -= $p;
+                            $this->V[$i][$k+1] -= $p * $q;
                         }
                     }  // ($s != 0)
                 }  // k loop
@@ -651,7 +647,7 @@ class EigenvalueDecomposition
                     $w = $this->H[$i][$i] - $p;
                     $r = 0.0;
                     for ($j = $l; $j <= $n; ++$j) {
-                        $r = $r + $this->H[$i][$j] * $this->H[$j][$n];
+                        $r += $this->H[$i][$j] * $this->H[$j][$n];
                     }
                     if ($this->e[$i] < 0.0) {
                         $z = $w;
@@ -659,11 +655,7 @@ class EigenvalueDecomposition
                     } else {
                         $l = $i;
                         if ($this->e[$i] == 0.0) {
-                            if ($w != 0.0) {
-                                $this->H[$i][$n] = -$r / $w;
-                            } else {
-                                $this->H[$i][$n] = -$r / ($eps * $norm);
-                            }
+                            $this->H[$i][$n] = $w != 0.0 ? -$r / $w : -$r / ($eps * $norm);
                         // Solve real equations
                         } else {
                             $x = $this->H[$i][$i+1];
@@ -671,17 +663,13 @@ class EigenvalueDecomposition
                             $q = ($this->d[$i] - $p) * ($this->d[$i] - $p) + $this->e[$i] * $this->e[$i];
                             $t = ($x * $s - $z * $r) / $q;
                             $this->H[$i][$n] = $t;
-                            if (abs($x) > abs($z)) {
-                                $this->H[$i+1][$n] = (-$r - $w * $t) / $x;
-                            } else {
-                                $this->H[$i+1][$n] = (-$s - $y * $t) / $z;
-                            }
+                            $this->H[$i+1][$n] = \abs($x) > \abs($z) ? (-$r - $w * $t) / $x : (-$s - $y * $t) / $z;
                         }
                         // Overflow control
-                        $t = abs($this->H[$i][$n]);
+                        $t = \abs($this->H[$i][$n]);
                         if (($eps * $t) * $t > 1) {
                             for ($j = $i; $j <= $n; ++$j) {
-                                $this->H[$j][$n] = $this->H[$j][$n] / $t;
+                                $this->H[$j][$n] /= $t;
                             }
                         }
                     }
@@ -690,7 +678,7 @@ class EigenvalueDecomposition
             } elseif ($q < 0) {
                 $l = $n-1;
                 // Last vector component imaginary so matrix is triangular
-                if (abs($this->H[$n][$n-1]) > abs($this->H[$n-1][$n])) {
+                if (\abs($this->H[$n][$n-1]) > \abs($this->H[$n-1][$n])) {
                     $this->H[$n-1][$n-1] = $q / $this->H[$n][$n-1];
                     $this->H[$n-1][$n] = -($this->H[$n][$n] - $p) / $this->H[$n][$n-1];
                 } else {
@@ -705,8 +693,8 @@ class EigenvalueDecomposition
                     $ra = 0.0;
                     $sa = 0.0;
                     for ($j = $l; $j <= $n; ++$j) {
-                        $ra = $ra + $this->H[$i][$j] * $this->H[$j][$n-1];
-                        $sa = $sa + $this->H[$i][$j] * $this->H[$j][$n];
+                        $ra += $this->H[$i][$j] * $this->H[$j][$n-1];
+                        $sa += $this->H[$i][$j] * $this->H[$j][$n];
                     }
                     $w = $this->H[$i][$i] - $p;
                     if ($this->e[$i] < 0.0) {
@@ -725,13 +713,13 @@ class EigenvalueDecomposition
                             $y = $this->H[$i+1][$i];
                             $vr = ($this->d[$i] - $p) * ($this->d[$i] - $p) + $this->e[$i] * $this->e[$i] - $q * $q;
                             $vi = ($this->d[$i] - $p) * 2.0 * $q;
-                            if ($vr == 0.0 & $vi == 0.0) {
-                                $vr = $eps * $norm * (abs($w) + abs($q) + abs($x) + abs($y) + abs($z));
+                            if (($vr == 0.0 & $vi == 0.0) !== 0) {
+                                $vr = $eps * $norm * (\abs($w) + \abs($q) + \abs($x) + \abs($y) + \abs($z));
                             }
                             $this->cdiv($x * $r - $z * $ra + $q * $sa, $x * $s - $z * $sa - $q * $ra, $vr, $vi);
                             $this->H[$i][$n-1] = $this->cdivr;
                             $this->H[$i][$n]   = $this->cdivi;
-                            if (abs($x) > (abs($z) + abs($q))) {
+                            if (\abs($x) > (\abs($z) + \abs($q))) {
                                 $this->H[$i+1][$n-1] = (-$ra - $w * $this->H[$i][$n-1] + $q * $this->H[$i][$n]) / $x;
                                 $this->H[$i+1][$n] = (-$sa - $w * $this->H[$i][$n] - $q * $this->H[$i][$n-1]) / $x;
                             } else {
@@ -741,11 +729,11 @@ class EigenvalueDecomposition
                             }
                         }
                         // Overflow control
-                        $t = max(abs($this->H[$i][$n-1]), abs($this->H[$i][$n]));
+                        $t = \max(\abs($this->H[$i][$n-1]), \abs($this->H[$i][$n]));
                         if (($eps * $t) * $t > 1) {
                             for ($j = $i; $j <= $n; ++$j) {
-                                $this->H[$j][$n-1] = $this->H[$j][$n-1] / $t;
-                                $this->H[$j][$n]   = $this->H[$j][$n] / $t;
+                                $this->H[$j][$n-1] /= $t;
+                                $this->H[$j][$n] /= $t;
                             }
                         }
                     } // end else
@@ -755,7 +743,7 @@ class EigenvalueDecomposition
 
         // Vectors of isolated roots
         for ($i = 0; $i < $nn; ++$i) {
-            if ($i < $low | $i > $high) {
+            if (($i < $low | $i > $high) !== 0) {
                 for ($j = $i; $j < $nn; ++$j) {
                     $this->V[$i][$j] = $this->H[$i][$j];
                 }
@@ -766,8 +754,8 @@ class EigenvalueDecomposition
         for ($j = $nn-1; $j >= $low; --$j) {
             for ($i = $low; $i <= $high; ++$i) {
                 $z = 0.0;
-                for ($k = $low; $k <= min($j, $high); ++$k) {
-                    $z = $z + $this->V[$i][$k] * $this->H[$k][$j];
+                for ($k = $low; $k <= \min($j, $high); ++$k) {
+                    $z += $this->V[$i][$k] * $this->H[$k][$j];
                 }
                 $this->V[$i][$j] = $z;
             }
@@ -786,7 +774,7 @@ class EigenvalueDecomposition
         $this->A = $Arg->getArray();
         $this->n = $Arg->getColumnDimension();
 
-        $issymmetric = true;
+        $issymmetric = \true;
         for ($j = 0; ($j < $this->n) & $issymmetric; ++$j) {
             for ($i = 0; ($i < $this->n) & $issymmetric; ++$i) {
                 $issymmetric = ($this->A[$i][$j] == $this->A[$j][$i]);
@@ -817,7 +805,7 @@ class EigenvalueDecomposition
      */
     public function getV()
     {
-        return new Matrix($this->V, $this->n, $this->n);
+        return new \Matrix($this->V, $this->n, $this->n);
     }
 
     /**
@@ -851,7 +839,7 @@ class EigenvalueDecomposition
     public function getD()
     {
         for ($i = 0; $i < $this->n; ++$i) {
-            $D[$i] = array_fill(0, $this->n, 0.0);
+            $D[$i] = \array_fill(0, $this->n, 0.0);
             $D[$i][$i] = $this->d[$i];
             if ($this->e[$i] == 0) {
                 continue;
@@ -859,6 +847,6 @@ class EigenvalueDecomposition
             $o = ($this->e[$i] > 0) ? $i + 1 : $i - 1;
             $D[$i][$o] = $this->e[$i];
         }
-        return new Matrix($D);
+        return new \Matrix($D);
     }
 }

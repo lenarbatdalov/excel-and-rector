@@ -1,5 +1,7 @@
 <?php
 
+namespace PhpOffice\PhpSpreadsheet\Writer;
+
 /**
  *  PHPExcel_Writer_IWriter
  *
@@ -25,13 +27,13 @@
  *  @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  *  @version    ##VERSION##, ##DATE##
  */
-interface PHPExcel_Writer_IWriter
+interface IWriter
 {
     /**
      *  Save PHPExcel to file
      *
      *  @param   string       $pFilename  Name of the file to save
-     *  @throws  PHPExcel_Writer_Exception
+     *  @throws  \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
-    public function save($pFilename = null);
+    public function save($pFilename = \null);
 }

@@ -1,5 +1,7 @@
 <?php
 
+namespace PhpOffice\PhpSpreadsheet\Shared\Escher\DgContainer\SpgrContainer;
+
 /**
  * PHPExcel_Shared_Escher_DgContainer_SpgrContainer_SpContainer
  *
@@ -25,21 +27,21 @@
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
-class PHPExcel_Shared_Escher_DgContainer_SpgrContainer_SpContainer
+class SpContainer
 {
     /**
      * Parent Shape Group Container
      *
-     * @var PHPExcel_Shared_Escher_DgContainer_SpgrContainer
+     * @var \PhpOffice\PhpSpreadsheet\Shared\Escher\DgContainer\SpgrContainer
      */
-    private $parent;
+    private $phpExcelSharedEscherDgContainerSpgrContainer;
 
     /**
      * Is this a group shape?
      *
      * @var boolean
      */
-    private $spgr = false;
+    private $spgr = \false;
 
     /**
      * Shape type
@@ -114,21 +116,21 @@ class PHPExcel_Shared_Escher_DgContainer_SpgrContainer_SpContainer
     /**
      * Set parent Shape Group Container
      *
-     * @param PHPExcel_Shared_Escher_DgContainer_SpgrContainer $parent
+     * @param \PhpOffice\PhpSpreadsheet\Shared\Escher\DgContainer\SpgrContainer $parent
      */
     public function setParent($parent)
     {
-        $this->parent = $parent;
+        $this->phpExcelSharedEscherDgContainerSpgrContainer = $parent;
     }
 
     /**
      * Get the parent Shape Group Container
      *
-     * @return PHPExcel_Shared_Escher_DgContainer_SpgrContainer
+     * @return \PhpOffice\PhpSpreadsheet\Shared\Escher\DgContainer\SpgrContainer
      */
     public function getParent()
     {
-        return $this->parent;
+        return $this->phpExcelSharedEscherDgContainerSpgrContainer;
     }
 
     /**
@@ -136,7 +138,7 @@ class PHPExcel_Shared_Escher_DgContainer_SpgrContainer_SpContainer
      *
      * @param boolean $value
      */
-    public function setSpgr($value = false)
+    public function setSpgr($value = \false)
     {
         $this->spgr = $value;
     }
@@ -146,7 +148,7 @@ class PHPExcel_Shared_Escher_DgContainer_SpgrContainer_SpContainer
      *
      * @return boolean
      */
-    public function getSpgr()
+    public function isSpgr()
     {
         return $this->spgr;
     }
@@ -206,7 +208,7 @@ class PHPExcel_Shared_Escher_DgContainer_SpgrContainer_SpContainer
      *
      * @return int
      */
-    public function getSpId()
+    public function isSpId()
     {
         return $this->spId;
     }
@@ -233,7 +235,7 @@ class PHPExcel_Shared_Escher_DgContainer_SpgrContainer_SpContainer
         if (isset($this->OPT[$property])) {
             return $this->OPT[$property];
         }
-        return null;
+        return \null;
     }
 
     /**
@@ -378,7 +380,7 @@ class PHPExcel_Shared_Escher_DgContainer_SpgrContainer_SpContainer
         $nestingLevel = 0;
 
         $parent = $this->getParent();
-        while ($parent instanceof PHPExcel_Shared_Escher_DgContainer_SpgrContainer) {
+        while ($parent instanceof \PhpOffice\PhpSpreadsheet\Shared\Escher\DgContainer\SpgrContainer) {
             ++$nestingLevel;
             $parent = $parent->getParent();
         }

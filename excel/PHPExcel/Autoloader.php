@@ -6,9 +6,9 @@ PHPExcel_Autoloader::register();
 //PHPExcel_Shared_ZipStreamWrapper::register();
 // check mbstring.func_overload
 if (ini_get('mbstring.func_overload') & 2) {
-    throw new PHPExcel_Exception('Multibyte function overloading in PHP must be disabled for string functions (2).');
+    throw new \PhpOffice\PhpSpreadsheet\Exception('Multibyte function overloading in PHP must be disabled for string functions (2).');
 }
-PHPExcel_Shared_String::buildCharacterSets();
+\PhpOffice\PhpSpreadsheet\Shared\StringHelper::buildCharacterSets();
 
 /**
  * PHPExcel
@@ -71,7 +71,7 @@ class PHPExcel_Autoloader
             str_replace('_', DIRECTORY_SEPARATOR, $pClassName) .
             '.php';
 
-        if ((file_exists($pClassFilePath) === false) || (is_readable($pClassFilePath) === false)) {
+        if ((!file_exists($pClassFilePath)) || (!is_readable($pClassFilePath))) {
             // Can't load
             return false;
         }

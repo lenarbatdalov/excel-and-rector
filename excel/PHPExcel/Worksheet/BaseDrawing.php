@@ -1,5 +1,7 @@
 <?php
 
+namespace PhpOffice\PhpSpreadsheet\Worksheet;
+
 /**
  * PHPExcel_Worksheet_BaseDrawing
  *
@@ -25,7 +27,7 @@
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
-class PHPExcel_Worksheet_BaseDrawing implements PHPExcel_IComparable
+class BaseDrawing implements \PhpOffice\PhpSpreadsheet\IComparable
 {
     /**
      * Image counter
@@ -58,7 +60,7 @@ class PHPExcel_Worksheet_BaseDrawing implements PHPExcel_IComparable
     /**
      * Worksheet
      *
-     * @var PHPExcel_Worksheet
+     * @var \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet
      */
     protected $worksheet;
 
@@ -114,7 +116,7 @@ class PHPExcel_Worksheet_BaseDrawing implements PHPExcel_IComparable
     /**
      * Shadow
      *
-     * @var PHPExcel_Worksheet_Drawing_Shadow
+     * @var \PhpOffice\PhpSpreadsheet\Worksheet\Drawing\Shadow
      */
     protected $shadow;
 
@@ -126,15 +128,15 @@ class PHPExcel_Worksheet_BaseDrawing implements PHPExcel_IComparable
         // Initialise values
         $this->name                = '';
         $this->description        = '';
-        $this->worksheet          = null;
+        $this->worksheet          = \null;
         $this->coordinates        = 'A1';
         $this->offsetX            = 0;
         $this->offsetY            = 0;
         $this->width              = 0;
         $this->height             = 0;
-        $this->resizeProportional = true;
+        $this->resizeProportional = \true;
         $this->rotation           = 0;
-        $this->shadow             = new PHPExcel_Worksheet_Drawing_Shadow();
+        $this->shadow             = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing\Shadow();
 
         // Set image index
         self::$imageCounter++;
@@ -165,7 +167,7 @@ class PHPExcel_Worksheet_BaseDrawing implements PHPExcel_IComparable
      * Set Name
      *
      * @param string $pValue
-     * @return PHPExcel_Worksheet_BaseDrawing
+     * @return \PhpOffice\PhpSpreadsheet\Worksheet\BaseDrawing
      */
     public function setName($pValue = '')
     {
@@ -187,7 +189,7 @@ class PHPExcel_Worksheet_BaseDrawing implements PHPExcel_IComparable
      * Set Description
      *
      * @param string $pValue
-     * @return PHPExcel_Worksheet_BaseDrawing
+     * @return \PhpOffice\PhpSpreadsheet\Worksheet\BaseDrawing
      */
     public function setDescription($pValue = '')
     {
@@ -198,7 +200,7 @@ class PHPExcel_Worksheet_BaseDrawing implements PHPExcel_IComparable
     /**
      * Get Worksheet
      *
-     * @return PHPExcel_Worksheet
+     * @return \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet
      */
     public function getWorksheet()
     {
@@ -208,36 +210,31 @@ class PHPExcel_Worksheet_BaseDrawing implements PHPExcel_IComparable
     /**
      * Set Worksheet
      *
-     * @param     PHPExcel_Worksheet     $pValue
      * @param     bool                $pOverrideOld    If a Worksheet has already been assigned, overwrite it and remove image from old Worksheet?
-     * @throws     PHPExcel_Exception
-     * @return PHPExcel_Worksheet_BaseDrawing
+     * @throws     \PhpOffice\PhpSpreadsheet\Exception
+     * @return \PhpOffice\PhpSpreadsheet\Worksheet\BaseDrawing
      */
-    public function setWorksheet(PHPExcel_Worksheet $pValue = null, $pOverrideOld = false)
+    public function setWorksheet(\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet $phpExcelWorksheet = \null, $pOverrideOld = \false)
     {
-        if (is_null($this->worksheet)) {
+        if (\is_null($this->worksheet)) {
             // Add drawing to PHPExcel_Worksheet
-            $this->worksheet = $pValue;
-            $this->worksheet->getCell($this->coordinates);
+            $this->worksheet = $phpExcelWorksheet;
+            $this->worksheet->getCell($this->coordinates, true);
             $this->worksheet->getDrawingCollection()->append($this);
-        } else {
-            if ($pOverrideOld) {
-                // Remove drawing from old PHPExcel_Worksheet
-                $iterator = $this->worksheet->getDrawingCollection()->getIterator();
-
-                while ($iterator->valid()) {
-                    if ($iterator->current()->getHashCode() == $this->getHashCode()) {
-                        $this->worksheet->getDrawingCollection()->offsetUnset($iterator->key());
-                        $this->worksheet = null;
-                        break;
-                    }
+        } elseif ($pOverrideOld) {
+            // Remove drawing from old PHPExcel_Worksheet
+            $iterator = $this->worksheet->getDrawingCollection()->getIterator();
+            while ($iterator->valid()) {
+                if ($iterator->current()->getHashCode() == $this->getHashCode()) {
+                    $this->worksheet->getDrawingCollection()->offsetUnset($iterator->key());
+                    $this->worksheet = \null;
+                    break;
                 }
-
-                // Set new PHPExcel_Worksheet
-                $this->setWorksheet($pValue);
-            } else {
-                throw new PHPExcel_Exception("A PHPExcel_Worksheet has already been assigned. Drawings can only exist on one PHPExcel_Worksheet.");
             }
+            // Set new PHPExcel_Worksheet
+            $this->setWorksheet($phpExcelWorksheet);
+        } else {
+            throw new \PhpOffice\PhpSpreadsheet\Exception("A PHPExcel_Worksheet has already been assigned. Drawings can only exist on one PHPExcel_Worksheet.");
         }
         return $this;
     }
@@ -256,7 +253,7 @@ class PHPExcel_Worksheet_BaseDrawing implements PHPExcel_IComparable
      * Set Coordinates
      *
      * @param string $pValue
-     * @return PHPExcel_Worksheet_BaseDrawing
+     * @return \PhpOffice\PhpSpreadsheet\Worksheet\BaseDrawing
      */
     public function setCoordinates($pValue = 'A1')
     {
@@ -278,7 +275,7 @@ class PHPExcel_Worksheet_BaseDrawing implements PHPExcel_IComparable
      * Set OffsetX
      *
      * @param int $pValue
-     * @return PHPExcel_Worksheet_BaseDrawing
+     * @return \PhpOffice\PhpSpreadsheet\Worksheet\BaseDrawing
      */
     public function setOffsetX($pValue = 0)
     {
@@ -300,7 +297,7 @@ class PHPExcel_Worksheet_BaseDrawing implements PHPExcel_IComparable
      * Set OffsetY
      *
      * @param int $pValue
-     * @return PHPExcel_Worksheet_BaseDrawing
+     * @return \PhpOffice\PhpSpreadsheet\Worksheet\BaseDrawing
      */
     public function setOffsetY($pValue = 0)
     {
@@ -322,14 +319,14 @@ class PHPExcel_Worksheet_BaseDrawing implements PHPExcel_IComparable
      * Set Width
      *
      * @param int $pValue
-     * @return PHPExcel_Worksheet_BaseDrawing
+     * @return \PhpOffice\PhpSpreadsheet\Worksheet\BaseDrawing
      */
     public function setWidth($pValue = 0)
     {
         // Resize proportional?
         if ($this->resizeProportional && $pValue != 0) {
             $ratio = $this->height / ($this->width != 0 ? $this->width : 1);
-            $this->height = round($ratio * $pValue);
+            $this->height = \round($ratio * $pValue);
         }
 
         // Set width
@@ -352,14 +349,14 @@ class PHPExcel_Worksheet_BaseDrawing implements PHPExcel_IComparable
      * Set Height
      *
      * @param int $pValue
-     * @return PHPExcel_Worksheet_BaseDrawing
+     * @return \PhpOffice\PhpSpreadsheet\Worksheet\BaseDrawing
      */
     public function setHeight($pValue = 0)
     {
         // Resize proportional?
         if ($this->resizeProportional && $pValue != 0) {
             $ratio = $this->width / ($this->height != 0 ? $this->height : 1);
-            $this->width = round($ratio * $pValue);
+            $this->width = \round($ratio * $pValue);
         }
 
         // Set height
@@ -379,18 +376,18 @@ class PHPExcel_Worksheet_BaseDrawing implements PHPExcel_IComparable
      * @author Vincent@luo MSN:kele_100@hotmail.com
      * @param int $width
      * @param int $height
-     * @return PHPExcel_Worksheet_BaseDrawing
+     * @return \PhpOffice\PhpSpreadsheet\Worksheet\BaseDrawing
      */
     public function setWidthAndHeight($width = 0, $height = 0)
     {
         $xratio = $width / ($this->width != 0 ? $this->width : 1);
         $yratio = $height / ($this->height != 0 ? $this->height : 1);
-        if ($this->resizeProportional && !($width == 0 || $height == 0)) {
+        if ($this->resizeProportional && ($width != 0 && $height != 0)) {
             if (($xratio * $this->height) < $height) {
-                $this->height = ceil($xratio * $this->height);
+                $this->height = \ceil($xratio * $this->height);
                 $this->width  = $width;
             } else {
-                $this->width    = ceil($yratio * $this->width);
+                $this->width    = \ceil($yratio * $this->width);
                 $this->height    = $height;
             }
         } else {
@@ -406,7 +403,7 @@ class PHPExcel_Worksheet_BaseDrawing implements PHPExcel_IComparable
      *
      * @return boolean
      */
-    public function getResizeProportional()
+    public function isResizeProportional()
     {
         return $this->resizeProportional;
     }
@@ -415,9 +412,9 @@ class PHPExcel_Worksheet_BaseDrawing implements PHPExcel_IComparable
      * Set ResizeProportional
      *
      * @param boolean $pValue
-     * @return PHPExcel_Worksheet_BaseDrawing
+     * @return \PhpOffice\PhpSpreadsheet\Worksheet\BaseDrawing
      */
-    public function setResizeProportional($pValue = true)
+    public function setResizeProportional($pValue = \true)
     {
         $this->resizeProportional = $pValue;
         return $this;
@@ -437,7 +434,7 @@ class PHPExcel_Worksheet_BaseDrawing implements PHPExcel_IComparable
      * Set Rotation
      *
      * @param int $pValue
-     * @return PHPExcel_Worksheet_BaseDrawing
+     * @return \PhpOffice\PhpSpreadsheet\Worksheet\BaseDrawing
      */
     public function setRotation($pValue = 0)
     {
@@ -448,7 +445,7 @@ class PHPExcel_Worksheet_BaseDrawing implements PHPExcel_IComparable
     /**
      * Get Shadow
      *
-     * @return PHPExcel_Worksheet_Drawing_Shadow
+     * @return \PhpOffice\PhpSpreadsheet\Worksheet\Drawing\Shadow
      */
     public function getShadow()
     {
@@ -458,13 +455,12 @@ class PHPExcel_Worksheet_BaseDrawing implements PHPExcel_IComparable
     /**
      * Set Shadow
      *
-     * @param     PHPExcel_Worksheet_Drawing_Shadow $pValue
-     * @throws     PHPExcel_Exception
-     * @return PHPExcel_Worksheet_BaseDrawing
+     * @throws     \PhpOffice\PhpSpreadsheet\Exception
+     * @return \PhpOffice\PhpSpreadsheet\Worksheet\BaseDrawing
      */
-    public function setShadow(PHPExcel_Worksheet_Drawing_Shadow $pValue = null)
+    public function setShadow(\PhpOffice\PhpSpreadsheet\Worksheet\Drawing\Shadow $phpExcelWorksheetDrawingShadow = \null)
     {
-           $this->shadow = $pValue;
+           $this->shadow = $phpExcelWorksheetDrawingShadow;
            return $this;
     }
 
@@ -475,7 +471,7 @@ class PHPExcel_Worksheet_BaseDrawing implements PHPExcel_IComparable
      */
     public function getHashCode()
     {
-        return md5(
+        return \md5(
             $this->name .
             $this->description .
             $this->worksheet->getHashCode() .
@@ -495,13 +491,9 @@ class PHPExcel_Worksheet_BaseDrawing implements PHPExcel_IComparable
      */
     public function __clone()
     {
-        $vars = get_object_vars($this);
+        $vars = \get_object_vars($this);
         foreach ($vars as $key => $value) {
-            if (is_object($value)) {
-                $this->$key = clone $value;
-            } else {
-                $this->$key = $value;
-            }
+            $this->$key = \is_object($value) ? clone $value : $value;
         }
     }
 }

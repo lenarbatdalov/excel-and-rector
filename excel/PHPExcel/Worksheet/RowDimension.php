@@ -1,5 +1,7 @@
 <?php
 
+namespace PhpOffice\PhpSpreadsheet\Worksheet;
+
 /**
  * PHPExcel_Worksheet_RowDimension
  *
@@ -25,7 +27,7 @@
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
-class PHPExcel_Worksheet_RowDimension extends PHPExcel_Worksheet_Dimension
+class RowDimension extends \PHPExcel_Worksheet_Dimension
 {
     /**
      * Row index
@@ -48,7 +50,7 @@ class PHPExcel_Worksheet_RowDimension extends PHPExcel_Worksheet_Dimension
      *
      * @var bool
      */
-    private $zeroHeight = false;
+    private $zeroHeight = \false;
 
     /**
      * Create a new PHPExcel_Worksheet_RowDimension
@@ -61,7 +63,7 @@ class PHPExcel_Worksheet_RowDimension extends PHPExcel_Worksheet_Dimension
         $this->rowIndex = $pIndex;
 
         // set dimension as unformatted by default
-        parent::__construct(null);
+        parent::__construct(\null);
     }
 
     /**
@@ -78,7 +80,7 @@ class PHPExcel_Worksheet_RowDimension extends PHPExcel_Worksheet_Dimension
      * Set Row Index
      *
      * @param int $pValue
-     * @return PHPExcel_Worksheet_RowDimension
+     * @return \PhpOffice\PhpSpreadsheet\Worksheet\RowDimension
      */
     public function setRowIndex($pValue)
     {
@@ -100,7 +102,7 @@ class PHPExcel_Worksheet_RowDimension extends PHPExcel_Worksheet_Dimension
      * Set Row Height
      *
      * @param double $pValue
-     * @return PHPExcel_Worksheet_RowDimension
+     * @return \PhpOffice\PhpSpreadsheet\Worksheet\RowDimension
      */
     public function setRowHeight($pValue = -1)
     {
@@ -113,7 +115,7 @@ class PHPExcel_Worksheet_RowDimension extends PHPExcel_Worksheet_Dimension
      *
      * @return bool
      */
-    public function getZeroHeight()
+    public function isZeroHeight()
     {
         return $this->zeroHeight;
     }
@@ -122,9 +124,9 @@ class PHPExcel_Worksheet_RowDimension extends PHPExcel_Worksheet_Dimension
      * Set ZeroHeight
      *
      * @param bool $pValue
-     * @return PHPExcel_Worksheet_RowDimension
+     * @return \PhpOffice\PhpSpreadsheet\Worksheet\RowDimension
      */
-    public function setZeroHeight($pValue = false)
+    public function setZeroHeight($pValue = \false)
     {
         $this->zeroHeight = $pValue;
         return $this;

@@ -1,4 +1,6 @@
 <?php
+namespace PhpOffice\PhpSpreadsheet\Shared\JAMA;
+
 /**
  *    @package JAMA
  *
@@ -36,7 +38,7 @@ class CholeskyDecomposition
      *    @var boolean
      *    @access private
      */
-    private $isspd = true;
+    private $isSPD = \true;
 
     /**
      *    CholeskyDecomposition
@@ -44,9 +46,9 @@ class CholeskyDecomposition
      *    Class constructor - decomposes symmetric positive definite matrix
      *    @param mixed Matrix square symmetric positive definite matrix
      */
-    public function __construct($A = null)
+    public function __construct($A = \null)
     {
-        if ($A instanceof Matrix) {
+        if ($A instanceof \Matrix) {
             $this->L = $A->getArray();
             $this->m = $A->getRowDimension();
 
@@ -55,16 +57,14 @@ class CholeskyDecomposition
                     for ($sum = $this->L[$i][$j], $k = $i - 1; $k >= 0; --$k) {
                         $sum -= $this->L[$i][$k] * $this->L[$j][$k];
                     }
-                    if ($i == $j) {
+                    if ($i === $j) {
                         if ($sum >= 0) {
-                            $this->L[$i][$i] = sqrt($sum);
+                            $this->L[$i][$i] = \sqrt($sum);
                         } else {
-                            $this->isspd = false;
+                            $this->isSPD = \false;
                         }
-                    } else {
-                        if ($this->L[$i][$i] != 0) {
-                            $this->L[$j][$i] = $sum / $this->L[$i][$i];
-                        }
+                    } elseif ($this->L[$i][$i] != 0) {
+                        $this->L[$j][$i] = $sum / $this->L[$i][$i];
                     }
                 }
 
@@ -73,7 +73,7 @@ class CholeskyDecomposition
                 }
             }
         } else {
-            throw new PHPExcel_Calculation_Exception(JAMAError(ARGUMENT_TYPE_EXCEPTION));
+            throw new \PhpOffice\PhpSpreadsheet\Calculation\Exception(\JAMAError(\ARGUMENT_TYPE_EXCEPTION));
         }
     }    //    function __construct()
 
@@ -84,7 +84,7 @@ class CholeskyDecomposition
      */
     public function isSPD()
     {
-        return $this->isspd;
+        return $this->isSPD;
     }    //    function isSPD()
 
     /**
@@ -95,7 +95,7 @@ class CholeskyDecomposition
      */
     public function getL()
     {
-        return new Matrix($this->L);
+        return new \Matrix($this->L);
     }    //    function getL()
 
     /**
@@ -104,11 +104,11 @@ class CholeskyDecomposition
      *    @param $B Row-equal matrix
      *    @return Matrix L * L' * X = B
      */
-    public function solve($B = null)
+    public function solve($B = \null)
     {
-        if ($B instanceof Matrix) {
+        if ($B instanceof \Matrix) {
             if ($B->getRowDimension() == $this->m) {
-                if ($this->isspd) {
+                if ($this->isSPD) {
                     $X  = $B->getArrayCopy();
                     $nx = $B->getColumnDimension();
 
@@ -134,15 +134,15 @@ class CholeskyDecomposition
                         }
                     }
 
-                    return new Matrix($X, $this->m, $nx);
+                    return new \Matrix($X, $this->m, $nx);
                 } else {
-                    throw new PHPExcel_Calculation_Exception(JAMAError(MatrixSPDException));
+                    throw new \PhpOffice\PhpSpreadsheet\Calculation\Exception(\JAMAError(\MatrixSPDException));
                 }
             } else {
-                throw new PHPExcel_Calculation_Exception(JAMAError(MATRIX_DIMENSION_EXCEPTION));
+                throw new \PhpOffice\PhpSpreadsheet\Calculation\Exception(\JAMAError(\MATRIX_DIMENSION_EXCEPTION));
             }
         } else {
-            throw new PHPExcel_Calculation_Exception(JAMAError(ARGUMENT_TYPE_EXCEPTION));
+            throw new \PhpOffice\PhpSpreadsheet\Calculation\Exception(\JAMAError(\ARGUMENT_TYPE_EXCEPTION));
         }
     }    //    function solve()
 }

@@ -1,5 +1,7 @@
 <?php
 
+namespace PhpOffice\PhpSpreadsheet\Writer\Ods;
+
 /**
  * PHPExcel_Writer_OpenDocument_Thumbnails
  *
@@ -25,16 +27,15 @@
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
-class PHPExcel_Writer_OpenDocument_Thumbnails extends PHPExcel_Writer_OpenDocument_WriterPart
+class Thumbnails extends \PhpOffice\PhpSpreadsheet\Writer\Ods\WriterPart
 {
     /**
      * Write Thumbnails/thumbnail.png to PNG format
      *
-     * @param   PHPExcel                   $pPHPExcel
      * @return  string                     XML Output
-     * @throws  PHPExcel_Writer_Exception
+     * @throws  \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
-    public function writeThumbnail(PHPExcel $pPHPExcel = null)
+    public function writeThumbnail(\PhpOffice\PhpSpreadsheet\Spreadsheet $phpExcel = \null)
     {
         return '';
     }

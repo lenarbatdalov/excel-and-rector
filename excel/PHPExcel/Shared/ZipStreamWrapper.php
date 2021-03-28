@@ -32,7 +32,7 @@ class PHPExcel_Shared_ZipStreamWrapper
      *
      * @var ZipArchive
      */
-    private $archive;
+    private $zipArchive;
 
     /**
      * Filename in ZipAcrhive
@@ -77,7 +77,7 @@ class PHPExcel_Shared_ZipStreamWrapper
     {
         // Check for mode
         if ($mode{0} != 'r') {
-            throw new PHPExcel_Reader_Exception('Mode ' . $mode . ' is not supported. Only read mode is supported.');
+            throw new \PhpOffice\PhpSpreadsheet\Reader\Exception('Mode ' . $mode . ' is not supported. Only read mode is supported.');
         }
 
         $pos = strrpos($path, '#');
@@ -85,12 +85,12 @@ class PHPExcel_Shared_ZipStreamWrapper
         $url['fragment'] = substr($path, $pos + 1);
 
         // Open archive
-        $this->archive = new ZipArchive();
-        $this->archive->open($url['host']);
+        $this->zipArchive = new ZipArchive();
+        $this->zipArchive->open($url['host']);
 
         $this->fileNameInArchive = $url['fragment'];
         $this->position = 0;
-        $this->data = $this->archive->getFromName($this->fileNameInArchive);
+        $this->data = $this->zipArchive->getFromName($this->fileNameInArchive);
 
         return true;
     }
@@ -100,7 +100,7 @@ class PHPExcel_Shared_ZipStreamWrapper
      *
      * @return  boolean
      */
-    public function statName()
+    public function getFileNameInArchive()
     {
         return $this->fileNameInArchive;
     }
@@ -112,7 +112,7 @@ class PHPExcel_Shared_ZipStreamWrapper
      */
     public function url_stat()
     {
-        return $this->statName($this->fileNameInArchive);
+        return $this->getFileNameInArchive($this->fileNameInArchive);
     }
 
     /**
@@ -122,7 +122,7 @@ class PHPExcel_Shared_ZipStreamWrapper
      */
     public function stream_stat()
     {
-        return $this->archive->statName($this->fileNameInArchive);
+        return $this->zipArchive->statName($this->fileNameInArchive);
     }
 
     /**
@@ -144,7 +144,7 @@ class PHPExcel_Shared_ZipStreamWrapper
      *
      * @return  int
      */
-    public function stream_tell()
+    public function getPosition()
     {
         return $this->position;
     }

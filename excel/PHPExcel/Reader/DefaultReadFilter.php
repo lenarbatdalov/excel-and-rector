@@ -9,6 +9,8 @@ if (!defined('PHPEXCEL_ROOT')) {
     require(PHPEXCEL_ROOT . 'PHPExcel/Autoloader.php');
 }
 
+namespace PhpOffice\PhpSpreadsheet\Reader;
+
 /**
  * PHPExcel_Reader_DefaultReadFilter
  *
@@ -34,7 +36,7 @@ if (!defined('PHPEXCEL_ROOT')) {
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
-class PHPExcel_Reader_DefaultReadFilter implements PHPExcel_Reader_IReadFilter
+class DefaultReadFilter implements \PhpOffice\PhpSpreadsheet\Reader\IReadFilter
 {
     /**
      * Should this cell be read?
@@ -46,6 +48,6 @@ class PHPExcel_Reader_DefaultReadFilter implements PHPExcel_Reader_IReadFilter
      */
     public function readCell($column, $row, $worksheetName = '')
     {
-        return true;
+        return \true;
     }
 }

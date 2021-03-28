@@ -1,4 +1,6 @@
 <?php
+namespace PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
 /**
  * PHPExcel
  *
@@ -24,8 +26,6 @@
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
-
-
 /**
  * PHPExcel_Writer_Excel2007_Worksheet
  *
@@ -33,26 +33,26 @@
  * @package    PHPExcel_Writer_Excel2007
  * @copyright  Copyright (c) 2006 - 2015 PHPExcel (http://www.codeplex.com/PHPExcel)
  */
-class PHPExcel_Writer_Excel2007_Worksheet extends PHPExcel_Writer_Excel2007_WriterPart
+class Worksheet extends \PhpOffice\PhpSpreadsheet\Writer\Xlsx\WriterPart
 {
     /**
      * Write worksheet to XML format
      *
-     * @param    PHPExcel_Worksheet        $pSheet
+     * @param    \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet        $pSheet
      * @param    string[]                $pStringTable
      * @param    boolean                    $includeCharts    Flag indicating if we should write charts
      * @return    string                    XML Output
-     * @throws    PHPExcel_Writer_Exception
+     * @throws    \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
-    public function writeWorksheet($pSheet = null, $pStringTable = null, $includeCharts = false)
+    public function writeWorksheet($pSheet = \null, $pStringTable = \null, $includeCharts = \false)
     {
-        if (!is_null($pSheet)) {
+        if (!\is_null($pSheet)) {
             // Create XML writer
-            $objWriter = null;
+            $objWriter = \null;
             if ($this->getParentWriter()->getUseDiskCaching()) {
-                $objWriter = new PHPExcel_Shared_XMLWriter(PHPExcel_Shared_XMLWriter::STORAGE_DISK, $this->getParentWriter()->getDiskCachingDirectory());
+                $objWriter = new \PhpOffice\PhpSpreadsheet\Shared\XMLWriter(\PhpOffice\PhpSpreadsheet\Shared\XMLWriter::STORAGE_DISK, $this->getParentWriter()->getDiskCachingDirectory());
             } else {
-                $objWriter = new PHPExcel_Shared_XMLWriter(PHPExcel_Shared_XMLWriter::STORAGE_MEMORY);
+                $objWriter = new \PhpOffice\PhpSpreadsheet\Shared\XMLWriter(\PhpOffice\PhpSpreadsheet\Shared\XMLWriter::STORAGE_MEMORY);
             }
 
             // XML header
@@ -132,163 +132,163 @@ class PHPExcel_Writer_Excel2007_Worksheet extends PHPExcel_Writer_Excel2007_Writ
             // Return
             return $objWriter->getData();
         } else {
-            throw new PHPExcel_Writer_Exception("Invalid PHPExcel_Worksheet object passed.");
+            throw new \PhpOffice\PhpSpreadsheet\Writer\Exception("Invalid PHPExcel_Worksheet object passed.");
         }
     }
 
     /**
      * Write SheetPr
      *
-     * @param    PHPExcel_Shared_XMLWriter        $objWriter        XML Writer
-     * @param    PHPExcel_Worksheet                $pSheet            Worksheet
-     * @throws    PHPExcel_Writer_Exception
+     * @param \PhpOffice\PhpSpreadsheet\Shared\XMLWriter        $phpExcelSharedXMLWriter        XML Writer
+     * @param \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet                $phpExcelWorksheet            Worksheet
+     * @throws    \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
-    private function writeSheetPr(PHPExcel_Shared_XMLWriter $objWriter = null, PHPExcel_Worksheet $pSheet = null)
+    private function writeSheetPr(\PhpOffice\PhpSpreadsheet\Shared\XMLWriter $phpExcelSharedXMLWriter = \null, \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet $phpExcelWorksheet = \null)
     {
         // sheetPr
-        $objWriter->startElement('sheetPr');
+        $phpExcelSharedXMLWriter->startElement('sheetPr');
         //$objWriter->writeAttribute('codeName',        $pSheet->getTitle());
-        if ($pSheet->getParent()->hasMacros()) {//if the workbook have macros, we need to have codeName for the sheet
-            if ($pSheet->hasCodeName()==false) {
-                $pSheet->setCodeName($pSheet->getTitle());
+        if ($phpExcelWorksheet->getParent()->hasMacros()) {//if the workbook have macros, we need to have codeName for the sheet
+            if ($phpExcelWorksheet->hasCodeName()==\false) {
+                $phpExcelWorksheet->setCodeName($phpExcelWorksheet->getTitle());
             }
-            $objWriter->writeAttribute('codeName', $pSheet->getCodeName());
+            $phpExcelSharedXMLWriter->writeAttribute('codeName', $phpExcelWorksheet->getCodeName());
         }
-        $autoFilterRange = $pSheet->getAutoFilter()->getRange();
+        $autoFilterRange = $phpExcelWorksheet->getAutoFilter()->getRange();
         if (!empty($autoFilterRange)) {
-            $objWriter->writeAttribute('filterMode', 1);
-            $pSheet->getAutoFilter()->showHideRows();
+            $phpExcelSharedXMLWriter->writeAttribute('filterMode', 1);
+            $phpExcelWorksheet->getAutoFilter()->showHideRows();
         }
 
         // tabColor
-        if ($pSheet->isTabColorSet()) {
-            $objWriter->startElement('tabColor');
-            $objWriter->writeAttribute('rgb', $pSheet->getTabColor()->getARGB());
-            $objWriter->endElement();
+        if ($phpExcelWorksheet->isTabColorSet()) {
+            $phpExcelSharedXMLWriter->startElement('tabColor');
+            $phpExcelSharedXMLWriter->writeAttribute('rgb', $phpExcelWorksheet->getTabColor()->getARGB());
+            $phpExcelSharedXMLWriter->endElement();
         }
 
         // outlinePr
-        $objWriter->startElement('outlinePr');
-        $objWriter->writeAttribute('summaryBelow', ($pSheet->getShowSummaryBelow() ? '1' : '0'));
-        $objWriter->writeAttribute('summaryRight', ($pSheet->getShowSummaryRight() ? '1' : '0'));
-        $objWriter->endElement();
+        $phpExcelSharedXMLWriter->startElement('outlinePr');
+        $phpExcelSharedXMLWriter->writeAttribute('summaryBelow', ($phpExcelWorksheet->getShowSummaryBelow() ? '1' : '0'));
+        $phpExcelSharedXMLWriter->writeAttribute('summaryRight', ($phpExcelWorksheet->getShowSummaryRight() ? '1' : '0'));
+        $phpExcelSharedXMLWriter->endElement();
 
         // pageSetUpPr
-        if ($pSheet->getPageSetup()->getFitToPage()) {
-            $objWriter->startElement('pageSetUpPr');
-            $objWriter->writeAttribute('fitToPage', '1');
-            $objWriter->endElement();
+        if ($phpExcelWorksheet->getPageSetup()->getFitToPage()) {
+            $phpExcelSharedXMLWriter->startElement('pageSetUpPr');
+            $phpExcelSharedXMLWriter->writeAttribute('fitToPage', '1');
+            $phpExcelSharedXMLWriter->endElement();
         }
 
-        $objWriter->endElement();
+        $phpExcelSharedXMLWriter->endElement();
     }
 
     /**
      * Write Dimension
      *
-     * @param    PHPExcel_Shared_XMLWriter    $objWriter        XML Writer
-     * @param    PHPExcel_Worksheet            $pSheet            Worksheet
-     * @throws    PHPExcel_Writer_Exception
+     * @param \PhpOffice\PhpSpreadsheet\Shared\XMLWriter    $phpExcelSharedXMLWriter        XML Writer
+     * @param \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet            $phpExcelWorksheet            Worksheet
+     * @throws    \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
-    private function writeDimension(PHPExcel_Shared_XMLWriter $objWriter = null, PHPExcel_Worksheet $pSheet = null)
+    private function writeDimension(\PhpOffice\PhpSpreadsheet\Shared\XMLWriter $phpExcelSharedXMLWriter = \null, \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet $phpExcelWorksheet = \null)
     {
         // dimension
-        $objWriter->startElement('dimension');
-        $objWriter->writeAttribute('ref', $pSheet->calculateWorksheetDimension());
-        $objWriter->endElement();
+        $phpExcelSharedXMLWriter->startElement('dimension');
+        $phpExcelSharedXMLWriter->writeAttribute('ref', $phpExcelWorksheet->calculateWorksheetDimension());
+        $phpExcelSharedXMLWriter->endElement();
     }
 
     /**
      * Write SheetViews
      *
-     * @param    PHPExcel_Shared_XMLWriter            $objWriter        XML Writer
-     * @param    PHPExcel_Worksheet                    $pSheet            Worksheet
-     * @throws    PHPExcel_Writer_Exception
+     * @param \PhpOffice\PhpSpreadsheet\Shared\XMLWriter            $phpExcelSharedXMLWriter        XML Writer
+     * @param \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet                    $phpExcelWorksheet            Worksheet
+     * @throws    \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
-    private function writeSheetViews(PHPExcel_Shared_XMLWriter $objWriter = null, PHPExcel_Worksheet $pSheet = null)
+    private function writeSheetViews(\PhpOffice\PhpSpreadsheet\Shared\XMLWriter $phpExcelSharedXMLWriter = \null, \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet $phpExcelWorksheet = \null)
     {
         // sheetViews
-        $objWriter->startElement('sheetViews');
+        $phpExcelSharedXMLWriter->startElement('sheetViews');
 
         // Sheet selected?
-        $sheetSelected = false;
-        if ($this->getParentWriter()->getPHPExcel()->getIndex($pSheet) == $this->getParentWriter()->getPHPExcel()->getActiveSheetIndex()) {
-            $sheetSelected = true;
+        $sheetSelected = \false;
+        if ($this->getParentWriter()->getPHPExcel()->getIndex($phpExcelWorksheet) == $this->getParentWriter()->getPHPExcel()->getActiveSheetIndex()) {
+            $sheetSelected = \true;
         }
 
         // sheetView
-        $objWriter->startElement('sheetView');
-        $objWriter->writeAttribute('tabSelected', $sheetSelected ? '1' : '0');
-        $objWriter->writeAttribute('workbookViewId', '0');
+        $phpExcelSharedXMLWriter->startElement('sheetView');
+        $phpExcelSharedXMLWriter->writeAttribute('tabSelected', $sheetSelected ? '1' : '0');
+        $phpExcelSharedXMLWriter->writeAttribute('workbookViewId', '0');
 
         // Zoom scales
-        if ($pSheet->getSheetView()->getZoomScale() != 100) {
-            $objWriter->writeAttribute('zoomScale', $pSheet->getSheetView()->getZoomScale());
+        if ($phpExcelWorksheet->getSheetView()->getZoomScale() != 100) {
+            $phpExcelSharedXMLWriter->writeAttribute('zoomScale', $phpExcelWorksheet->getSheetView()->getZoomScale());
         }
-        if ($pSheet->getSheetView()->getZoomScaleNormal() != 100) {
-            $objWriter->writeAttribute('zoomScaleNormal', $pSheet->getSheetView()->getZoomScaleNormal());
+        if ($phpExcelWorksheet->getSheetView()->getZoomScaleNormal() != 100) {
+            $phpExcelSharedXMLWriter->writeAttribute('zoomScaleNormal', $phpExcelWorksheet->getSheetView()->getZoomScaleNormal());
         }
 
         // View Layout Type
-        if ($pSheet->getSheetView()->getView() !== PHPExcel_Worksheet_SheetView::SHEETVIEW_NORMAL) {
-            $objWriter->writeAttribute('view', $pSheet->getSheetView()->getView());
+        if ($phpExcelWorksheet->getSheetView()->getView() !== \PhpOffice\PhpSpreadsheet\Worksheet\SheetView::SHEETVIEW_NORMAL) {
+            $phpExcelSharedXMLWriter->writeAttribute('view', $phpExcelWorksheet->getSheetView()->getView());
         }
 
         // Gridlines
-        if ($pSheet->getShowGridlines()) {
-            $objWriter->writeAttribute('showGridLines', 'true');
+        if ($phpExcelWorksheet->getShowGridlines()) {
+            $phpExcelSharedXMLWriter->writeAttribute('showGridLines', 'true');
         } else {
-            $objWriter->writeAttribute('showGridLines', 'false');
+            $phpExcelSharedXMLWriter->writeAttribute('showGridLines', 'false');
         }
 
         // Row and column headers
-        if ($pSheet->getShowRowColHeaders()) {
-            $objWriter->writeAttribute('showRowColHeaders', '1');
+        if ($phpExcelWorksheet->getShowRowColHeaders()) {
+            $phpExcelSharedXMLWriter->writeAttribute('showRowColHeaders', '1');
         } else {
-            $objWriter->writeAttribute('showRowColHeaders', '0');
+            $phpExcelSharedXMLWriter->writeAttribute('showRowColHeaders', '0');
         }
 
         // Right-to-left
-        if ($pSheet->getRightToLeft()) {
-            $objWriter->writeAttribute('rightToLeft', 'true');
+        if ($phpExcelWorksheet->getRightToLeft()) {
+            $phpExcelSharedXMLWriter->writeAttribute('rightToLeft', 'true');
         }
 
-        $activeCell = $pSheet->getActiveCell();
+        $activeCell = $phpExcelWorksheet->getActiveCell();
 
         // Pane
         $pane = '';
-        $topLeftCell = $pSheet->getFreezePane();
+        $topLeftCell = $phpExcelWorksheet->getFreezePane();
         if (($topLeftCell != '') && ($topLeftCell != 'A1')) {
             $activeCell = empty($activeCell) ? $topLeftCell : $activeCell;
             // Calculate freeze coordinates
             $xSplit = $ySplit = 0;
 
-            list($xSplit, $ySplit) = PHPExcel_Cell::coordinateFromString($topLeftCell);
-            $xSplit = PHPExcel_Cell::columnIndexFromString($xSplit);
+            list($xSplit, $ySplit) = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::coordinateFromString($topLeftCell);
+            $xSplit = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($xSplit);
 
             // pane
             $pane = 'topRight';
-            $objWriter->startElement('pane');
+            $phpExcelSharedXMLWriter->startElement('pane');
             if ($xSplit > 1) {
-                $objWriter->writeAttribute('xSplit', $xSplit - 1);
+                $phpExcelSharedXMLWriter->writeAttribute('xSplit', $xSplit - 1);
             }
             if ($ySplit > 1) {
-                $objWriter->writeAttribute('ySplit', $ySplit - 1);
+                $phpExcelSharedXMLWriter->writeAttribute('ySplit', $ySplit - 1);
                 $pane = ($xSplit > 1) ? 'bottomRight' : 'bottomLeft';
             }
-            $objWriter->writeAttribute('topLeftCell', $topLeftCell);
-            $objWriter->writeAttribute('activePane', $pane);
-            $objWriter->writeAttribute('state', 'frozen');
-            $objWriter->endElement();
+            $phpExcelSharedXMLWriter->writeAttribute('topLeftCell', $topLeftCell);
+            $phpExcelSharedXMLWriter->writeAttribute('activePane', $pane);
+            $phpExcelSharedXMLWriter->writeAttribute('state', 'frozen');
+            $phpExcelSharedXMLWriter->endElement();
 
             if (($xSplit > 1) && ($ySplit > 1)) {
                 //    Write additional selections if more than two panes (ie both an X and a Y split)
-                $objWriter->startElement('selection');
-                $objWriter->writeAttribute('pane', 'topRight');
-                $objWriter->endElement();
-                $objWriter->startElement('selection');
-                $objWriter->writeAttribute('pane', 'bottomLeft');
-                $objWriter->endElement();
+                $phpExcelSharedXMLWriter->startElement('selection');
+                $phpExcelSharedXMLWriter->writeAttribute('pane', 'topRight');
+                $phpExcelSharedXMLWriter->endElement();
+                $phpExcelSharedXMLWriter->startElement('selection');
+                $phpExcelSharedXMLWriter->writeAttribute('pane', 'bottomLeft');
+                $phpExcelSharedXMLWriter->endElement();
             }
         }
 
@@ -296,240 +296,240 @@ class PHPExcel_Writer_Excel2007_Worksheet extends PHPExcel_Writer_Excel2007_Writ
 //      if ($pane != '') {
         // Only need to write selection element if we have a split pane
         // We cheat a little by over-riding the active cell selection, setting it to the split cell
-        $objWriter->startElement('selection');
+        $phpExcelSharedXMLWriter->startElement('selection');
         if ($pane != '') {
-            $objWriter->writeAttribute('pane', $pane);
+            $phpExcelSharedXMLWriter->writeAttribute('pane', $pane);
         }
-        $objWriter->writeAttribute('activeCell', $activeCell);
-        $objWriter->writeAttribute('sqref', $activeCell);
-        $objWriter->endElement();
+        $phpExcelSharedXMLWriter->writeAttribute('activeCell', $activeCell);
+        $phpExcelSharedXMLWriter->writeAttribute('sqref', $activeCell);
+        $phpExcelSharedXMLWriter->endElement();
 //      }
 
-        $objWriter->endElement();
+        $phpExcelSharedXMLWriter->endElement();
 
-        $objWriter->endElement();
+        $phpExcelSharedXMLWriter->endElement();
     }
 
     /**
      * Write SheetFormatPr
      *
-     * @param    PHPExcel_Shared_XMLWriter $objWriter        XML Writer
-     * @param    PHPExcel_Worksheet          $pSheet            Worksheet
-     * @throws    PHPExcel_Writer_Exception
+     * @param \PhpOffice\PhpSpreadsheet\Shared\XMLWriter $phpExcelSharedXMLWriter        XML Writer
+     * @param \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet          $phpExcelWorksheet            Worksheet
+     * @throws    \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
-    private function writeSheetFormatPr(PHPExcel_Shared_XMLWriter $objWriter = null, PHPExcel_Worksheet $pSheet = null)
+    private function writeSheetFormatPr(\PhpOffice\PhpSpreadsheet\Shared\XMLWriter $phpExcelSharedXMLWriter = \null, \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet $phpExcelWorksheet = \null)
     {
         // sheetFormatPr
-        $objWriter->startElement('sheetFormatPr');
+        $phpExcelSharedXMLWriter->startElement('sheetFormatPr');
 
         // Default row height
-        if ($pSheet->getDefaultRowDimension()->getRowHeight() >= 0) {
-            $objWriter->writeAttribute('customHeight', 'true');
-            $objWriter->writeAttribute('defaultRowHeight', PHPExcel_Shared_String::FormatNumber($pSheet->getDefaultRowDimension()->getRowHeight()));
+        if ($phpExcelWorksheet->getDefaultRowDimension()->getRowHeight() >= 0) {
+            $phpExcelSharedXMLWriter->writeAttribute('customHeight', 'true');
+            $phpExcelSharedXMLWriter->writeAttribute('defaultRowHeight', \PhpOffice\PhpSpreadsheet\Shared\StringHelper::FormatNumber($phpExcelWorksheet->getDefaultRowDimension()->getRowHeight()));
         } else {
-            $objWriter->writeAttribute('defaultRowHeight', '14.4');
+            $phpExcelSharedXMLWriter->writeAttribute('defaultRowHeight', '14.4');
         }
 
         // Set Zero Height row
-        if ((string)$pSheet->getDefaultRowDimension()->getZeroHeight()  == '1' ||
-            strtolower((string)$pSheet->getDefaultRowDimension()->getZeroHeight()) == 'true') {
-            $objWriter->writeAttribute('zeroHeight', '1');
+        if ((string)$phpExcelWorksheet->getDefaultRowDimension()->getZeroHeight()  == '1' ||
+            \strtolower((string)$phpExcelWorksheet->getDefaultRowDimension()->getZeroHeight()) == 'true') {
+            $phpExcelSharedXMLWriter->writeAttribute('zeroHeight', '1');
         }
 
         // Default column width
-        if ($pSheet->getDefaultColumnDimension()->getWidth() >= 0) {
-            $objWriter->writeAttribute('defaultColWidth', PHPExcel_Shared_String::FormatNumber($pSheet->getDefaultColumnDimension()->getWidth()));
+        if ($phpExcelWorksheet->getDefaultColumnDimension()->getWidth() >= 0) {
+            $phpExcelSharedXMLWriter->writeAttribute('defaultColWidth', \PhpOffice\PhpSpreadsheet\Shared\StringHelper::FormatNumber($phpExcelWorksheet->getDefaultColumnDimension()->getWidth()));
         }
 
         // Outline level - row
         $outlineLevelRow = 0;
-        foreach ($pSheet->getRowDimensions() as $dimension) {
-            if ($dimension->getOutlineLevel() > $outlineLevelRow) {
-                $outlineLevelRow = $dimension->getOutlineLevel();
+        foreach ($phpExcelWorksheet->getRowDimensions() as $columnDimension) {
+            if ($columnDimension->getOutlineLevel() > $outlineLevelRow) {
+                $outlineLevelRow = $columnDimension->getOutlineLevel();
             }
         }
-        $objWriter->writeAttribute('outlineLevelRow', (int)$outlineLevelRow);
+        $phpExcelSharedXMLWriter->writeAttribute('outlineLevelRow', $outlineLevelRow);
 
         // Outline level - column
         $outlineLevelCol = 0;
-        foreach ($pSheet->getColumnDimensions() as $dimension) {
-            if ($dimension->getOutlineLevel() > $outlineLevelCol) {
-                $outlineLevelCol = $dimension->getOutlineLevel();
+        foreach ($phpExcelWorksheet->getColumnDimensions() as $columnDimension) {
+            if ($columnDimension->getOutlineLevel() > $outlineLevelCol) {
+                $outlineLevelCol = $columnDimension->getOutlineLevel();
             }
         }
-        $objWriter->writeAttribute('outlineLevelCol', (int)$outlineLevelCol);
+        $phpExcelSharedXMLWriter->writeAttribute('outlineLevelCol', $outlineLevelCol);
 
-        $objWriter->endElement();
+        $phpExcelSharedXMLWriter->endElement();
     }
 
     /**
      * Write Cols
      *
-     * @param    PHPExcel_Shared_XMLWriter $objWriter XML Writer
-     * @param    PHPExcel_Worksheet $pSheet Worksheet
-     * @throws    PHPExcel_Writer_Exception
+     * @param \PhpOffice\PhpSpreadsheet\Shared\XMLWriter $phpExcelSharedXMLWriter XML Writer
+     * @param \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet $phpExcelWorksheet Worksheet
+     * @throws    \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
-    private function writeCols(PHPExcel_Shared_XMLWriter $objWriter = null, PHPExcel_Worksheet $pSheet = null)
+    private function writeCols(\PhpOffice\PhpSpreadsheet\Shared\XMLWriter $phpExcelSharedXMLWriter = \null, \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet $phpExcelWorksheet = \null)
     {
         // cols
-        if (count($pSheet->getColumnDimensions()) > 0) {
-            $objWriter->startElement('cols');
+        if (\count($phpExcelWorksheet->getColumnDimensions()) > 0) {
+            $phpExcelSharedXMLWriter->startElement('cols');
 
-            $pSheet->calculateColumnWidths();
+            $phpExcelWorksheet->calculateColumnWidths();
 
             // Loop through column dimensions
-            foreach ($pSheet->getColumnDimensions() as $colDimension) {
+            foreach ($phpExcelWorksheet->getColumnDimensions() as $phpExcelWorksheetColumnDimension) {
                 // col
-                $objWriter->startElement('col');
-                $objWriter->writeAttribute('min', PHPExcel_Cell::columnIndexFromString($colDimension->getColumnIndex()));
-                $objWriter->writeAttribute('max', PHPExcel_Cell::columnIndexFromString($colDimension->getColumnIndex()));
+                $phpExcelSharedXMLWriter->startElement('col');
+                $phpExcelSharedXMLWriter->writeAttribute('min', \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($phpExcelWorksheetColumnDimension->getColumnIndex()));
+                $phpExcelSharedXMLWriter->writeAttribute('max', \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($phpExcelWorksheetColumnDimension->getColumnIndex()));
 
-                if ($colDimension->getWidth() < 0) {
+                if ($phpExcelWorksheetColumnDimension->getWidth() < 0) {
                     // No width set, apply default of 10
-                    $objWriter->writeAttribute('width', '9.10');
+                    $phpExcelSharedXMLWriter->writeAttribute('width', '9.10');
                 } else {
                     // Width set
-                    $objWriter->writeAttribute('width', PHPExcel_Shared_String::FormatNumber($colDimension->getWidth()));
+                    $phpExcelSharedXMLWriter->writeAttribute('width', \PhpOffice\PhpSpreadsheet\Shared\StringHelper::FormatNumber($phpExcelWorksheetColumnDimension->getWidth()));
                 }
 
                 // Column visibility
-                if ($colDimension->getVisible() == false) {
-                    $objWriter->writeAttribute('hidden', 'true');
+                if ($phpExcelWorksheetColumnDimension->isVisible() == \false) {
+                    $phpExcelSharedXMLWriter->writeAttribute('hidden', 'true');
                 }
 
                 // Auto size?
-                if ($colDimension->getAutoSize()) {
-                    $objWriter->writeAttribute('bestFit', 'true');
+                if ($phpExcelWorksheetColumnDimension->isAutoSize()) {
+                    $phpExcelSharedXMLWriter->writeAttribute('bestFit', 'true');
                 }
 
                 // Custom width?
-                if ($colDimension->getWidth() != $pSheet->getDefaultColumnDimension()->getWidth()) {
-                    $objWriter->writeAttribute('customWidth', 'true');
+                if ($phpExcelWorksheetColumnDimension->getWidth() != $phpExcelWorksheet->getDefaultColumnDimension()->getWidth()) {
+                    $phpExcelSharedXMLWriter->writeAttribute('customWidth', 'true');
                 }
 
                 // Collapsed
-                if ($colDimension->getCollapsed() == true) {
-                    $objWriter->writeAttribute('collapsed', 'true');
+                if ($phpExcelWorksheetColumnDimension->isCollapsed() == \true) {
+                    $phpExcelSharedXMLWriter->writeAttribute('collapsed', 'true');
                 }
 
                 // Outline level
-                if ($colDimension->getOutlineLevel() > 0) {
-                    $objWriter->writeAttribute('outlineLevel', $colDimension->getOutlineLevel());
+                if ($phpExcelWorksheetColumnDimension->getOutlineLevel() > 0) {
+                    $phpExcelSharedXMLWriter->writeAttribute('outlineLevel', $phpExcelWorksheetColumnDimension->getOutlineLevel());
                 }
 
                 // Style
-                $objWriter->writeAttribute('style', $colDimension->getXfIndex());
+                $phpExcelSharedXMLWriter->writeAttribute('style', $phpExcelWorksheetColumnDimension->getXfIndex());
 
-                $objWriter->endElement();
+                $phpExcelSharedXMLWriter->endElement();
             }
 
-            $objWriter->endElement();
+            $phpExcelSharedXMLWriter->endElement();
         }
     }
 
     /**
      * Write SheetProtection
      *
-     * @param    PHPExcel_Shared_XMLWriter            $objWriter        XML Writer
-     * @param    PHPExcel_Worksheet                    $pSheet            Worksheet
-     * @throws    PHPExcel_Writer_Exception
+     * @param \PhpOffice\PhpSpreadsheet\Shared\XMLWriter            $phpExcelSharedXMLWriter        XML Writer
+     * @param \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet                    $phpExcelWorksheet            Worksheet
+     * @throws    \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
-    private function writeSheetProtection(PHPExcel_Shared_XMLWriter $objWriter = null, PHPExcel_Worksheet $pSheet = null)
+    private function writeSheetProtection(\PhpOffice\PhpSpreadsheet\Shared\XMLWriter $phpExcelSharedXMLWriter = \null, \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet $phpExcelWorksheet = \null)
     {
         // sheetProtection
-        $objWriter->startElement('sheetProtection');
+        $phpExcelSharedXMLWriter->startElement('sheetProtection');
 
-        if ($pSheet->getProtection()->getPassword() != '') {
-            $objWriter->writeAttribute('password', $pSheet->getProtection()->getPassword());
+        if ($phpExcelWorksheet->getProtection()->getPassword() != '') {
+            $phpExcelSharedXMLWriter->writeAttribute('password', $phpExcelWorksheet->getProtection()->getPassword());
         }
 
-        $objWriter->writeAttribute('sheet', ($pSheet->getProtection()->getSheet() ? 'true' : 'false'));
-        $objWriter->writeAttribute('objects', ($pSheet->getProtection()->getObjects() ? 'true' : 'false'));
-        $objWriter->writeAttribute('scenarios', ($pSheet->getProtection()->getScenarios() ? 'true' : 'false'));
-        $objWriter->writeAttribute('formatCells', ($pSheet->getProtection()->getFormatCells() ? 'true' : 'false'));
-        $objWriter->writeAttribute('formatColumns', ($pSheet->getProtection()->getFormatColumns() ? 'true' : 'false'));
-        $objWriter->writeAttribute('formatRows', ($pSheet->getProtection()->getFormatRows() ? 'true' : 'false'));
-        $objWriter->writeAttribute('insertColumns', ($pSheet->getProtection()->getInsertColumns() ? 'true' : 'false'));
-        $objWriter->writeAttribute('insertRows', ($pSheet->getProtection()->getInsertRows() ? 'true' : 'false'));
-        $objWriter->writeAttribute('insertHyperlinks', ($pSheet->getProtection()->getInsertHyperlinks() ? 'true' : 'false'));
-        $objWriter->writeAttribute('deleteColumns', ($pSheet->getProtection()->getDeleteColumns() ? 'true' : 'false'));
-        $objWriter->writeAttribute('deleteRows', ($pSheet->getProtection()->getDeleteRows() ? 'true' : 'false'));
-        $objWriter->writeAttribute('selectLockedCells', ($pSheet->getProtection()->getSelectLockedCells() ? 'true' : 'false'));
-        $objWriter->writeAttribute('sort', ($pSheet->getProtection()->getSort() ? 'true' : 'false'));
-        $objWriter->writeAttribute('autoFilter', ($pSheet->getProtection()->getAutoFilter() ? 'true' : 'false'));
-        $objWriter->writeAttribute('pivotTables', ($pSheet->getProtection()->getPivotTables() ? 'true' : 'false'));
-        $objWriter->writeAttribute('selectUnlockedCells', ($pSheet->getProtection()->getSelectUnlockedCells() ? 'true' : 'false'));
-        $objWriter->endElement();
+        $phpExcelSharedXMLWriter->writeAttribute('sheet', ($phpExcelWorksheet->getProtection()->getSheet() ? 'true' : 'false'));
+        $phpExcelSharedXMLWriter->writeAttribute('objects', ($phpExcelWorksheet->getProtection()->getObjects() ? 'true' : 'false'));
+        $phpExcelSharedXMLWriter->writeAttribute('scenarios', ($phpExcelWorksheet->getProtection()->getScenarios() ? 'true' : 'false'));
+        $phpExcelSharedXMLWriter->writeAttribute('formatCells', ($phpExcelWorksheet->getProtection()->getFormatCells() ? 'true' : 'false'));
+        $phpExcelSharedXMLWriter->writeAttribute('formatColumns', ($phpExcelWorksheet->getProtection()->getFormatColumns() ? 'true' : 'false'));
+        $phpExcelSharedXMLWriter->writeAttribute('formatRows', ($phpExcelWorksheet->getProtection()->getFormatRows() ? 'true' : 'false'));
+        $phpExcelSharedXMLWriter->writeAttribute('insertColumns', ($phpExcelWorksheet->getProtection()->getInsertColumns() ? 'true' : 'false'));
+        $phpExcelSharedXMLWriter->writeAttribute('insertRows', ($phpExcelWorksheet->getProtection()->getInsertRows() ? 'true' : 'false'));
+        $phpExcelSharedXMLWriter->writeAttribute('insertHyperlinks', ($phpExcelWorksheet->getProtection()->getInsertHyperlinks() ? 'true' : 'false'));
+        $phpExcelSharedXMLWriter->writeAttribute('deleteColumns', ($phpExcelWorksheet->getProtection()->getDeleteColumns() ? 'true' : 'false'));
+        $phpExcelSharedXMLWriter->writeAttribute('deleteRows', ($phpExcelWorksheet->getProtection()->getDeleteRows() ? 'true' : 'false'));
+        $phpExcelSharedXMLWriter->writeAttribute('selectLockedCells', ($phpExcelWorksheet->getProtection()->getSelectLockedCells() ? 'true' : 'false'));
+        $phpExcelSharedXMLWriter->writeAttribute('sort', ($phpExcelWorksheet->getProtection()->getSort() ? 'true' : 'false'));
+        $phpExcelSharedXMLWriter->writeAttribute('autoFilter', ($phpExcelWorksheet->getProtection()->getAutoFilter() ? 'true' : 'false'));
+        $phpExcelSharedXMLWriter->writeAttribute('pivotTables', ($phpExcelWorksheet->getProtection()->getPivotTables() ? 'true' : 'false'));
+        $phpExcelSharedXMLWriter->writeAttribute('selectUnlockedCells', ($phpExcelWorksheet->getProtection()->getSelectUnlockedCells() ? 'true' : 'false'));
+        $phpExcelSharedXMLWriter->endElement();
     }
 
     /**
      * Write ConditionalFormatting
      *
-     * @param    PHPExcel_Shared_XMLWriter            $objWriter        XML Writer
-     * @param    PHPExcel_Worksheet                    $pSheet            Worksheet
-     * @throws    PHPExcel_Writer_Exception
+     * @param \PhpOffice\PhpSpreadsheet\Shared\XMLWriter            $phpExcelSharedXMLWriter        XML Writer
+     * @param \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet                    $phpExcelWorksheet            Worksheet
+     * @throws    \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
-    private function writeConditionalFormatting(PHPExcel_Shared_XMLWriter $objWriter = null, PHPExcel_Worksheet $pSheet = null)
+    private function writeConditionalFormatting(\PhpOffice\PhpSpreadsheet\Shared\XMLWriter $phpExcelSharedXMLWriter = \null, \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet $phpExcelWorksheet = \null)
     {
         // Conditional id
         $id = 1;
 
         // Loop through styles in the current worksheet
-        foreach ($pSheet->getConditionalStylesCollection() as $cellCoordinate => $conditionalStyles) {
-            foreach ($conditionalStyles as $conditional) {
+        foreach ($phpExcelWorksheet->getConditionalStylesCollection() as $cellCoordinate => $conditionalStyles) {
+            foreach ($conditionalStyles as $conditionalStyle) {
                 // WHY was this again?
                 // if ($this->getParentWriter()->getStylesConditionalHashTable()->getIndexForHashCode($conditional->getHashCode()) == '') {
                 //    continue;
                 // }
-                if ($conditional->getConditionType() != PHPExcel_Style_Conditional::CONDITION_NONE) {
+                if ($conditionalStyle->getConditionType() != \PhpOffice\PhpSpreadsheet\Style\Conditional::CONDITION_NONE) {
                     // conditionalFormatting
-                    $objWriter->startElement('conditionalFormatting');
-                    $objWriter->writeAttribute('sqref', $cellCoordinate);
+                    $phpExcelSharedXMLWriter->startElement('conditionalFormatting');
+                    $phpExcelSharedXMLWriter->writeAttribute('sqref', $cellCoordinate);
 
                     // cfRule
-                    $objWriter->startElement('cfRule');
-                    $objWriter->writeAttribute('type', $conditional->getConditionType());
-                    $objWriter->writeAttribute('dxfId', $this->getParentWriter()->getStylesConditionalHashTable()->getIndexForHashCode($conditional->getHashCode()));
-                    $objWriter->writeAttribute('priority', $id++);
+                    $phpExcelSharedXMLWriter->startElement('cfRule');
+                    $phpExcelSharedXMLWriter->writeAttribute('type', $conditionalStyle->getConditionType());
+                    $phpExcelSharedXMLWriter->writeAttribute('dxfId', $this->getParentWriter()->getStylesConditionalHashTable()->getIndexForHashCode($conditionalStyle->getHashCode()));
+                    $phpExcelSharedXMLWriter->writeAttribute('priority', $id++);
 
-                    if (($conditional->getConditionType() == PHPExcel_Style_Conditional::CONDITION_CELLIS || $conditional->getConditionType() == PHPExcel_Style_Conditional::CONDITION_CONTAINSTEXT)
-                        && $conditional->getOperatorType() != PHPExcel_Style_Conditional::OPERATOR_NONE) {
-                        $objWriter->writeAttribute('operator', $conditional->getOperatorType());
+                    if (($conditionalStyle->getConditionType() == \PhpOffice\PhpSpreadsheet\Style\Conditional::CONDITION_CELLIS || $conditionalStyle->getConditionType() == \PhpOffice\PhpSpreadsheet\Style\Conditional::CONDITION_CONTAINSTEXT)
+                        && $conditionalStyle->getOperatorType() != \PhpOffice\PhpSpreadsheet\Style\Conditional::OPERATOR_NONE) {
+                        $phpExcelSharedXMLWriter->writeAttribute('operator', $conditionalStyle->getOperatorType());
                     }
 
-                    if ($conditional->getConditionType() == PHPExcel_Style_Conditional::CONDITION_CONTAINSTEXT
-                        && !is_null($conditional->getText())) {
-                        $objWriter->writeAttribute('text', $conditional->getText());
+                    if ($conditionalStyle->getConditionType() == \PhpOffice\PhpSpreadsheet\Style\Conditional::CONDITION_CONTAINSTEXT
+                        && !\is_null($conditionalStyle->getText())) {
+                        $phpExcelSharedXMLWriter->writeAttribute('text', $conditionalStyle->getText());
                     }
 
-                    if ($conditional->getConditionType() == PHPExcel_Style_Conditional::CONDITION_CONTAINSTEXT
-                        && $conditional->getOperatorType() == PHPExcel_Style_Conditional::OPERATOR_CONTAINSTEXT
-                        && !is_null($conditional->getText())) {
-                        $objWriter->writeElement('formula', 'NOT(ISERROR(SEARCH("' . $conditional->getText() . '",' . $cellCoordinate . ')))');
-                    } elseif ($conditional->getConditionType() == PHPExcel_Style_Conditional::CONDITION_CONTAINSTEXT
-                        && $conditional->getOperatorType() == PHPExcel_Style_Conditional::OPERATOR_BEGINSWITH
-                        && !is_null($conditional->getText())) {
-                        $objWriter->writeElement('formula', 'LEFT(' . $cellCoordinate . ',' . strlen($conditional->getText()) . ')="' . $conditional->getText() . '"');
-                    } elseif ($conditional->getConditionType() == PHPExcel_Style_Conditional::CONDITION_CONTAINSTEXT
-                        && $conditional->getOperatorType() == PHPExcel_Style_Conditional::OPERATOR_ENDSWITH
-                        && !is_null($conditional->getText())) {
-                        $objWriter->writeElement('formula', 'RIGHT(' . $cellCoordinate . ',' . strlen($conditional->getText()) . ')="' . $conditional->getText() . '"');
-                    } elseif ($conditional->getConditionType() == PHPExcel_Style_Conditional::CONDITION_CONTAINSTEXT
-                        && $conditional->getOperatorType() == PHPExcel_Style_Conditional::OPERATOR_NOTCONTAINS
-                        && !is_null($conditional->getText())) {
-                        $objWriter->writeElement('formula', 'ISERROR(SEARCH("' . $conditional->getText() . '",' . $cellCoordinate . '))');
-                    } elseif ($conditional->getConditionType() == PHPExcel_Style_Conditional::CONDITION_CELLIS
-                        || $conditional->getConditionType() == PHPExcel_Style_Conditional::CONDITION_CONTAINSTEXT
-                        || $conditional->getConditionType() == PHPExcel_Style_Conditional::CONDITION_EXPRESSION) {
-                        foreach ($conditional->getConditions() as $formula) {
+                    if ($conditionalStyle->getConditionType() == \PhpOffice\PhpSpreadsheet\Style\Conditional::CONDITION_CONTAINSTEXT
+                        && $conditionalStyle->getOperatorType() == \PhpOffice\PhpSpreadsheet\Style\Conditional::OPERATOR_CONTAINSTEXT
+                        && !\is_null($conditionalStyle->getText())) {
+                        $phpExcelSharedXMLWriter->writeElement('formula', 'NOT(ISERROR(SEARCH("' . $conditionalStyle->getText() . '",' . $cellCoordinate . ')))');
+                    } elseif ($conditionalStyle->getConditionType() == \PhpOffice\PhpSpreadsheet\Style\Conditional::CONDITION_CONTAINSTEXT
+                        && $conditionalStyle->getOperatorType() == \PhpOffice\PhpSpreadsheet\Style\Conditional::OPERATOR_BEGINSWITH
+                        && !\is_null($conditionalStyle->getText())) {
+                        $phpExcelSharedXMLWriter->writeElement('formula', 'LEFT(' . $cellCoordinate . ',' . \strlen($conditionalStyle->getText()) . ')="' . $conditionalStyle->getText() . '"');
+                    } elseif ($conditionalStyle->getConditionType() == \PhpOffice\PhpSpreadsheet\Style\Conditional::CONDITION_CONTAINSTEXT
+                        && $conditionalStyle->getOperatorType() == \PhpOffice\PhpSpreadsheet\Style\Conditional::OPERATOR_ENDSWITH
+                        && !\is_null($conditionalStyle->getText())) {
+                        $phpExcelSharedXMLWriter->writeElement('formula', 'RIGHT(' . $cellCoordinate . ',' . \strlen($conditionalStyle->getText()) . ')="' . $conditionalStyle->getText() . '"');
+                    } elseif ($conditionalStyle->getConditionType() == \PhpOffice\PhpSpreadsheet\Style\Conditional::CONDITION_CONTAINSTEXT
+                        && $conditionalStyle->getOperatorType() == \PhpOffice\PhpSpreadsheet\Style\Conditional::OPERATOR_NOTCONTAINS
+                        && !\is_null($conditionalStyle->getText())) {
+                        $phpExcelSharedXMLWriter->writeElement('formula', 'ISERROR(SEARCH("' . $conditionalStyle->getText() . '",' . $cellCoordinate . '))');
+                    } elseif ($conditionalStyle->getConditionType() == \PhpOffice\PhpSpreadsheet\Style\Conditional::CONDITION_CELLIS
+                        || $conditionalStyle->getConditionType() == \PhpOffice\PhpSpreadsheet\Style\Conditional::CONDITION_CONTAINSTEXT
+                        || $conditionalStyle->getConditionType() == \PhpOffice\PhpSpreadsheet\Style\Conditional::CONDITION_EXPRESSION) {
+                        foreach ($conditionalStyle->getConditions() as $condition) {
                             // Formula
-                            $objWriter->writeElement('formula', $formula);
+                            $phpExcelSharedXMLWriter->writeElement('formula', $condition);
                         }
                     }
 
-                    $objWriter->endElement();
+                    $phpExcelSharedXMLWriter->endElement();
 
-                    $objWriter->endElement();
+                    $phpExcelSharedXMLWriter->endElement();
                 }
             }
         }
@@ -538,682 +538,682 @@ class PHPExcel_Writer_Excel2007_Worksheet extends PHPExcel_Writer_Excel2007_Writ
     /**
      * Write DataValidations
      *
-     * @param    PHPExcel_Shared_XMLWriter            $objWriter        XML Writer
-     * @param    PHPExcel_Worksheet                    $pSheet            Worksheet
-     * @throws    PHPExcel_Writer_Exception
+     * @param \PhpOffice\PhpSpreadsheet\Shared\XMLWriter            $phpExcelSharedXMLWriter        XML Writer
+     * @param \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet                    $phpExcelWorksheet            Worksheet
+     * @throws    \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
-    private function writeDataValidations(PHPExcel_Shared_XMLWriter $objWriter = null, PHPExcel_Worksheet $pSheet = null)
+    private function writeDataValidations(\PhpOffice\PhpSpreadsheet\Shared\XMLWriter $phpExcelSharedXMLWriter = \null, \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet $phpExcelWorksheet = \null)
     {
         // Datavalidation collection
-        $dataValidationCollection = $pSheet->getDataValidationCollection();
+        $dataValidationCollection = $phpExcelWorksheet->getDataValidationCollection();
 
         // Write data validations?
         if (!empty($dataValidationCollection)) {
-            $objWriter->startElement('dataValidations');
-            $objWriter->writeAttribute('count', count($dataValidationCollection));
+            $phpExcelSharedXMLWriter->startElement('dataValidations');
+            $phpExcelSharedXMLWriter->writeAttribute('count', \count($dataValidationCollection));
 
             foreach ($dataValidationCollection as $coordinate => $dv) {
-                $objWriter->startElement('dataValidation');
+                $phpExcelSharedXMLWriter->startElement('dataValidation');
 
                 if ($dv->getType() != '') {
-                    $objWriter->writeAttribute('type', $dv->getType());
+                    $phpExcelSharedXMLWriter->writeAttribute('type', $dv->getType());
                 }
 
                 if ($dv->getErrorStyle() != '') {
-                    $objWriter->writeAttribute('errorStyle', $dv->getErrorStyle());
+                    $phpExcelSharedXMLWriter->writeAttribute('errorStyle', $dv->getErrorStyle());
                 }
 
                 if ($dv->getOperator() != '') {
-                    $objWriter->writeAttribute('operator', $dv->getOperator());
+                    $phpExcelSharedXMLWriter->writeAttribute('operator', $dv->getOperator());
                 }
 
-                $objWriter->writeAttribute('allowBlank', ($dv->getAllowBlank() ? '1'  : '0'));
-                $objWriter->writeAttribute('showDropDown', (!$dv->getShowDropDown() ? '1'  : '0'));
-                $objWriter->writeAttribute('showInputMessage', ($dv->getShowInputMessage() ? '1'  : '0'));
-                $objWriter->writeAttribute('showErrorMessage', ($dv->getShowErrorMessage() ? '1'  : '0'));
+                $phpExcelSharedXMLWriter->writeAttribute('allowBlank', ($dv->isAllowBlank() ? '1'  : '0'));
+                $phpExcelSharedXMLWriter->writeAttribute('showDropDown', ($dv->isShowDropDown() ? '0'  : '1'));
+                $phpExcelSharedXMLWriter->writeAttribute('showInputMessage', ($dv->isShowInputMessage() ? '1'  : '0'));
+                $phpExcelSharedXMLWriter->writeAttribute('showErrorMessage', ($dv->isShowErrorMessage() ? '1'  : '0'));
 
                 if ($dv->getErrorTitle() !== '') {
-                    $objWriter->writeAttribute('errorTitle', $dv->getErrorTitle());
+                    $phpExcelSharedXMLWriter->writeAttribute('errorTitle', $dv->getErrorTitle());
                 }
                 if ($dv->getError() !== '') {
-                    $objWriter->writeAttribute('error', $dv->getError());
+                    $phpExcelSharedXMLWriter->writeAttribute('error', $dv->getError());
                 }
                 if ($dv->getPromptTitle() !== '') {
-                    $objWriter->writeAttribute('promptTitle', $dv->getPromptTitle());
+                    $phpExcelSharedXMLWriter->writeAttribute('promptTitle', $dv->getPromptTitle());
                 }
                 if ($dv->getPrompt() !== '') {
-                    $objWriter->writeAttribute('prompt', $dv->getPrompt());
+                    $phpExcelSharedXMLWriter->writeAttribute('prompt', $dv->getPrompt());
                 }
 
-                $objWriter->writeAttribute('sqref', $coordinate);
+                $phpExcelSharedXMLWriter->writeAttribute('sqref', $coordinate);
 
                 if ($dv->getFormula1() !== '') {
-                    $objWriter->writeElement('formula1', $dv->getFormula1());
+                    $phpExcelSharedXMLWriter->writeElement('formula1', $dv->getFormula1());
                 }
                 if ($dv->getFormula2() !== '') {
-                    $objWriter->writeElement('formula2', $dv->getFormula2());
+                    $phpExcelSharedXMLWriter->writeElement('formula2', $dv->getFormula2());
                 }
 
-                $objWriter->endElement();
+                $phpExcelSharedXMLWriter->endElement();
             }
 
-            $objWriter->endElement();
+            $phpExcelSharedXMLWriter->endElement();
         }
     }
 
     /**
      * Write Hyperlinks
      *
-     * @param    PHPExcel_Shared_XMLWriter            $objWriter        XML Writer
-     * @param    PHPExcel_Worksheet                    $pSheet            Worksheet
-     * @throws    PHPExcel_Writer_Exception
+     * @param \PhpOffice\PhpSpreadsheet\Shared\XMLWriter            $phpExcelSharedXMLWriter        XML Writer
+     * @param \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet                    $phpExcelWorksheet            Worksheet
+     * @throws    \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
-    private function writeHyperlinks(PHPExcel_Shared_XMLWriter $objWriter = null, PHPExcel_Worksheet $pSheet = null)
+    private function writeHyperlinks(\PhpOffice\PhpSpreadsheet\Shared\XMLWriter $phpExcelSharedXMLWriter = \null, \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet $phpExcelWorksheet = \null)
     {
         // Hyperlink collection
-        $hyperlinkCollection = $pSheet->getHyperlinkCollection();
+        $hyperlinkCollection = $phpExcelWorksheet->getHyperlinkCollection();
 
         // Relation ID
         $relationId = 1;
 
         // Write hyperlinks?
         if (!empty($hyperlinkCollection)) {
-            $objWriter->startElement('hyperlinks');
+            $phpExcelSharedXMLWriter->startElement('hyperlinks');
 
             foreach ($hyperlinkCollection as $coordinate => $hyperlink) {
-                $objWriter->startElement('hyperlink');
+                $phpExcelSharedXMLWriter->startElement('hyperlink');
 
-                $objWriter->writeAttribute('ref', $coordinate);
+                $phpExcelSharedXMLWriter->writeAttribute('ref', $coordinate);
                 if (!$hyperlink->isInternal()) {
-                    $objWriter->writeAttribute('r:id', 'rId_hyperlink_' . $relationId);
+                    $phpExcelSharedXMLWriter->writeAttribute('r:id', 'rId_hyperlink_' . $relationId);
                     ++$relationId;
                 } else {
-                    $objWriter->writeAttribute('location', str_replace('sheet://', '', $hyperlink->getUrl()));
+                    $phpExcelSharedXMLWriter->writeAttribute('location', \str_replace('sheet://', '', $hyperlink->getUrl()));
                 }
 
                 if ($hyperlink->getTooltip() != '') {
-                    $objWriter->writeAttribute('tooltip', $hyperlink->getTooltip());
+                    $phpExcelSharedXMLWriter->writeAttribute('tooltip', $hyperlink->getTooltip());
                 }
 
-                $objWriter->endElement();
+                $phpExcelSharedXMLWriter->endElement();
             }
 
-            $objWriter->endElement();
+            $phpExcelSharedXMLWriter->endElement();
         }
     }
 
     /**
      * Write ProtectedRanges
      *
-     * @param    PHPExcel_Shared_XMLWriter            $objWriter        XML Writer
-     * @param    PHPExcel_Worksheet                    $pSheet            Worksheet
-     * @throws    PHPExcel_Writer_Exception
+     * @param \PhpOffice\PhpSpreadsheet\Shared\XMLWriter            $phpExcelSharedXMLWriter        XML Writer
+     * @param \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet                    $phpExcelWorksheet            Worksheet
+     * @throws    \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
-    private function writeProtectedRanges(PHPExcel_Shared_XMLWriter $objWriter = null, PHPExcel_Worksheet $pSheet = null)
+    private function writeProtectedRanges(\PhpOffice\PhpSpreadsheet\Shared\XMLWriter $phpExcelSharedXMLWriter = \null, \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet $phpExcelWorksheet = \null)
     {
-        if (count($pSheet->getProtectedCells()) > 0) {
+        if (\count($phpExcelWorksheet->getProtectedCells()) > 0) {
             // protectedRanges
-            $objWriter->startElement('protectedRanges');
+            $phpExcelSharedXMLWriter->startElement('protectedRanges');
 
             // Loop protectedRanges
-            foreach ($pSheet->getProtectedCells() as $protectedCell => $passwordHash) {
+            foreach ($phpExcelWorksheet->getProtectedCells() as $protectedCell => $passwordHash) {
                 // protectedRange
-                $objWriter->startElement('protectedRange');
-                $objWriter->writeAttribute('name', 'p' . md5($protectedCell));
-                $objWriter->writeAttribute('sqref', $protectedCell);
+                $phpExcelSharedXMLWriter->startElement('protectedRange');
+                $phpExcelSharedXMLWriter->writeAttribute('name', 'p' . \md5($protectedCell));
+                $phpExcelSharedXMLWriter->writeAttribute('sqref', $protectedCell);
                 if (!empty($passwordHash)) {
-                    $objWriter->writeAttribute('password', $passwordHash);
+                    $phpExcelSharedXMLWriter->writeAttribute('password', $passwordHash);
                 }
-                $objWriter->endElement();
+                $phpExcelSharedXMLWriter->endElement();
             }
 
-            $objWriter->endElement();
+            $phpExcelSharedXMLWriter->endElement();
         }
     }
 
     /**
      * Write MergeCells
      *
-     * @param    PHPExcel_Shared_XMLWriter            $objWriter        XML Writer
-     * @param    PHPExcel_Worksheet                    $pSheet            Worksheet
-     * @throws    PHPExcel_Writer_Exception
+     * @param \PhpOffice\PhpSpreadsheet\Shared\XMLWriter            $phpExcelSharedXMLWriter        XML Writer
+     * @param \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet                    $phpExcelWorksheet            Worksheet
+     * @throws    \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
-    private function writeMergeCells(PHPExcel_Shared_XMLWriter $objWriter = null, PHPExcel_Worksheet $pSheet = null)
+    private function writeMergeCells(\PhpOffice\PhpSpreadsheet\Shared\XMLWriter $phpExcelSharedXMLWriter = \null, \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet $phpExcelWorksheet = \null)
     {
-        if (count($pSheet->getMergeCells()) > 0) {
+        if (\count($phpExcelWorksheet->getMergeCells()) > 0) {
             // mergeCells
-            $objWriter->startElement('mergeCells');
+            $phpExcelSharedXMLWriter->startElement('mergeCells');
 
             // Loop mergeCells
-            foreach ($pSheet->getMergeCells() as $mergeCell) {
+            foreach ($phpExcelWorksheet->getMergeCells() as $mergeCell) {
                 // mergeCell
-                $objWriter->startElement('mergeCell');
-                $objWriter->writeAttribute('ref', $mergeCell);
-                $objWriter->endElement();
+                $phpExcelSharedXMLWriter->startElement('mergeCell');
+                $phpExcelSharedXMLWriter->writeAttribute('ref', $mergeCell);
+                $phpExcelSharedXMLWriter->endElement();
             }
 
-            $objWriter->endElement();
+            $phpExcelSharedXMLWriter->endElement();
         }
     }
 
     /**
      * Write PrintOptions
      *
-     * @param    PHPExcel_Shared_XMLWriter            $objWriter        XML Writer
-     * @param    PHPExcel_Worksheet                    $pSheet            Worksheet
-     * @throws    PHPExcel_Writer_Exception
+     * @param \PhpOffice\PhpSpreadsheet\Shared\XMLWriter            $phpExcelSharedXMLWriter        XML Writer
+     * @param \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet                    $phpExcelWorksheet            Worksheet
+     * @throws    \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
-    private function writePrintOptions(PHPExcel_Shared_XMLWriter $objWriter = null, PHPExcel_Worksheet $pSheet = null)
+    private function writePrintOptions(\PhpOffice\PhpSpreadsheet\Shared\XMLWriter $phpExcelSharedXMLWriter = \null, \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet $phpExcelWorksheet = \null)
     {
         // printOptions
-        $objWriter->startElement('printOptions');
+        $phpExcelSharedXMLWriter->startElement('printOptions');
 
-        $objWriter->writeAttribute('gridLines', ($pSheet->getPrintGridlines() ? 'true': 'false'));
-        $objWriter->writeAttribute('gridLinesSet', 'true');
+        $phpExcelSharedXMLWriter->writeAttribute('gridLines', ($phpExcelWorksheet->getPrintGridlines() ? 'true': 'false'));
+        $phpExcelSharedXMLWriter->writeAttribute('gridLinesSet', 'true');
 
-        if ($pSheet->getPageSetup()->getHorizontalCentered()) {
-            $objWriter->writeAttribute('horizontalCentered', 'true');
+        if ($phpExcelWorksheet->getPageSetup()->getHorizontalCentered()) {
+            $phpExcelSharedXMLWriter->writeAttribute('horizontalCentered', 'true');
         }
 
-        if ($pSheet->getPageSetup()->getVerticalCentered()) {
-            $objWriter->writeAttribute('verticalCentered', 'true');
+        if ($phpExcelWorksheet->getPageSetup()->getVerticalCentered()) {
+            $phpExcelSharedXMLWriter->writeAttribute('verticalCentered', 'true');
         }
 
-        $objWriter->endElement();
+        $phpExcelSharedXMLWriter->endElement();
     }
 
     /**
      * Write PageMargins
      *
-     * @param    PHPExcel_Shared_XMLWriter                $objWriter        XML Writer
-     * @param    PHPExcel_Worksheet                        $pSheet            Worksheet
-     * @throws    PHPExcel_Writer_Exception
+     * @param \PhpOffice\PhpSpreadsheet\Shared\XMLWriter                $phpExcelSharedXMLWriter        XML Writer
+     * @param \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet                        $phpExcelWorksheet            Worksheet
+     * @throws    \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
-    private function writePageMargins(PHPExcel_Shared_XMLWriter $objWriter = null, PHPExcel_Worksheet $pSheet = null)
+    private function writePageMargins(\PhpOffice\PhpSpreadsheet\Shared\XMLWriter $phpExcelSharedXMLWriter = \null, \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet $phpExcelWorksheet = \null)
     {
         // pageMargins
-        $objWriter->startElement('pageMargins');
-        $objWriter->writeAttribute('left', PHPExcel_Shared_String::FormatNumber($pSheet->getPageMargins()->getLeft()));
-        $objWriter->writeAttribute('right', PHPExcel_Shared_String::FormatNumber($pSheet->getPageMargins()->getRight()));
-        $objWriter->writeAttribute('top', PHPExcel_Shared_String::FormatNumber($pSheet->getPageMargins()->getTop()));
-        $objWriter->writeAttribute('bottom', PHPExcel_Shared_String::FormatNumber($pSheet->getPageMargins()->getBottom()));
-        $objWriter->writeAttribute('header', PHPExcel_Shared_String::FormatNumber($pSheet->getPageMargins()->getHeader()));
-        $objWriter->writeAttribute('footer', PHPExcel_Shared_String::FormatNumber($pSheet->getPageMargins()->getFooter()));
-        $objWriter->endElement();
+        $phpExcelSharedXMLWriter->startElement('pageMargins');
+        $phpExcelSharedXMLWriter->writeAttribute('left', \PhpOffice\PhpSpreadsheet\Shared\StringHelper::FormatNumber($phpExcelWorksheet->getPageMargins()->getLeft()));
+        $phpExcelSharedXMLWriter->writeAttribute('right', \PhpOffice\PhpSpreadsheet\Shared\StringHelper::FormatNumber($phpExcelWorksheet->getPageMargins()->getRight()));
+        $phpExcelSharedXMLWriter->writeAttribute('top', \PhpOffice\PhpSpreadsheet\Shared\StringHelper::FormatNumber($phpExcelWorksheet->getPageMargins()->getTop()));
+        $phpExcelSharedXMLWriter->writeAttribute('bottom', \PhpOffice\PhpSpreadsheet\Shared\StringHelper::FormatNumber($phpExcelWorksheet->getPageMargins()->getBottom()));
+        $phpExcelSharedXMLWriter->writeAttribute('header', \PhpOffice\PhpSpreadsheet\Shared\StringHelper::FormatNumber($phpExcelWorksheet->getPageMargins()->getHeader()));
+        $phpExcelSharedXMLWriter->writeAttribute('footer', \PhpOffice\PhpSpreadsheet\Shared\StringHelper::FormatNumber($phpExcelWorksheet->getPageMargins()->getFooter()));
+        $phpExcelSharedXMLWriter->endElement();
     }
 
     /**
      * Write AutoFilter
      *
-     * @param    PHPExcel_Shared_XMLWriter                $objWriter        XML Writer
-     * @param    PHPExcel_Worksheet                        $pSheet            Worksheet
-     * @throws    PHPExcel_Writer_Exception
+     * @param \PhpOffice\PhpSpreadsheet\Shared\XMLWriter                $phpExcelSharedXMLWriter        XML Writer
+     * @param \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet                        $phpExcelWorksheet            Worksheet
+     * @throws    \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
-    private function writeAutoFilter(PHPExcel_Shared_XMLWriter $objWriter = null, PHPExcel_Worksheet $pSheet = null)
+    private function writeAutoFilter(\PhpOffice\PhpSpreadsheet\Shared\XMLWriter $phpExcelSharedXMLWriter = \null, \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet $phpExcelWorksheet = \null)
     {
-        $autoFilterRange = $pSheet->getAutoFilter()->getRange();
+        $autoFilterRange = $phpExcelWorksheet->getAutoFilter()->getRange();
         if (!empty($autoFilterRange)) {
             // autoFilter
-            $objWriter->startElement('autoFilter');
+            $phpExcelSharedXMLWriter->startElement('autoFilter');
 
             // Strip any worksheet reference from the filter coordinates
-            $range = PHPExcel_Cell::splitRange($autoFilterRange);
+            $range = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::splitRange($autoFilterRange);
             $range = $range[0];
             //    Strip any worksheet ref
-            if (strpos($range[0], '!') !== false) {
-                list($ws, $range[0]) = explode('!', $range[0]);
+            if (\strpos($range[0], '!') !== \false) {
+                list($ws, $range[0]) = \explode('!', $range[0]);
             }
-            $range = implode(':', $range);
+            $range = \implode(':', $range);
 
-            $objWriter->writeAttribute('ref', str_replace('$', '', $range));
+            $phpExcelSharedXMLWriter->writeAttribute('ref', \str_replace('$', '', $range));
 
-            $columns = $pSheet->getAutoFilter()->getColumns();
-            if (count($columns > 0)) {
+            $columns = $phpExcelWorksheet->getAutoFilter()->getColumns();
+            if (\count($columns > 0) > 0) {
                 foreach ($columns as $columnID => $column) {
                     $rules = $column->getRules();
-                    if (count($rules) > 0) {
-                        $objWriter->startElement('filterColumn');
-                        $objWriter->writeAttribute('colId', $pSheet->getAutoFilter()->getColumnOffset($columnID));
+                    if (\count($rules) > 0) {
+                        $phpExcelSharedXMLWriter->startElement('filterColumn');
+                        $phpExcelSharedXMLWriter->writeAttribute('colId', $phpExcelWorksheet->getAutoFilter()->getColumnOffset($columnID));
 
-                        $objWriter->startElement($column->getFilterType());
-                        if ($column->getJoin() == PHPExcel_Worksheet_AutoFilter_Column::AUTOFILTER_COLUMN_JOIN_AND) {
-                            $objWriter->writeAttribute('and', 1);
+                        $phpExcelSharedXMLWriter->startElement($column->getFilterType());
+                        if ($column->getJoin() == \PhpOffice\PhpSpreadsheet\Worksheet\AutoFilter\Column::AUTOFILTER_COLUMN_JOIN_AND) {
+                            $phpExcelSharedXMLWriter->writeAttribute('and', 1);
                         }
 
                         foreach ($rules as $rule) {
-                            if (($column->getFilterType() === PHPExcel_Worksheet_AutoFilter_Column::AUTOFILTER_FILTERTYPE_FILTER) &&
-                                ($rule->getOperator() === PHPExcel_Worksheet_AutoFilter_Column_Rule::AUTOFILTER_COLUMN_RULE_EQUAL) &&
+                            if (($column->getFilterType() === \PhpOffice\PhpSpreadsheet\Worksheet\AutoFilter\Column::AUTOFILTER_FILTERTYPE_FILTER) &&
+                                ($rule->getOperator() === \PhpOffice\PhpSpreadsheet\Worksheet\AutoFilter\Column\Rule::AUTOFILTER_COLUMN_RULE_EQUAL) &&
                                 ($rule->getValue() === '')) {
                                 //    Filter rule for Blanks
-                                $objWriter->writeAttribute('blank', 1);
-                            } elseif ($rule->getRuleType() === PHPExcel_Worksheet_AutoFilter_Column_Rule::AUTOFILTER_RULETYPE_DYNAMICFILTER) {
+                                $phpExcelSharedXMLWriter->writeAttribute('blank', 1);
+                            } elseif ($rule->getRuleType() === \PhpOffice\PhpSpreadsheet\Worksheet\AutoFilter\Column\Rule::AUTOFILTER_RULETYPE_DYNAMICFILTER) {
                                 //    Dynamic Filter Rule
-                                $objWriter->writeAttribute('type', $rule->getGrouping());
+                                $phpExcelSharedXMLWriter->writeAttribute('type', $rule->getGrouping());
                                 $val = $column->getAttribute('val');
-                                if ($val !== null) {
-                                    $objWriter->writeAttribute('val', $val);
+                                if ($val !== \null) {
+                                    $phpExcelSharedXMLWriter->writeAttribute('val', $val);
                                 }
                                 $maxVal = $column->getAttribute('maxVal');
-                                if ($maxVal !== null) {
-                                    $objWriter->writeAttribute('maxVal', $maxVal);
+                                if ($maxVal !== \null) {
+                                    $phpExcelSharedXMLWriter->writeAttribute('maxVal', $maxVal);
                                 }
-                            } elseif ($rule->getRuleType() === PHPExcel_Worksheet_AutoFilter_Column_Rule::AUTOFILTER_RULETYPE_TOPTENFILTER) {
+                            } elseif ($rule->getRuleType() === \PhpOffice\PhpSpreadsheet\Worksheet\AutoFilter\Column\Rule::AUTOFILTER_RULETYPE_TOPTENFILTER) {
                                 //    Top 10 Filter Rule
-                                $objWriter->writeAttribute('val', $rule->getValue());
-                                $objWriter->writeAttribute('percent', (($rule->getOperator() === PHPExcel_Worksheet_AutoFilter_Column_Rule::AUTOFILTER_COLUMN_RULE_TOPTEN_PERCENT) ? '1' : '0'));
-                                $objWriter->writeAttribute('top', (($rule->getGrouping() === PHPExcel_Worksheet_AutoFilter_Column_Rule::AUTOFILTER_COLUMN_RULE_TOPTEN_TOP) ? '1': '0'));
+                                $phpExcelSharedXMLWriter->writeAttribute('val', $rule->getValue());
+                                $phpExcelSharedXMLWriter->writeAttribute('percent', (($rule->getOperator() === \PhpOffice\PhpSpreadsheet\Worksheet\AutoFilter\Column\Rule::AUTOFILTER_COLUMN_RULE_TOPTEN_PERCENT) ? '1' : '0'));
+                                $phpExcelSharedXMLWriter->writeAttribute('top', (($rule->getGrouping() === \PhpOffice\PhpSpreadsheet\Worksheet\AutoFilter\Column\Rule::AUTOFILTER_COLUMN_RULE_TOPTEN_TOP) ? '1': '0'));
                             } else {
                                 //    Filter, DateGroupItem or CustomFilter
-                                $objWriter->startElement($rule->getRuleType());
+                                $phpExcelSharedXMLWriter->startElement($rule->getRuleType());
 
-                                if ($rule->getOperator() !== PHPExcel_Worksheet_AutoFilter_Column_Rule::AUTOFILTER_COLUMN_RULE_EQUAL) {
-                                    $objWriter->writeAttribute('operator', $rule->getOperator());
+                                if ($rule->getOperator() !== \PhpOffice\PhpSpreadsheet\Worksheet\AutoFilter\Column\Rule::AUTOFILTER_COLUMN_RULE_EQUAL) {
+                                    $phpExcelSharedXMLWriter->writeAttribute('operator', $rule->getOperator());
                                 }
-                                if ($rule->getRuleType() === PHPExcel_Worksheet_AutoFilter_Column_Rule::AUTOFILTER_RULETYPE_DATEGROUP) {
+                                if ($rule->getRuleType() === \PhpOffice\PhpSpreadsheet\Worksheet\AutoFilter\Column\Rule::AUTOFILTER_RULETYPE_DATEGROUP) {
                                     // Date Group filters
                                     foreach ($rule->getValue() as $key => $value) {
                                         if ($value > '') {
-                                            $objWriter->writeAttribute($key, $value);
+                                            $phpExcelSharedXMLWriter->writeAttribute($key, $value);
                                         }
                                     }
-                                    $objWriter->writeAttribute('dateTimeGrouping', $rule->getGrouping());
+                                    $phpExcelSharedXMLWriter->writeAttribute('dateTimeGrouping', $rule->getGrouping());
                                 } else {
-                                    $objWriter->writeAttribute('val', $rule->getValue());
+                                    $phpExcelSharedXMLWriter->writeAttribute('val', $rule->getValue());
                                 }
 
-                                $objWriter->endElement();
+                                $phpExcelSharedXMLWriter->endElement();
                             }
                         }
 
-                        $objWriter->endElement();
+                        $phpExcelSharedXMLWriter->endElement();
 
-                        $objWriter->endElement();
+                        $phpExcelSharedXMLWriter->endElement();
                     }
                 }
             }
-            $objWriter->endElement();
+            $phpExcelSharedXMLWriter->endElement();
         }
     }
 
     /**
      * Write PageSetup
      *
-     * @param    PHPExcel_Shared_XMLWriter            $objWriter        XML Writer
-     * @param    PHPExcel_Worksheet                    $pSheet            Worksheet
-     * @throws    PHPExcel_Writer_Exception
+     * @param \PhpOffice\PhpSpreadsheet\Shared\XMLWriter            $phpExcelSharedXMLWriter        XML Writer
+     * @param \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet                    $phpExcelWorksheet            Worksheet
+     * @throws    \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
-    private function writePageSetup(PHPExcel_Shared_XMLWriter $objWriter = null, PHPExcel_Worksheet $pSheet = null)
+    private function writePageSetup(\PhpOffice\PhpSpreadsheet\Shared\XMLWriter $phpExcelSharedXMLWriter = \null, \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet $phpExcelWorksheet = \null)
     {
         // pageSetup
-        $objWriter->startElement('pageSetup');
-        $objWriter->writeAttribute('paperSize', $pSheet->getPageSetup()->getPaperSize());
-        $objWriter->writeAttribute('orientation', $pSheet->getPageSetup()->getOrientation());
+        $phpExcelSharedXMLWriter->startElement('pageSetup');
+        $phpExcelSharedXMLWriter->writeAttribute('paperSize', $phpExcelWorksheet->getPageSetup()->getPaperSize());
+        $phpExcelSharedXMLWriter->writeAttribute('orientation', $phpExcelWorksheet->getPageSetup()->getOrientation());
 
-        if (!is_null($pSheet->getPageSetup()->getScale())) {
-            $objWriter->writeAttribute('scale', $pSheet->getPageSetup()->getScale());
+        if (!\is_null($phpExcelWorksheet->getPageSetup()->getScale())) {
+            $phpExcelSharedXMLWriter->writeAttribute('scale', $phpExcelWorksheet->getPageSetup()->getScale());
         }
-        if (!is_null($pSheet->getPageSetup()->getFitToHeight())) {
-            $objWriter->writeAttribute('fitToHeight', $pSheet->getPageSetup()->getFitToHeight());
+        if (!\is_null($phpExcelWorksheet->getPageSetup()->getFitToHeight())) {
+            $phpExcelSharedXMLWriter->writeAttribute('fitToHeight', $phpExcelWorksheet->getPageSetup()->getFitToHeight());
         } else {
-            $objWriter->writeAttribute('fitToHeight', '0');
+            $phpExcelSharedXMLWriter->writeAttribute('fitToHeight', '0');
         }
-        if (!is_null($pSheet->getPageSetup()->getFitToWidth())) {
-            $objWriter->writeAttribute('fitToWidth', $pSheet->getPageSetup()->getFitToWidth());
+        if (!\is_null($phpExcelWorksheet->getPageSetup()->getFitToWidth())) {
+            $phpExcelSharedXMLWriter->writeAttribute('fitToWidth', $phpExcelWorksheet->getPageSetup()->getFitToWidth());
         } else {
-            $objWriter->writeAttribute('fitToWidth', '0');
+            $phpExcelSharedXMLWriter->writeAttribute('fitToWidth', '0');
         }
-        if (!is_null($pSheet->getPageSetup()->getFirstPageNumber())) {
-            $objWriter->writeAttribute('firstPageNumber', $pSheet->getPageSetup()->getFirstPageNumber());
-            $objWriter->writeAttribute('useFirstPageNumber', '1');
+        if (!\is_null($phpExcelWorksheet->getPageSetup()->getFirstPageNumber())) {
+            $phpExcelSharedXMLWriter->writeAttribute('firstPageNumber', $phpExcelWorksheet->getPageSetup()->getFirstPageNumber());
+            $phpExcelSharedXMLWriter->writeAttribute('useFirstPageNumber', '1');
         }
 
-        $objWriter->endElement();
+        $phpExcelSharedXMLWriter->endElement();
     }
 
     /**
      * Write Header / Footer
      *
-     * @param    PHPExcel_Shared_XMLWriter        $objWriter        XML Writer
-     * @param    PHPExcel_Worksheet                $pSheet            Worksheet
-     * @throws    PHPExcel_Writer_Exception
+     * @param \PhpOffice\PhpSpreadsheet\Shared\XMLWriter        $phpExcelSharedXMLWriter        XML Writer
+     * @param \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet                $phpExcelWorksheet            Worksheet
+     * @throws    \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
-    private function writeHeaderFooter(PHPExcel_Shared_XMLWriter $objWriter = null, PHPExcel_Worksheet $pSheet = null)
+    private function writeHeaderFooter(\PhpOffice\PhpSpreadsheet\Shared\XMLWriter $phpExcelSharedXMLWriter = \null, \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet $phpExcelWorksheet = \null)
     {
         // headerFooter
-        $objWriter->startElement('headerFooter');
-        $objWriter->writeAttribute('differentOddEven', ($pSheet->getHeaderFooter()->getDifferentOddEven() ? 'true' : 'false'));
-        $objWriter->writeAttribute('differentFirst', ($pSheet->getHeaderFooter()->getDifferentFirst() ? 'true' : 'false'));
-        $objWriter->writeAttribute('scaleWithDoc', ($pSheet->getHeaderFooter()->getScaleWithDocument() ? 'true' : 'false'));
-        $objWriter->writeAttribute('alignWithMargins', ($pSheet->getHeaderFooter()->getAlignWithMargins() ? 'true' : 'false'));
+        $phpExcelSharedXMLWriter->startElement('headerFooter');
+        $phpExcelSharedXMLWriter->writeAttribute('differentOddEven', ($phpExcelWorksheet->getHeaderFooter()->getDifferentOddEven() ? 'true' : 'false'));
+        $phpExcelSharedXMLWriter->writeAttribute('differentFirst', ($phpExcelWorksheet->getHeaderFooter()->getDifferentFirst() ? 'true' : 'false'));
+        $phpExcelSharedXMLWriter->writeAttribute('scaleWithDoc', ($phpExcelWorksheet->getHeaderFooter()->getScaleWithDocument() ? 'true' : 'false'));
+        $phpExcelSharedXMLWriter->writeAttribute('alignWithMargins', ($phpExcelWorksheet->getHeaderFooter()->getAlignWithMargins() ? 'true' : 'false'));
 
-        $objWriter->writeElement('oddHeader', $pSheet->getHeaderFooter()->getOddHeader());
-        $objWriter->writeElement('oddFooter', $pSheet->getHeaderFooter()->getOddFooter());
-        $objWriter->writeElement('evenHeader', $pSheet->getHeaderFooter()->getEvenHeader());
-        $objWriter->writeElement('evenFooter', $pSheet->getHeaderFooter()->getEvenFooter());
-        $objWriter->writeElement('firstHeader', $pSheet->getHeaderFooter()->getFirstHeader());
-        $objWriter->writeElement('firstFooter', $pSheet->getHeaderFooter()->getFirstFooter());
-        $objWriter->endElement();
+        $phpExcelSharedXMLWriter->writeElement('oddHeader', $phpExcelWorksheet->getHeaderFooter()->getOddHeader());
+        $phpExcelSharedXMLWriter->writeElement('oddFooter', $phpExcelWorksheet->getHeaderFooter()->getOddFooter());
+        $phpExcelSharedXMLWriter->writeElement('evenHeader', $phpExcelWorksheet->getHeaderFooter()->getEvenHeader());
+        $phpExcelSharedXMLWriter->writeElement('evenFooter', $phpExcelWorksheet->getHeaderFooter()->getEvenFooter());
+        $phpExcelSharedXMLWriter->writeElement('firstHeader', $phpExcelWorksheet->getHeaderFooter()->getFirstHeader());
+        $phpExcelSharedXMLWriter->writeElement('firstFooter', $phpExcelWorksheet->getHeaderFooter()->getFirstFooter());
+        $phpExcelSharedXMLWriter->endElement();
     }
 
     /**
      * Write Breaks
      *
-     * @param    PHPExcel_Shared_XMLWriter        $objWriter        XML Writer
-     * @param    PHPExcel_Worksheet                $pSheet            Worksheet
-     * @throws    PHPExcel_Writer_Exception
+     * @param \PhpOffice\PhpSpreadsheet\Shared\XMLWriter        $phpExcelSharedXMLWriter        XML Writer
+     * @param \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet                $phpExcelWorksheet            Worksheet
+     * @throws    \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
-    private function writeBreaks(PHPExcel_Shared_XMLWriter $objWriter = null, PHPExcel_Worksheet $pSheet = null)
+    private function writeBreaks(\PhpOffice\PhpSpreadsheet\Shared\XMLWriter $phpExcelSharedXMLWriter = \null, \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet $phpExcelWorksheet = \null)
     {
         // Get row and column breaks
         $aRowBreaks = array();
         $aColumnBreaks = array();
-        foreach ($pSheet->getBreaks() as $cell => $breakType) {
-            if ($breakType == PHPExcel_Worksheet::BREAK_ROW) {
+        foreach ($phpExcelWorksheet->getBreaks() as $cell => $breakType) {
+            if ($breakType == \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet::BREAK_ROW) {
                 $aRowBreaks[] = $cell;
-            } elseif ($breakType == PHPExcel_Worksheet::BREAK_COLUMN) {
+            } elseif ($breakType == \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet::BREAK_COLUMN) {
                 $aColumnBreaks[] = $cell;
             }
         }
 
         // rowBreaks
         if (!empty($aRowBreaks)) {
-            $objWriter->startElement('rowBreaks');
-            $objWriter->writeAttribute('count', count($aRowBreaks));
-            $objWriter->writeAttribute('manualBreakCount', count($aRowBreaks));
+            $phpExcelSharedXMLWriter->startElement('rowBreaks');
+            $phpExcelSharedXMLWriter->writeAttribute('count', \count($aRowBreaks));
+            $phpExcelSharedXMLWriter->writeAttribute('manualBreakCount', \count($aRowBreaks));
 
-            foreach ($aRowBreaks as $cell) {
-                $coords = PHPExcel_Cell::coordinateFromString($cell);
+            foreach ($aRowBreaks as $aRowBreak) {
+                $coords = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::coordinateFromString($aRowBreak);
 
-                $objWriter->startElement('brk');
-                $objWriter->writeAttribute('id', $coords[1]);
-                $objWriter->writeAttribute('man', '1');
-                $objWriter->endElement();
+                $phpExcelSharedXMLWriter->startElement('brk');
+                $phpExcelSharedXMLWriter->writeAttribute('id', $coords[1]);
+                $phpExcelSharedXMLWriter->writeAttribute('man', '1');
+                $phpExcelSharedXMLWriter->endElement();
             }
 
-            $objWriter->endElement();
+            $phpExcelSharedXMLWriter->endElement();
         }
 
         // Second, write column breaks
         if (!empty($aColumnBreaks)) {
-            $objWriter->startElement('colBreaks');
-            $objWriter->writeAttribute('count', count($aColumnBreaks));
-            $objWriter->writeAttribute('manualBreakCount', count($aColumnBreaks));
+            $phpExcelSharedXMLWriter->startElement('colBreaks');
+            $phpExcelSharedXMLWriter->writeAttribute('count', \count($aColumnBreaks));
+            $phpExcelSharedXMLWriter->writeAttribute('manualBreakCount', \count($aColumnBreaks));
 
-            foreach ($aColumnBreaks as $cell) {
-                $coords = PHPExcel_Cell::coordinateFromString($cell);
+            foreach ($aColumnBreaks as $aColumnBreak) {
+                $coords = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::coordinateFromString($aColumnBreak);
 
-                $objWriter->startElement('brk');
-                $objWriter->writeAttribute('id', PHPExcel_Cell::columnIndexFromString($coords[0]) - 1);
-                $objWriter->writeAttribute('man', '1');
-                $objWriter->endElement();
+                $phpExcelSharedXMLWriter->startElement('brk');
+                $phpExcelSharedXMLWriter->writeAttribute('id', \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($coords[0]) - 1);
+                $phpExcelSharedXMLWriter->writeAttribute('man', '1');
+                $phpExcelSharedXMLWriter->endElement();
             }
 
-            $objWriter->endElement();
+            $phpExcelSharedXMLWriter->endElement();
         }
     }
 
     /**
      * Write SheetData
      *
-     * @param    PHPExcel_Shared_XMLWriter        $objWriter        XML Writer
-     * @param    PHPExcel_Worksheet                $pSheet            Worksheet
+     * @param \PhpOffice\PhpSpreadsheet\Shared\XMLWriter        $phpExcelSharedXMLWriter        XML Writer
+     * @param \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet                $phpExcelWorksheet            Worksheet
      * @param    string[]                        $pStringTable    String table
-     * @throws    PHPExcel_Writer_Exception
+     * @throws    \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
-    private function writeSheetData(PHPExcel_Shared_XMLWriter $objWriter = null, PHPExcel_Worksheet $pSheet = null, $pStringTable = null)
+    private function writeSheetData(\PhpOffice\PhpSpreadsheet\Shared\XMLWriter $phpExcelSharedXMLWriter = \null, \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet $phpExcelWorksheet = \null, $pStringTable = \null)
     {
-        if (is_array($pStringTable)) {
+        if (\is_array($pStringTable)) {
             // Flipped stringtable, for faster index searching
             $aFlippedStringTable = $this->getParentWriter()->getWriterPart('stringtable')->flipStringTable($pStringTable);
 
             // sheetData
-            $objWriter->startElement('sheetData');
+            $phpExcelSharedXMLWriter->startElement('sheetData');
 
             // Get column count
-            $colCount = PHPExcel_Cell::columnIndexFromString($pSheet->getHighestColumn());
+            $colCount = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($phpExcelWorksheet->getHighestColumn());
 
             // Highest row number
-            $highestRow = $pSheet->getHighestRow();
+            $highestRow = $phpExcelWorksheet->getHighestRow();
 
             // Loop through cells
             $cellsByRow = array();
-            foreach ($pSheet->getCellCollection() as $cellID) {
-                $cellAddress = PHPExcel_Cell::coordinateFromString($cellID);
+            foreach ($phpExcelWorksheet->getCellCollection() as $cellID) {
+                $cellAddress = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::coordinateFromString($cellID);
                 $cellsByRow[$cellAddress[1]][] = $cellID;
             }
 
             $currentRow = 0;
             while ($currentRow++ < $highestRow) {
                 // Get row dimension
-                $rowDimension = $pSheet->getRowDimension($currentRow);
+                $rowDimension = $phpExcelWorksheet->getRowDimension($currentRow);
 
                 // Write current row?
-                $writeCurrentRow = isset($cellsByRow[$currentRow]) || $rowDimension->getRowHeight() >= 0 || $rowDimension->getVisible() == false || $rowDimension->getCollapsed() == true || $rowDimension->getOutlineLevel() > 0 || $rowDimension->getXfIndex() !== null;
+                $writeCurrentRow = isset($cellsByRow[$currentRow]) || $rowDimension->getRowHeight() >= 0 || $rowDimension->isVisible() == \false || $rowDimension->isCollapsed() == \true || $rowDimension->getOutlineLevel() > 0 || $rowDimension->getXfIndex() !== \null;
 
                 if ($writeCurrentRow) {
                     // Start a new row
-                    $objWriter->startElement('row');
-                    $objWriter->writeAttribute('r', $currentRow);
-                    $objWriter->writeAttribute('spans', '1:' . $colCount);
+                    $phpExcelSharedXMLWriter->startElement('row');
+                    $phpExcelSharedXMLWriter->writeAttribute('r', $currentRow);
+                    $phpExcelSharedXMLWriter->writeAttribute('spans', '1:' . $colCount);
 
                     // Row dimensions
                     if ($rowDimension->getRowHeight() >= 0) {
-                        $objWriter->writeAttribute('customHeight', '1');
-                        $objWriter->writeAttribute('ht', PHPExcel_Shared_String::FormatNumber($rowDimension->getRowHeight()));
+                        $phpExcelSharedXMLWriter->writeAttribute('customHeight', '1');
+                        $phpExcelSharedXMLWriter->writeAttribute('ht', \PhpOffice\PhpSpreadsheet\Shared\StringHelper::FormatNumber($rowDimension->getRowHeight()));
                     }
 
                     // Row visibility
-                    if ($rowDimension->getVisible() == false) {
-                        $objWriter->writeAttribute('hidden', 'true');
+                    if ($rowDimension->isVisible() == \false) {
+                        $phpExcelSharedXMLWriter->writeAttribute('hidden', 'true');
                     }
 
                     // Collapsed
-                    if ($rowDimension->getCollapsed() == true) {
-                        $objWriter->writeAttribute('collapsed', 'true');
+                    if ($rowDimension->isCollapsed() == \true) {
+                        $phpExcelSharedXMLWriter->writeAttribute('collapsed', 'true');
                     }
 
                     // Outline level
                     if ($rowDimension->getOutlineLevel() > 0) {
-                        $objWriter->writeAttribute('outlineLevel', $rowDimension->getOutlineLevel());
+                        $phpExcelSharedXMLWriter->writeAttribute('outlineLevel', $rowDimension->getOutlineLevel());
                     }
 
                     // Style
-                    if ($rowDimension->getXfIndex() !== null) {
-                        $objWriter->writeAttribute('s', $rowDimension->getXfIndex());
-                        $objWriter->writeAttribute('customFormat', '1');
+                    if ($rowDimension->getXfIndex() !== \null) {
+                        $phpExcelSharedXMLWriter->writeAttribute('s', $rowDimension->getXfIndex());
+                        $phpExcelSharedXMLWriter->writeAttribute('customFormat', '1');
                     }
 
                     // Write cells
                     if (isset($cellsByRow[$currentRow])) {
                         foreach ($cellsByRow[$currentRow] as $cellAddress) {
                             // Write cell
-                            $this->writeCell($objWriter, $pSheet, $cellAddress, $pStringTable, $aFlippedStringTable);
+                            $this->writeCell($phpExcelSharedXMLWriter, $phpExcelWorksheet, $cellAddress, $pStringTable, $aFlippedStringTable);
                         }
                     }
 
                     // End row
-                    $objWriter->endElement();
+                    $phpExcelSharedXMLWriter->endElement();
                 }
             }
 
-            $objWriter->endElement();
+            $phpExcelSharedXMLWriter->endElement();
         } else {
-            throw new PHPExcel_Writer_Exception("Invalid parameters passed.");
+            throw new \PhpOffice\PhpSpreadsheet\Writer\Exception("Invalid parameters passed.");
         }
     }
 
     /**
      * Write Cell
      *
-     * @param    PHPExcel_Shared_XMLWriter    $objWriter                XML Writer
-     * @param    PHPExcel_Worksheet            $pSheet                    Worksheet
-     * @param    PHPExcel_Cell                $pCellAddress            Cell Address
+     * @param \PhpOffice\PhpSpreadsheet\Shared\XMLWriter    $phpExcelSharedXMLWriter                XML Writer
+     * @param \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet            $phpExcelWorksheet                    Worksheet
+     * @param    \PhpOffice\PhpSpreadsheet\Cell\Cell                $pCellAddress            Cell Address
      * @param    string[]                    $pStringTable            String table
      * @param    string[]                    $pFlippedStringTable    String table (flipped), for faster index searching
-     * @throws    PHPExcel_Writer_Exception
+     * @throws    \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
-    private function writeCell(PHPExcel_Shared_XMLWriter $objWriter = null, PHPExcel_Worksheet $pSheet = null, $pCellAddress = null, $pStringTable = null, $pFlippedStringTable = null)
+    private function writeCell(\PhpOffice\PhpSpreadsheet\Shared\XMLWriter $phpExcelSharedXMLWriter = \null, \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet $phpExcelWorksheet = \null, $pCellAddress = \null, $pStringTable = \null, $pFlippedStringTable = \null)
     {
-        if (is_array($pStringTable) && is_array($pFlippedStringTable)) {
+        if (\is_array($pStringTable) && \is_array($pFlippedStringTable)) {
             // Cell
-            $pCell = $pSheet->getCell($pCellAddress);
-            $objWriter->startElement('c');
-            $objWriter->writeAttribute('r', $pCellAddress);
+            $pCell = $phpExcelWorksheet->getCell($pCellAddress);
+            $phpExcelSharedXMLWriter->startElement('c');
+            $phpExcelSharedXMLWriter->writeAttribute('r', $pCellAddress);
 
             // Sheet styles
             if ($pCell->getXfIndex() != '') {
-                $objWriter->writeAttribute('s', $pCell->getXfIndex());
+                $phpExcelSharedXMLWriter->writeAttribute('s', $pCell->getXfIndex());
             }
 
             // If cell value is supplied, write cell value
             $cellValue = $pCell->getValue();
-            if (is_object($cellValue) || $cellValue !== '') {
+            if (\is_object($cellValue) || $cellValue !== '') {
                 // Map type
-                $mappedType = $pCell->getDataType();
+                $dataType = $pCell->getDataType();
 
                 // Write data type depending on its type
-                switch (strtolower($mappedType)) {
+                switch (\strtolower($dataType)) {
                     case 'inlinestr':    // Inline string
                     case 's':            // String
                     case 'b':            // Boolean
-                        $objWriter->writeAttribute('t', $mappedType);
+                        $phpExcelSharedXMLWriter->writeAttribute('t', $dataType);
                         break;
                     case 'f':            // Formula
                         $calculatedValue = ($this->getParentWriter()->getPreCalculateFormulas()) ?
                             $pCell->getCalculatedValue() :
                             $cellValue;
-                        if (is_string($calculatedValue)) {
-                            $objWriter->writeAttribute('t', 'str');
+                        if (\is_string($calculatedValue)) {
+                            $phpExcelSharedXMLWriter->writeAttribute('t', 'str');
                         }
                         break;
                     case 'e':            // Error
-                        $objWriter->writeAttribute('t', $mappedType);
+                        $phpExcelSharedXMLWriter->writeAttribute('t', $dataType);
                 }
 
                 // Write data depending on its type
-                switch (strtolower($mappedType)) {
+                switch (\strtolower($dataType)) {
                     case 'inlinestr':    // Inline string
-                        if (! $cellValue instanceof PHPExcel_RichText) {
-                            $objWriter->writeElement('t', PHPExcel_Shared_String::ControlCharacterPHP2OOXML(htmlspecialchars($cellValue)));
-                        } elseif ($cellValue instanceof PHPExcel_RichText) {
-                            $objWriter->startElement('is');
-                            $this->getParentWriter()->getWriterPart('stringtable')->writeRichText($objWriter, $cellValue);
-                            $objWriter->endElement();
+                        if (! $cellValue instanceof \PhpOffice\PhpSpreadsheet\RichText\RichText) {
+                            $phpExcelSharedXMLWriter->writeElement('t', \PhpOffice\PhpSpreadsheet\Shared\StringHelper::ControlCharacterPHP2OOXML(\htmlspecialchars($cellValue)));
+                        } elseif ($cellValue instanceof \PhpOffice\PhpSpreadsheet\RichText\RichText) {
+                            $phpExcelSharedXMLWriter->startElement('is');
+                            $this->getParentWriter()->getWriterPart('stringtable')->writeRichText($phpExcelSharedXMLWriter, $cellValue);
+                            $phpExcelSharedXMLWriter->endElement();
                         }
 
                         break;
                     case 's':            // String
-                        if (! $cellValue instanceof PHPExcel_RichText) {
+                        if (! $cellValue instanceof \PhpOffice\PhpSpreadsheet\RichText\RichText) {
                             if (isset($pFlippedStringTable[$cellValue])) {
-                                $objWriter->writeElement('v', $pFlippedStringTable[$cellValue]);
+                                $phpExcelSharedXMLWriter->writeElement('v', $pFlippedStringTable[$cellValue]);
                             }
-                        } elseif ($cellValue instanceof PHPExcel_RichText) {
-                            $objWriter->writeElement('v', $pFlippedStringTable[$cellValue->getHashCode()]);
+                        } elseif ($cellValue instanceof \PhpOffice\PhpSpreadsheet\RichText\RichText) {
+                            $phpExcelSharedXMLWriter->writeElement('v', $pFlippedStringTable[$cellValue->getHashCode()]);
                         }
 
                         break;
                     case 'f':            // Formula
                         $attributes = $pCell->getFormulaAttributes();
                         if ($attributes['t'] == 'array') {
-                            $objWriter->startElement('f');
-                            $objWriter->writeAttribute('t', 'array');
-                            $objWriter->writeAttribute('ref', $pCellAddress);
-                            $objWriter->writeAttribute('aca', '1');
-                            $objWriter->writeAttribute('ca', '1');
-                            $objWriter->text(substr($cellValue, 1));
-                            $objWriter->endElement();
+                            $phpExcelSharedXMLWriter->startElement('f');
+                            $phpExcelSharedXMLWriter->writeAttribute('t', 'array');
+                            $phpExcelSharedXMLWriter->writeAttribute('ref', $pCellAddress);
+                            $phpExcelSharedXMLWriter->writeAttribute('aca', '1');
+                            $phpExcelSharedXMLWriter->writeAttribute('ca', '1');
+                            $phpExcelSharedXMLWriter->text(\substr($cellValue, 1));
+                            $phpExcelSharedXMLWriter->endElement();
                         } else {
-                            $objWriter->writeElement('f', substr($cellValue, 1));
+                            $phpExcelSharedXMLWriter->writeElement('f', \substr($cellValue, 1));
                         }
-                        if ($this->getParentWriter()->getOffice2003Compatibility() === false) {
+                        if ($this->getParentWriter()->getOffice2003Compatibility() === \false) {
                             if ($this->getParentWriter()->getPreCalculateFormulas()) {
 //                                $calculatedValue = $pCell->getCalculatedValue();
-                                if (!is_array($calculatedValue) && substr($calculatedValue, 0, 1) != '#') {
-                                    $objWriter->writeElement('v', PHPExcel_Shared_String::FormatNumber($calculatedValue));
+                                if (!\is_array($calculatedValue) && \substr($calculatedValue, 0, 1) != '#') {
+                                    $phpExcelSharedXMLWriter->writeElement('v', \PhpOffice\PhpSpreadsheet\Shared\StringHelper::FormatNumber($calculatedValue));
                                 } else {
-                                    $objWriter->writeElement('v', '0');
+                                    $phpExcelSharedXMLWriter->writeElement('v', '0');
                                 }
                             } else {
-                                $objWriter->writeElement('v', '0');
+                                $phpExcelSharedXMLWriter->writeElement('v', '0');
                             }
                         }
                         break;
                     case 'n':            // Numeric
                         // force point as decimal separator in case current locale uses comma
-                        $objWriter->writeElement('v', str_replace(',', '.', $cellValue));
+                        $phpExcelSharedXMLWriter->writeElement('v', \str_replace(',', '.', $cellValue));
                         break;
                     case 'b':            // Boolean
-                        $objWriter->writeElement('v', ($cellValue ? '1' : '0'));
+                        $phpExcelSharedXMLWriter->writeElement('v', ($cellValue ? '1' : '0'));
                         break;
                     case 'e':            // Error
-                        if (substr($cellValue, 0, 1) == '=') {
-                            $objWriter->writeElement('f', substr($cellValue, 1));
-                            $objWriter->writeElement('v', substr($cellValue, 1));
+                        if (\substr($cellValue, 0, 1) == '=') {
+                            $phpExcelSharedXMLWriter->writeElement('f', \substr($cellValue, 1));
+                            $phpExcelSharedXMLWriter->writeElement('v', \substr($cellValue, 1));
                         } else {
-                            $objWriter->writeElement('v', $cellValue);
+                            $phpExcelSharedXMLWriter->writeElement('v', $cellValue);
                         }
 
                         break;
                 }
             }
 
-            $objWriter->endElement();
+            $phpExcelSharedXMLWriter->endElement();
         } else {
-            throw new PHPExcel_Writer_Exception("Invalid parameters passed.");
+            throw new \PhpOffice\PhpSpreadsheet\Writer\Exception("Invalid parameters passed.");
         }
     }
 
     /**
      * Write Drawings
      *
-     * @param    PHPExcel_Shared_XMLWriter    $objWriter        XML Writer
-     * @param    PHPExcel_Worksheet            $pSheet            Worksheet
+     * @param \PhpOffice\PhpSpreadsheet\Shared\XMLWriter    $phpExcelSharedXMLWriter        XML Writer
+     * @param \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet            $phpExcelWorksheet            Worksheet
      * @param    boolean                        $includeCharts    Flag indicating if we should include drawing details for charts
-     * @throws    PHPExcel_Writer_Exception
+     * @throws    \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
-    private function writeDrawings(PHPExcel_Shared_XMLWriter $objWriter = null, PHPExcel_Worksheet $pSheet = null, $includeCharts = false)
+    private function writeDrawings(\PhpOffice\PhpSpreadsheet\Shared\XMLWriter $phpExcelSharedXMLWriter = \null, \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet $phpExcelWorksheet = \null, $includeCharts = \false)
     {
-        $chartCount = ($includeCharts) ? $pSheet->getChartCollection()->count() : 0;
+        $chartCount = ($includeCharts) ? $phpExcelWorksheet->getChartCollection()->count() : 0;
         // If sheet contains drawings, add the relationships
-        if (($pSheet->getDrawingCollection()->count() > 0) ||
+        if (($phpExcelWorksheet->getDrawingCollection()->count() > 0) ||
             ($chartCount > 0)) {
-            $objWriter->startElement('drawing');
-            $objWriter->writeAttribute('r:id', 'rId1');
-            $objWriter->endElement();
+            $phpExcelSharedXMLWriter->startElement('drawing');
+            $phpExcelSharedXMLWriter->writeAttribute('r:id', 'rId1');
+            $phpExcelSharedXMLWriter->endElement();
         }
     }
 
     /**
      * Write LegacyDrawing
      *
-     * @param    PHPExcel_Shared_XMLWriter        $objWriter        XML Writer
-     * @param    PHPExcel_Worksheet                $pSheet            Worksheet
-     * @throws    PHPExcel_Writer_Exception
+     * @param \PhpOffice\PhpSpreadsheet\Shared\XMLWriter        $phpExcelSharedXMLWriter        XML Writer
+     * @param \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet                $phpExcelWorksheet            Worksheet
+     * @throws    \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
-    private function writeLegacyDrawing(PHPExcel_Shared_XMLWriter $objWriter = null, PHPExcel_Worksheet $pSheet = null)
+    private function writeLegacyDrawing(\PhpOffice\PhpSpreadsheet\Shared\XMLWriter $phpExcelSharedXMLWriter = \null, \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet $phpExcelWorksheet = \null)
     {
         // If sheet contains comments, add the relationships
-        if (count($pSheet->getComments()) > 0) {
-            $objWriter->startElement('legacyDrawing');
-            $objWriter->writeAttribute('r:id', 'rId_comments_vml1');
-            $objWriter->endElement();
+        if (\count($phpExcelWorksheet->getComments()) > 0) {
+            $phpExcelSharedXMLWriter->startElement('legacyDrawing');
+            $phpExcelSharedXMLWriter->writeAttribute('r:id', 'rId_comments_vml1');
+            $phpExcelSharedXMLWriter->endElement();
         }
     }
 
     /**
      * Write LegacyDrawingHF
      *
-     * @param    PHPExcel_Shared_XMLWriter        $objWriter        XML Writer
-     * @param    PHPExcel_Worksheet                $pSheet            Worksheet
-     * @throws    PHPExcel_Writer_Exception
+     * @param \PhpOffice\PhpSpreadsheet\Shared\XMLWriter        $phpExcelSharedXMLWriter        XML Writer
+     * @param \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet                $phpExcelWorksheet            Worksheet
+     * @throws    \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
-    private function writeLegacyDrawingHF(PHPExcel_Shared_XMLWriter $objWriter = null, PHPExcel_Worksheet $pSheet = null)
+    private function writeLegacyDrawingHF(\PhpOffice\PhpSpreadsheet\Shared\XMLWriter $phpExcelSharedXMLWriter = \null, \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet $phpExcelWorksheet = \null)
     {
         // If sheet contains images, add the relationships
-        if (count($pSheet->getHeaderFooter()->getImages()) > 0) {
-            $objWriter->startElement('legacyDrawingHF');
-            $objWriter->writeAttribute('r:id', 'rId_headerfooter_vml1');
-            $objWriter->endElement();
+        if (\count($phpExcelWorksheet->getHeaderFooter()->getImages()) > 0) {
+            $phpExcelSharedXMLWriter->startElement('legacyDrawingHF');
+            $phpExcelSharedXMLWriter->writeAttribute('r:id', 'rId_headerfooter_vml1');
+            $phpExcelSharedXMLWriter->endElement();
         }
     }
 }

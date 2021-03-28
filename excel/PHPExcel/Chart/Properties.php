@@ -353,8 +353,8 @@ abstract class PHPExcel_Chart_Properties
         if (!is_array($elements)) {
             return $reference[$elements];
         } else {
-            foreach ($elements as $keys) {
-                $reference = & $reference[$keys];
+            foreach ($elements as $element) {
+                $reference = & $reference[$element];
             }
             return $reference;
         }

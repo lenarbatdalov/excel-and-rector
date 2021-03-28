@@ -1,4 +1,6 @@
 <?php
+namespace PhpOffice\PhpSpreadsheet\Reader\Xlsx;
+
 /**
  * PHPExcel
  *
@@ -24,8 +26,6 @@
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
-
-
 /**
  * PHPExcel_Reader_Excel2007_Theme
  *
@@ -33,7 +33,7 @@
  * @package    PHPExcel_Reader_Excel2007
  * @copyright  Copyright (c) 2006 - 2015 PHPExcel (http://www.codeplex.com/PHPExcel)
  */
-class PHPExcel_Reader_Excel2007_Theme
+class Theme
 {
     /**
      * Theme Name
@@ -48,13 +48,6 @@ class PHPExcel_Reader_Excel2007_Theme
      * @var string
      */
     private $colourSchemeName;
-
-    /**
-     * Colour Map indexed by position
-     *
-     * @var array of string
-     */
-    private $colourMapValues;
 
 
     /**
@@ -107,7 +100,7 @@ class PHPExcel_Reader_Excel2007_Theme
         if (isset($this->colourMap[$index])) {
             return $this->colourMap[$index];
         }
-        return null;
+        return \null;
     }
 
     /**
@@ -115,13 +108,9 @@ class PHPExcel_Reader_Excel2007_Theme
      */
     public function __clone()
     {
-        $vars = get_object_vars($this);
+        $vars = \get_object_vars($this);
         foreach ($vars as $key => $value) {
-            if ((is_object($value)) && ($key != '_parent')) {
-                $this->$key = clone $value;
-            } else {
-                $this->$key = $value;
-            }
+            $this->$key = (\is_object($value)) && ($key != '_parent') ? clone $value : $value;
         }
     }
 }

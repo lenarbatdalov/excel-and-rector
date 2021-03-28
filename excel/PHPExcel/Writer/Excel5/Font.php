@@ -1,5 +1,7 @@
 <?php
 
+namespace PhpOffice\PhpSpreadsheet\Writer\Xls;
+
 /**
  * PHPExcel_Writer_Excel5_Font
  *
@@ -25,7 +27,7 @@
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
-class PHPExcel_Writer_Excel5_Font
+class Font
 {
     /**
      * Color index
@@ -37,19 +39,17 @@ class PHPExcel_Writer_Excel5_Font
     /**
      * Font
      *
-     * @var PHPExcel_Style_Font
+     * @var \PhpOffice\PhpSpreadsheet\Style\Font
      */
-    private $font;
+    private $phpExcelStyleFont;
 
     /**
      * Constructor
-     *
-     * @param PHPExcel_Style_Font $font
      */
-    public function __construct(PHPExcel_Style_Font $font = null)
+    public function __construct(\PhpOffice\PhpSpreadsheet\Style\Font $phpExcelStyleFont = \null)
     {
         $this->colorIndex = 0x7FFF;
-        $this->font = $font;
+        $this->phpExcelStyleFont = $phpExcelStyleFont;
     }
 
     /**
@@ -73,52 +73,52 @@ class PHPExcel_Writer_Excel5_Font
         $font_shadow = 0;
 
         $icv = $this->colorIndex; // Index to color palette
-        if ($this->font->getSuperScript()) {
+        if ($this->phpExcelStyleFont->getSuperScript()) {
             $sss = 1;
-        } elseif ($this->font->getSubScript()) {
+        } elseif ($this->phpExcelStyleFont->getSubScript()) {
             $sss = 2;
         } else {
             $sss = 0;
         }
         $bFamily = 0; // Font family
-        $bCharSet = PHPExcel_Shared_Font::getCharsetFromFontName($this->font->getName()); // Character set
+        $bCharSet = \PhpOffice\PhpSpreadsheet\Shared\Font::getCharsetFromFontName($this->phpExcelStyleFont->getName()); // Character set
 
         $record = 0x31;        // Record identifier
         $reserved = 0x00;    // Reserved
         $grbit = 0x00;        // Font attributes
-        if ($this->font->getItalic()) {
+        if ($this->phpExcelStyleFont->getItalic()) {
             $grbit |= 0x02;
         }
-        if ($this->font->getStrikethrough()) {
+        if ($this->phpExcelStyleFont->getStrikethrough()) {
             $grbit |= 0x08;
         }
-        if ($font_outline) {
+        if ($font_outline !== 0) {
             $grbit |= 0x10;
         }
-        if ($font_shadow) {
+        if ($font_shadow !== 0) {
             $grbit |= 0x20;
         }
 
-        $data = pack(
+        $data = \pack(
             "vvvvvCCCC",
             // Fontsize (in twips)
-            $this->font->getSize() * 20,
+            $this->phpExcelStyleFont->getSize() * 20,
             $grbit,
             // Colour
             $icv,
             // Font weight
-            self::mapBold($this->font->getBold()),
+            self::mapBold($this->phpExcelStyleFont->getBold()),
             // Superscript/Subscript
             $sss,
-            self::mapUnderline($this->font->getUnderline()),
+            self::mapUnderline($this->phpExcelStyleFont->getUnderline()),
             $bFamily,
             $bCharSet,
             $reserved
         );
-        $data .= PHPExcel_Shared_String::UTF8toBIFF8UnicodeShort($this->font->getName());
+        $data .= \PhpOffice\PhpSpreadsheet\Shared\StringHelper::UTF8toBIFF8UnicodeShort($this->phpExcelStyleFont->getName());
 
-        $length = strlen($data);
-        $header = pack("vv", $record, $length);
+        $length = \strlen($data);
+        $header = \pack("vv", $record, $length);
 
         return($header . $data);
     }
@@ -143,11 +143,11 @@ class PHPExcel_Writer_Excel5_Font
      *
      */
     private static $mapUnderline = array(
-        PHPExcel_Style_Font::UNDERLINE_NONE              => 0x00,
-        PHPExcel_Style_Font::UNDERLINE_SINGLE            => 0x01,
-        PHPExcel_Style_Font::UNDERLINE_DOUBLE            => 0x02,
-        PHPExcel_Style_Font::UNDERLINE_SINGLEACCOUNTING  => 0x21,
-        PHPExcel_Style_Font::UNDERLINE_DOUBLEACCOUNTING  => 0x22,
+        \PhpOffice\PhpSpreadsheet\Style\Font::UNDERLINE_NONE              => 0x00,
+        \PhpOffice\PhpSpreadsheet\Style\Font::UNDERLINE_SINGLE            => 0x01,
+        \PhpOffice\PhpSpreadsheet\Style\Font::UNDERLINE_DOUBLE            => 0x02,
+        \PhpOffice\PhpSpreadsheet\Style\Font::UNDERLINE_SINGLEACCOUNTING  => 0x21,
+        \PhpOffice\PhpSpreadsheet\Style\Font::UNDERLINE_DOUBLEACCOUNTING  => 0x22,
     );
 
     /**

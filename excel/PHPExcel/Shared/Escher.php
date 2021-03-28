@@ -1,5 +1,7 @@
 <?php
 
+namespace PhpOffice\PhpSpreadsheet\Shared;
+
 /**
  * PHPExcel_Shared_Escher
  *
@@ -25,59 +27,59 @@
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
-class PHPExcel_Shared_Escher
+class Escher
 {
     /**
      * Drawing Group Container
      *
-     * @var PHPExcel_Shared_Escher_DggContainer
+     * @var \PhpOffice\PhpSpreadsheet\Shared\Escher\DggContainer
      */
-    private $dggContainer;
+    private $phpExcelSharedEscherDggContainer;
 
     /**
      * Drawing Container
      *
-     * @var PHPExcel_Shared_Escher_DgContainer
+     * @var \PhpOffice\PhpSpreadsheet\Shared\Escher\DgContainer
      */
-    private $dgContainer;
+    private $phpExcelSharedEscherDgContainer;
 
     /**
      * Get Drawing Group Container
      *
-     * @return PHPExcel_Shared_Escher_DgContainer
+     * @return \PhpOffice\PhpSpreadsheet\Shared\Escher\DgContainer
      */
     public function getDggContainer()
     {
-        return $this->dggContainer;
+        return $this->phpExcelSharedEscherDggContainer;
     }
 
     /**
      * Set Drawing Group Container
      *
-     * @param PHPExcel_Shared_Escher_DggContainer $dggContainer
+     * @param \PhpOffice\PhpSpreadsheet\Shared\Escher\DggContainer $dggContainer
      */
     public function setDggContainer($dggContainer)
     {
-        return $this->dggContainer = $dggContainer;
+        return $this->phpExcelSharedEscherDggContainer = $dggContainer;
     }
 
     /**
      * Get Drawing Container
      *
-     * @return PHPExcel_Shared_Escher_DgContainer
+     * @return \PhpOffice\PhpSpreadsheet\Shared\Escher\DgContainer
      */
     public function getDgContainer()
     {
-        return $this->dgContainer;
+        return $this->phpExcelSharedEscherDgContainer;
     }
 
     /**
      * Set Drawing Container
      *
-     * @param PHPExcel_Shared_Escher_DgContainer $dgContainer
+     * @param \PhpOffice\PhpSpreadsheet\Shared\Escher\DgContainer $dgContainer
      */
     public function setDgContainer($dgContainer)
     {
-        return $this->dgContainer = $dgContainer;
+        return $this->phpExcelSharedEscherDgContainer = $dgContainer;
     }
 }

@@ -1,4 +1,6 @@
 <?php
+namespace PhpOffice\PhpSpreadsheet\Worksheet;
+
 /**
  * PHPExcel
  *
@@ -24,8 +26,6 @@
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
-
-
 /**
  * PHPExcel_Worksheet_PageSetup
  *
@@ -104,7 +104,7 @@
  * @package    PHPExcel_Worksheet
  * @copyright  Copyright (c) 2006 - 2015 PHPExcel (http://www.codeplex.com/PHPExcel)
  */
-class PHPExcel_Worksheet_PageSetup
+class PageSetup
 {
     /* Paper size */
     const PAPERSIZE_LETTER                          = 1;
@@ -189,14 +189,14 @@ class PHPExcel_Worksheet_PageSetup
      *
      * @var int
      */
-    private $paperSize = PHPExcel_Worksheet_PageSetup::PAPERSIZE_LETTER;
+    private $paperSize = \PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::PAPERSIZE_LETTER;
 
     /**
      * Orientation
      *
      * @var string
      */
-    private $orientation = PHPExcel_Worksheet_PageSetup::ORIENTATION_DEFAULT;
+    private $orientation = \PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_DEFAULT;
 
     /**
      * Scale (Print Scale)
@@ -214,7 +214,7 @@ class PHPExcel_Worksheet_PageSetup
       *
       * @var boolean
       */
-    private $fitToPage = false;
+    private $fitToPage = \false;
 
     /**
       * Fit To Height
@@ -251,35 +251,28 @@ class PHPExcel_Worksheet_PageSetup
      *
      * @var boolean
      */
-    private $horizontalCentered = false;
+    private $horizontalCentered = \false;
 
     /**
      * Center page vertically
      *
      * @var boolean
      */
-    private $verticalCentered = false;
+    private $verticalCentered = \false;
 
     /**
      * Print area
      *
      * @var string
      */
-    private $printArea = null;
+    private $printArea;
 
     /**
      * First page number
      *
      * @var int
      */
-    private $firstPageNumber = null;
-
-    /**
-     * Create a new PHPExcel_Worksheet_PageSetup
-     */
-    public function __construct()
-    {
-    }
+    private $firstPageNumber;
 
     /**
      * Get Paper Size
@@ -295,9 +288,9 @@ class PHPExcel_Worksheet_PageSetup
      * Set Paper Size
      *
      * @param int $pValue
-     * @return PHPExcel_Worksheet_PageSetup
+     * @return \PhpOffice\PhpSpreadsheet\Worksheet\PageSetup
      */
-    public function setPaperSize($pValue = PHPExcel_Worksheet_PageSetup::PAPERSIZE_LETTER)
+    public function setPaperSize($pValue = \PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::PAPERSIZE_LETTER)
     {
         $this->paperSize = $pValue;
         return $this;
@@ -317,9 +310,9 @@ class PHPExcel_Worksheet_PageSetup
      * Set Orientation
      *
      * @param string $pValue
-     * @return PHPExcel_Worksheet_PageSetup
+     * @return \PhpOffice\PhpSpreadsheet\Worksheet\PageSetup
      */
-    public function setOrientation($pValue = PHPExcel_Worksheet_PageSetup::ORIENTATION_DEFAULT)
+    public function setOrientation($pValue = \PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_DEFAULT)
     {
         $this->orientation = $pValue;
         return $this;
@@ -343,20 +336,20 @@ class PHPExcel_Worksheet_PageSetup
      *
      * @param     int?    $pValue
      * @param boolean    $pUpdate    Update fitToPage so scaling applies rather than fitToHeight / fitToWidth
-     * @return PHPExcel_Worksheet_PageSetup
-     * @throws     PHPExcel_Exception
+     * @return \PhpOffice\PhpSpreadsheet\Worksheet\PageSetup
+     * @throws     \PhpOffice\PhpSpreadsheet\Exception
      */
-    public function setScale($pValue = 100, $pUpdate = true)
+    public function setScale($pValue = 100, $pUpdate = \true)
     {
         // Microsoft Office Excel 2007 only allows setting a scale between 10 and 400 via the user interface,
         // but it is apparently still able to handle any scale >= 0, where 0 results in 100
-        if (($pValue >= 0) || is_null($pValue)) {
+        if (($pValue >= 0) || \is_null($pValue)) {
             $this->scale = $pValue;
             if ($pUpdate) {
-                $this->fitToPage = false;
+                $this->fitToPage = \false;
             }
         } else {
-            throw new PHPExcel_Exception("Scale must not be negative");
+            throw new \PhpOffice\PhpSpreadsheet\Exception("Scale must not be negative");
         }
         return $this;
     }
@@ -366,7 +359,7 @@ class PHPExcel_Worksheet_PageSetup
      *
      * @return boolean
      */
-    public function getFitToPage()
+    public function isFitToPage()
     {
         return $this->fitToPage;
     }
@@ -375,9 +368,9 @@ class PHPExcel_Worksheet_PageSetup
      * Set Fit To Page
      *
      * @param boolean $pValue
-     * @return PHPExcel_Worksheet_PageSetup
+     * @return \PhpOffice\PhpSpreadsheet\Worksheet\PageSetup
      */
-    public function setFitToPage($pValue = true)
+    public function setFitToPage($pValue = \true)
     {
         $this->fitToPage = $pValue;
         return $this;
@@ -398,13 +391,13 @@ class PHPExcel_Worksheet_PageSetup
      *
      * @param int? $pValue
      * @param boolean $pUpdate Update fitToPage so it applies rather than scaling
-     * @return PHPExcel_Worksheet_PageSetup
+     * @return \PhpOffice\PhpSpreadsheet\Worksheet\PageSetup
      */
-    public function setFitToHeight($pValue = 1, $pUpdate = true)
+    public function setFitToHeight($pValue = 1, $pUpdate = \true)
     {
         $this->fitToHeight = $pValue;
         if ($pUpdate) {
-            $this->fitToPage = true;
+            $this->fitToPage = \true;
         }
         return $this;
     }
@@ -424,13 +417,13 @@ class PHPExcel_Worksheet_PageSetup
      *
      * @param int? $pValue
      * @param boolean $pUpdate Update fitToPage so it applies rather than scaling
-     * @return PHPExcel_Worksheet_PageSetup
+     * @return \PhpOffice\PhpSpreadsheet\Worksheet\PageSetup
      */
-    public function setFitToWidth($pValue = 1, $pUpdate = true)
+    public function setFitToWidth($pValue = 1, $pUpdate = \true)
     {
         $this->fitToWidth = $pValue;
         if ($pUpdate) {
-            $this->fitToPage = true;
+            $this->fitToPage = \true;
         }
         return $this;
     }
@@ -442,13 +435,11 @@ class PHPExcel_Worksheet_PageSetup
      */
     public function isColumnsToRepeatAtLeftSet()
     {
-        if (is_array($this->columnsToRepeatAtLeft)) {
-            if ($this->columnsToRepeatAtLeft[0] != '' && $this->columnsToRepeatAtLeft[1] != '') {
-                return true;
-            }
+        if (\is_array($this->columnsToRepeatAtLeft) && ($this->columnsToRepeatAtLeft[0] != '' && $this->columnsToRepeatAtLeft[1] != '')) {
+            return \true;
         }
 
-        return false;
+        return \false;
     }
 
     /**
@@ -465,11 +456,11 @@ class PHPExcel_Worksheet_PageSetup
      * Set Columns to repeat at left
      *
      * @param array $pValue Containing start column and end column, empty array if option unset
-     * @return PHPExcel_Worksheet_PageSetup
+     * @return \PhpOffice\PhpSpreadsheet\Worksheet\PageSetup
      */
-    public function setColumnsToRepeatAtLeft($pValue = null)
+    public function setColumnsToRepeatAtLeft($pValue = \null)
     {
-        if (is_array($pValue)) {
+        if (\is_array($pValue)) {
             $this->columnsToRepeatAtLeft = $pValue;
         }
         return $this;
@@ -480,7 +471,7 @@ class PHPExcel_Worksheet_PageSetup
      *
      * @param string $pStart
      * @param string $pEnd
-     * @return PHPExcel_Worksheet_PageSetup
+     * @return \PhpOffice\PhpSpreadsheet\Worksheet\PageSetup
      */
     public function setColumnsToRepeatAtLeftByStartAndEnd($pStart = 'A', $pEnd = 'A')
     {
@@ -495,13 +486,11 @@ class PHPExcel_Worksheet_PageSetup
      */
     public function isRowsToRepeatAtTopSet()
     {
-        if (is_array($this->rowsToRepeatAtTop)) {
-            if ($this->rowsToRepeatAtTop[0] != 0 && $this->rowsToRepeatAtTop[1] != 0) {
-                return true;
-            }
+        if (\is_array($this->rowsToRepeatAtTop) && ($this->rowsToRepeatAtTop[0] != 0 && $this->rowsToRepeatAtTop[1] != 0)) {
+            return \true;
         }
 
-        return false;
+        return \false;
     }
 
     /**
@@ -518,11 +507,11 @@ class PHPExcel_Worksheet_PageSetup
      * Set Rows to repeat at top
      *
      * @param array    $pValue    Containing start column and end column, empty array if option unset
-     * @return PHPExcel_Worksheet_PageSetup
+     * @return \PhpOffice\PhpSpreadsheet\Worksheet\PageSetup
      */
-    public function setRowsToRepeatAtTop($pValue = null)
+    public function setRowsToRepeatAtTop($pValue = \null)
     {
-        if (is_array($pValue)) {
+        if (\is_array($pValue)) {
             $this->rowsToRepeatAtTop = $pValue;
         }
         return $this;
@@ -533,7 +522,7 @@ class PHPExcel_Worksheet_PageSetup
      *
      * @param int $pStart
      * @param int $pEnd
-     * @return PHPExcel_Worksheet_PageSetup
+     * @return \PhpOffice\PhpSpreadsheet\Worksheet\PageSetup
      */
     public function setRowsToRepeatAtTopByStartAndEnd($pStart = 1, $pEnd = 1)
     {
@@ -546,7 +535,7 @@ class PHPExcel_Worksheet_PageSetup
      *
      * @return bool
      */
-    public function getHorizontalCentered()
+    public function isHorizontalCentered()
     {
         return $this->horizontalCentered;
     }
@@ -555,9 +544,9 @@ class PHPExcel_Worksheet_PageSetup
      * Set center page horizontally
      *
      * @param bool $value
-     * @return PHPExcel_Worksheet_PageSetup
+     * @return \PhpOffice\PhpSpreadsheet\Worksheet\PageSetup
      */
-    public function setHorizontalCentered($value = false)
+    public function setHorizontalCentered($value = \false)
     {
         $this->horizontalCentered = $value;
         return $this;
@@ -568,7 +557,7 @@ class PHPExcel_Worksheet_PageSetup
      *
      * @return bool
      */
-    public function getVerticalCentered()
+    public function isVerticalCentered()
     {
         return $this->verticalCentered;
     }
@@ -577,9 +566,9 @@ class PHPExcel_Worksheet_PageSetup
      * Set center page vertically
      *
      * @param bool $value
-     * @return PHPExcel_Worksheet_PageSetup
+     * @return \PhpOffice\PhpSpreadsheet\Worksheet\PageSetup
      */
-    public function setVerticalCentered($value = false)
+    public function setVerticalCentered($value = \false)
     {
         $this->verticalCentered = $value;
         return $this;
@@ -592,7 +581,7 @@ class PHPExcel_Worksheet_PageSetup
      *                            Default behaviour, or a index value of 0, will return all ranges as a comma-separated string
      *                            Otherwise, the specific range identified by the value of $index will be returned
      *                            Print areas are numbered from 1
-     * @throws    PHPExcel_Exception
+     * @throws    \PhpOffice\PhpSpreadsheet\Exception
      * @return    string
      */
     public function getPrintArea($index = 0)
@@ -600,11 +589,11 @@ class PHPExcel_Worksheet_PageSetup
         if ($index == 0) {
             return $this->printArea;
         }
-        $printAreas = explode(',', $this->printArea);
+        $printAreas = \explode(',', $this->printArea);
         if (isset($printAreas[$index-1])) {
             return $printAreas[$index-1];
         }
-        throw new PHPExcel_Exception("Requested Print Area does not exist");
+        throw new \PhpOffice\PhpSpreadsheet\Exception("Requested Print Area does not exist");
     }
 
     /**
@@ -619,9 +608,9 @@ class PHPExcel_Worksheet_PageSetup
     public function isPrintAreaSet($index = 0)
     {
         if ($index == 0) {
-            return !is_null($this->printArea);
+            return !\is_null($this->printArea);
         }
-        $printAreas = explode(',', $this->printArea);
+        $printAreas = \explode(',', $this->printArea);
         return isset($printAreas[$index-1]);
     }
 
@@ -632,17 +621,17 @@ class PHPExcel_Worksheet_PageSetup
      *                            Default behaviour, or an index value of 0, will clear all print ranges that are set
      *                            Otherwise, the range identified by the value of $index will be removed from the series
      *                            Print areas are numbered from 1
-     * @return    PHPExcel_Worksheet_PageSetup
+     * @return    \PhpOffice\PhpSpreadsheet\Worksheet\PageSetup
      */
     public function clearPrintArea($index = 0)
     {
         if ($index == 0) {
-            $this->printArea = null;
+            $this->printArea = \null;
         } else {
-            $printAreas = explode(',', $this->printArea);
+            $printAreas = \explode(',', $this->printArea);
             if (isset($printAreas[$index-1])) {
                 unset($printAreas[$index-1]);
-                $this->printArea = implode(',', $printAreas);
+                $this->printArea = \implode(',', $printAreas);
             }
         }
 
@@ -666,50 +655,50 @@ class PHPExcel_Worksheet_PageSetup
      * @param    string    $method    Determines the method used when setting multiple print areas
      *                            Default behaviour, or the "O" method, overwrites existing print area
      *                            The "I" method, inserts the new print area before any specified index, or at the end of the list
-     * @return    PHPExcel_Worksheet_PageSetup
-     * @throws    PHPExcel_Exception
+     * @return    \PhpOffice\PhpSpreadsheet\Worksheet\PageSetup
+     * @throws    \PhpOffice\PhpSpreadsheet\Exception
      */
     public function setPrintArea($value, $index = 0, $method = self::SETPRINTRANGE_OVERWRITE)
     {
-        if (strpos($value, '!') !== false) {
-            throw new PHPExcel_Exception('Cell coordinate must not specify a worksheet.');
-        } elseif (strpos($value, ':') === false) {
-            throw new PHPExcel_Exception('Cell coordinate must be a range of cells.');
-        } elseif (strpos($value, '$') !== false) {
-            throw new PHPExcel_Exception('Cell coordinate must not be absolute.');
+        if (\strpos($value, '!') !== \false) {
+            throw new \PhpOffice\PhpSpreadsheet\Exception('Cell coordinate must not specify a worksheet.');
+        } elseif (\strpos($value, ':') === \false) {
+            throw new \PhpOffice\PhpSpreadsheet\Exception('Cell coordinate must be a range of cells.');
+        } elseif (\strpos($value, '$') !== \false) {
+            throw new \PhpOffice\PhpSpreadsheet\Exception('Cell coordinate must not be absolute.');
         }
-        $value = strtoupper($value);
+        $value = \strtoupper($value);
 
         if ($method == self::SETPRINTRANGE_OVERWRITE) {
             if ($index == 0) {
                 $this->printArea = $value;
             } else {
-                $printAreas = explode(',', $this->printArea);
+                $printAreas = \explode(',', $this->printArea);
                 if ($index < 0) {
-                    $index = count($printAreas) - abs($index) + 1;
+                    $index = \count($printAreas) - \abs($index) + 1;
                 }
-                if (($index <= 0) || ($index > count($printAreas))) {
-                    throw new PHPExcel_Exception('Invalid index for setting print range.');
+                if (($index <= 0) || ($index > \count($printAreas))) {
+                    throw new \PhpOffice\PhpSpreadsheet\Exception('Invalid index for setting print range.');
                 }
                 $printAreas[$index-1] = $value;
-                $this->printArea = implode(',', $printAreas);
+                $this->printArea = \implode(',', $printAreas);
             }
         } elseif ($method == self::SETPRINTRANGE_INSERT) {
             if ($index == 0) {
                 $this->printArea .= ($this->printArea == '') ? $value : ','.$value;
             } else {
-                $printAreas = explode(',', $this->printArea);
+                $printAreas = \explode(',', $this->printArea);
                 if ($index < 0) {
-                    $index = abs($index) - 1;
+                    $index = \abs($index) - 1;
                 }
-                if ($index > count($printAreas)) {
-                    throw new PHPExcel_Exception('Invalid index for setting print range.');
+                if ($index > \count($printAreas)) {
+                    throw new \PhpOffice\PhpSpreadsheet\Exception('Invalid index for setting print range.');
                 }
-                $printAreas = array_merge(array_slice($printAreas, 0, $index), array($value), array_slice($printAreas, $index));
-                $this->printArea = implode(',', $printAreas);
+                $printAreas = \array_merge(\array_slice($printAreas, 0, $index), array($value), \array_slice($printAreas, $index));
+                $this->printArea = \implode(',', $printAreas);
             }
         } else {
-            throw new PHPExcel_Exception('Invalid method for setting print range.');
+            throw new \PhpOffice\PhpSpreadsheet\Exception('Invalid method for setting print range.');
         }
 
         return $this;
@@ -725,8 +714,8 @@ class PHPExcel_Worksheet_PageSetup
      *                                Specifying an index value of 0, will always append the new print range at the end of the
      *                                list.
      *                            Print areas are numbered from 1
-     * @return    PHPExcel_Worksheet_PageSetup
-     * @throws    PHPExcel_Exception
+     * @return    \PhpOffice\PhpSpreadsheet\Worksheet\PageSetup
+     * @throws    \PhpOffice\PhpSpreadsheet\Exception
      */
     public function addPrintArea($value, $index = -1)
     {
@@ -753,13 +742,13 @@ class PHPExcel_Worksheet_PageSetup
      * @param    string    $method        Determines the method used when setting multiple print areas
      *                                Default behaviour, or the "O" method, overwrites existing print area
      *                                The "I" method, inserts the new print area before any specified index, or at the end of the list
-     * @return    PHPExcel_Worksheet_PageSetup
-     * @throws    PHPExcel_Exception
+     * @return    \PhpOffice\PhpSpreadsheet\Worksheet\PageSetup
+     * @throws    \PhpOffice\PhpSpreadsheet\Exception
      */
     public function setPrintAreaByColumnAndRow($column1, $row1, $column2, $row2, $index = 0, $method = self::SETPRINTRANGE_OVERWRITE)
     {
         return $this->setPrintArea(
-            PHPExcel_Cell::stringFromColumnIndex($column1) . $row1 . ':' . PHPExcel_Cell::stringFromColumnIndex($column2) . $row2,
+            \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($column1) . $row1 . ':' . \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($column2) . $row2,
             $index,
             $method
         );
@@ -778,13 +767,13 @@ class PHPExcel_Worksheet_PageSetup
      *                                    Specifying an index value of 0, will always append the new print range at the end of the
      *                                    list.
      *                                Print areas are numbered from 1
-     * @return    PHPExcel_Worksheet_PageSetup
-     * @throws    PHPExcel_Exception
+     * @return    \PhpOffice\PhpSpreadsheet\Worksheet\PageSetup
+     * @throws    \PhpOffice\PhpSpreadsheet\Exception
      */
     public function addPrintAreaByColumnAndRow($column1, $row1, $column2, $row2, $index = -1)
     {
         return $this->setPrintArea(
-            PHPExcel_Cell::stringFromColumnIndex($column1) . $row1 . ':' . PHPExcel_Cell::stringFromColumnIndex($column2) . $row2,
+            \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($column1) . $row1 . ':' . \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($column2) . $row2,
             $index,
             self::SETPRINTRANGE_INSERT
         );
@@ -804,9 +793,9 @@ class PHPExcel_Worksheet_PageSetup
      * Set first page number
      *
      * @param int $value
-     * @return PHPExcel_Worksheet_HeaderFooter
+     * @return \PhpOffice\PhpSpreadsheet\Worksheet\HeaderFooter
      */
-    public function setFirstPageNumber($value = null)
+    public function setFirstPageNumber($value = \null)
     {
         $this->firstPageNumber = $value;
         return $this;
@@ -815,7 +804,7 @@ class PHPExcel_Worksheet_PageSetup
     /**
      * Reset first page number
      *
-     * @return PHPExcel_Worksheet_HeaderFooter
+     * @return \PhpOffice\PhpSpreadsheet\Worksheet\HeaderFooter
      */
     public function resetFirstPageNumber()
     {
@@ -827,13 +816,9 @@ class PHPExcel_Worksheet_PageSetup
      */
     public function __clone()
     {
-        $vars = get_object_vars($this);
+        $vars = \get_object_vars($this);
         foreach ($vars as $key => $value) {
-            if (is_object($value)) {
-                $this->$key = clone $value;
-            } else {
-                $this->$key = $value;
-            }
+            $this->$key = \is_object($value) ? clone $value : $value;
         }
     }
 }

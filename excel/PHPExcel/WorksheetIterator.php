@@ -1,5 +1,7 @@
 <?php
 
+namespace PhpOffice\PhpSpreadsheet\Worksheet;
+
 /**
  * PHPExcel_WorksheetIterator
  *
@@ -25,14 +27,14 @@
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
-class PHPExcel_WorksheetIterator implements Iterator
+class Iterator implements \Iterator
 {
     /**
      * Spreadsheet to iterate
      *
-     * @var PHPExcel
+     * @var \PhpOffice\PhpSpreadsheet\Spreadsheet
      */
-    private $subject;
+    private $phpExcel;
 
     /**
      * Current iterator position
@@ -43,13 +45,11 @@ class PHPExcel_WorksheetIterator implements Iterator
 
     /**
      * Create a new worksheet iterator
-     *
-     * @param PHPExcel         $subject
      */
-    public function __construct(PHPExcel $subject = null)
+    public function __construct(\PhpOffice\PhpSpreadsheet\Spreadsheet $phpExcel = \null)
     {
         // Set subject
-        $this->subject = $subject;
+        $this->phpExcel = $phpExcel;
     }
 
     /**
@@ -57,7 +57,7 @@ class PHPExcel_WorksheetIterator implements Iterator
      */
     public function __destruct()
     {
-        unset($this->subject);
+        unset($this->phpExcel);
     }
 
     /**
@@ -71,11 +71,11 @@ class PHPExcel_WorksheetIterator implements Iterator
     /**
      * Current PHPExcel_Worksheet
      *
-     * @return PHPExcel_Worksheet
+     * @return \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet
      */
     public function current()
     {
-        return $this->subject->getSheet($this->position);
+        return $this->phpExcel->getSheet($this->position);
     }
 
     /**
@@ -83,7 +83,7 @@ class PHPExcel_WorksheetIterator implements Iterator
      *
      * @return int
      */
-    public function key()
+    public function getPosition()
     {
         return $this->position;
     }
@@ -103,6 +103,6 @@ class PHPExcel_WorksheetIterator implements Iterator
      */
     public function valid()
     {
-        return $this->position < $this->subject->getSheetCount();
+        return $this->position < $this->phpExcel->getSheetCount();
     }
 }
