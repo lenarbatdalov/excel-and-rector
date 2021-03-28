@@ -2,6 +2,8 @@
 
 require_once(PHPEXCEL_ROOT . 'PHPExcel/Shared/trend/bestFitClass.php');
 
+namespace PhpOffice\PhpSpreadsheet\Shared\Trend;
+
 /**
  * PHPExcel_Logarithmic_Best_Fit
  *
@@ -27,7 +29,7 @@ require_once(PHPEXCEL_ROOT . 'PHPExcel/Shared/trend/bestFitClass.php');
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
-class PHPExcel_Logarithmic_Best_Fit extends PHPExcel_Best_Fit
+class LogarithmicBestFit extends \PhpOffice\PhpSpreadsheet\Shared\Trend\BestFit
 {
     /**
      * Algorithm type to use for best-fit
@@ -45,7 +47,7 @@ class PHPExcel_Logarithmic_Best_Fit extends PHPExcel_Best_Fit
      **/
     public function getValueOfYForX($xValue)
     {
-        return $this->getIntersect() + $this->getSlope() * log($xValue - $this->xOffset);
+        return $this->getIntersect() + $this->getSlope() * \log($xValue - $this->xOffset);
     }
 
     /**
@@ -56,7 +58,7 @@ class PHPExcel_Logarithmic_Best_Fit extends PHPExcel_Best_Fit
      **/
     public function getValueOfXForY($yValue)
     {
-        return exp(($yValue - $this->getIntersect()) / $this->getSlope());
+        return \exp(($yValue - $this->getIntersect()) / $this->getSlope());
     }
 
     /**
@@ -84,9 +86,9 @@ class PHPExcel_Logarithmic_Best_Fit extends PHPExcel_Best_Fit
     {
         foreach ($xValues as &$value) {
             if ($value < 0.0) {
-                $value = 0 - log(abs($value));
+                $value = 0 - \log(\abs($value));
             } elseif ($value > 0.0) {
-                $value = log($value);
+                $value = \log($value);
             }
         }
         unset($value);
@@ -101,9 +103,9 @@ class PHPExcel_Logarithmic_Best_Fit extends PHPExcel_Best_Fit
      * @param    float[]        $xValues    The set of X-values for this regression
      * @param    boolean        $const
      */
-    public function __construct($yValues, $xValues = array(), $const = true)
+    public function __construct($yValues, $xValues = array(), $const = \true)
     {
-        if (parent::__construct($yValues, $xValues) !== false) {
+        if (parent::__construct($yValues, $xValues) !== \false) {
             $this->logarithmicRegression($yValues, $xValues, $const);
         }
     }

@@ -1,4 +1,6 @@
 <?php
+namespace PhpOffice\PhpSpreadsheet\Chart;
+
 /**
  * PHPExcel
  *
@@ -24,8 +26,6 @@
  * @license        http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
-
-
 /**
  * PHPExcel_Chart_DataSeries
  *
@@ -33,7 +33,7 @@
  * @package        PHPExcel_Chart
  * @copyright    Copyright (c) 2006 - 2015 PHPExcel (http://www.codeplex.com/PHPExcel)
  */
-class PHPExcel_Chart_DataSeries
+class DataSeries
 {
     const TYPE_BARCHART        = 'barChart';
     const TYPE_BARCHART_3D     = 'bar3DChart';
@@ -136,26 +136,26 @@ class PHPExcel_Chart_DataSeries
     /**
      * Create a new PHPExcel_Chart_DataSeries
      */
-    public function __construct($plotType = null, $plotGrouping = null, $plotOrder = array(), $plotLabel = array(), $plotCategory = array(), $plotValues = array(), $plotDirection = null, $smoothLine = null, $plotStyle = null)
+    public function __construct($plotType = \null, $plotGrouping = \null, $plotOrder = array(), $plotLabel = array(), $plotCategory = array(), $plotValues = array(), $plotDirection = \null, $smoothLine = \null, $plotStyle = \null)
     {
         $this->plotType = $plotType;
         $this->plotGrouping = $plotGrouping;
         $this->plotOrder = $plotOrder;
-        $keys = array_keys($plotValues);
+        $keys = \array_keys($plotValues);
         $this->plotValues = $plotValues;
-        if ((count($plotLabel) == 0) || (is_null($plotLabel[$keys[0]]))) {
-            $plotLabel[$keys[0]] = new PHPExcel_Chart_DataSeriesValues();
+        if ((\count($plotLabel) == 0) || (\is_null($plotLabel[$keys[0]]))) {
+            $plotLabel[$keys[0]] = new \PhpOffice\PhpSpreadsheet\Chart\DataSeriesValues();
         }
 
         $this->plotLabel = $plotLabel;
-        if ((count($plotCategory) == 0) || (is_null($plotCategory[$keys[0]]))) {
-            $plotCategory[$keys[0]] = new PHPExcel_Chart_DataSeriesValues();
+        if ((\count($plotCategory) == 0) || (\is_null($plotCategory[$keys[0]]))) {
+            $plotCategory[$keys[0]] = new \PhpOffice\PhpSpreadsheet\Chart\DataSeriesValues();
         }
         $this->plotCategory = $plotCategory;
         $this->smoothLine = $smoothLine;
         $this->plotStyle = $plotStyle;
         
-        if (is_null($plotDirection)) {
+        if (\is_null($plotDirection)) {
             $plotDirection = self::DIRECTION_COL;
         }
         $this->plotDirection = $plotDirection;
@@ -175,7 +175,7 @@ class PHPExcel_Chart_DataSeries
      * Set Plot Type
      *
      * @param string $plotType
-     * @return PHPExcel_Chart_DataSeries
+     * @return \PhpOffice\PhpSpreadsheet\Chart\DataSeries
      */
     public function setPlotType($plotType = '')
     {
@@ -197,9 +197,9 @@ class PHPExcel_Chart_DataSeries
      * Set Plot Grouping Type
      *
      * @param string $groupingType
-     * @return PHPExcel_Chart_DataSeries
+     * @return \PhpOffice\PhpSpreadsheet\Chart\DataSeries
      */
-    public function setPlotGrouping($groupingType = null)
+    public function setPlotGrouping($groupingType = \null)
     {
         $this->plotGrouping = $groupingType;
         return $this;
@@ -219,9 +219,9 @@ class PHPExcel_Chart_DataSeries
      * Set Plot Direction
      *
      * @param string $plotDirection
-     * @return PHPExcel_Chart_DataSeries
+     * @return \PhpOffice\PhpSpreadsheet\Chart\DataSeries
      */
-    public function setPlotDirection($plotDirection = null)
+    public function setPlotDirection($plotDirection = \null)
     {
         $this->plotDirection = $plotDirection;
         return $this;
@@ -250,17 +250,17 @@ class PHPExcel_Chart_DataSeries
     /**
      * Get Plot Label by Index
      *
-     * @return PHPExcel_Chart_DataSeriesValues
+     * @return \PhpOffice\PhpSpreadsheet\Chart\DataSeriesValues
      */
     public function getPlotLabelByIndex($index)
     {
-        $keys = array_keys($this->plotLabel);
-        if (in_array($index, $keys)) {
+        $keys = \array_keys($this->plotLabel);
+        if (\in_array($index, $keys)) {
             return $this->plotLabel[$index];
         } elseif (isset($keys[$index])) {
             return $this->plotLabel[$keys[$index]];
         }
-        return false;
+        return \false;
     }
 
     /**
@@ -276,17 +276,17 @@ class PHPExcel_Chart_DataSeries
     /**
      * Get Plot Category by Index
      *
-     * @return PHPExcel_Chart_DataSeriesValues
+     * @return \PhpOffice\PhpSpreadsheet\Chart\DataSeriesValues
      */
     public function getPlotCategoryByIndex($index)
     {
-        $keys = array_keys($this->plotCategory);
-        if (in_array($index, $keys)) {
+        $keys = \array_keys($this->plotCategory);
+        if (\in_array($index, $keys)) {
             return $this->plotCategory[$index];
         } elseif (isset($keys[$index])) {
             return $this->plotCategory[$keys[$index]];
         }
-        return false;
+        return \false;
     }
 
     /**
@@ -303,9 +303,9 @@ class PHPExcel_Chart_DataSeries
      * Set Plot Style
      *
      * @param string $plotStyle
-     * @return PHPExcel_Chart_DataSeries
+     * @return \PhpOffice\PhpSpreadsheet\Chart\DataSeries
      */
-    public function setPlotStyle($plotStyle = null)
+    public function setPlotStyle($plotStyle = \null)
     {
         $this->plotStyle = $plotStyle;
         return $this;
@@ -324,17 +324,17 @@ class PHPExcel_Chart_DataSeries
     /**
      * Get Plot Values by Index
      *
-     * @return PHPExcel_Chart_DataSeriesValues
+     * @return \PhpOffice\PhpSpreadsheet\Chart\DataSeriesValues
      */
     public function getPlotValuesByIndex($index)
     {
-        $keys = array_keys($this->plotValues);
-        if (in_array($index, $keys)) {
+        $keys = \array_keys($this->plotValues);
+        if (\in_array($index, $keys)) {
             return $this->plotValues[$index];
         } elseif (isset($keys[$index])) {
             return $this->plotValues[$keys[$index]];
         }
-        return false;
+        return \false;
     }
 
     /**
@@ -344,7 +344,7 @@ class PHPExcel_Chart_DataSeries
      */
     public function getPlotSeriesCount()
     {
-        return count($this->plotValues);
+        return \count($this->plotValues);
     }
 
     /**
@@ -361,29 +361,29 @@ class PHPExcel_Chart_DataSeries
      * Set Smooth Line
      *
      * @param boolean $smoothLine
-     * @return PHPExcel_Chart_DataSeries
+     * @return \PhpOffice\PhpSpreadsheet\Chart\DataSeries
      */
-    public function setSmoothLine($smoothLine = true)
+    public function setSmoothLine($smoothLine = \true)
     {
         $this->smoothLine = $smoothLine;
         return $this;
     }
 
-    public function refresh(PHPExcel_Worksheet $worksheet)
+    public function refresh(\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet $worksheet)
     {
         foreach ($this->plotValues as $plotValues) {
-            if ($plotValues !== null) {
-                $plotValues->refresh($worksheet, true);
+            if ($plotValues !== \null) {
+                $plotValues->refresh($worksheet, \true);
             }
         }
         foreach ($this->plotLabel as $plotValues) {
-            if ($plotValues !== null) {
-                $plotValues->refresh($worksheet, true);
+            if ($plotValues !== \null) {
+                $plotValues->refresh($worksheet, \true);
             }
         }
         foreach ($this->plotCategory as $plotValues) {
-            if ($plotValues !== null) {
-                $plotValues->refresh($worksheet, false);
+            if ($plotValues !== \null) {
+                $plotValues->refresh($worksheet, \false);
             }
         }
     }

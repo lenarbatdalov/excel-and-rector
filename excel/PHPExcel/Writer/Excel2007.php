@@ -1,5 +1,7 @@
 <?php
 
+namespace PhpOffice\PhpSpreadsheet\Writer;
+
 /**
  * PHPExcel_Writer_Excel2007
  *
@@ -25,7 +27,7 @@
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
-class PHPExcel_Writer_Excel2007 extends PHPExcel_Writer_Abstract implements PHPExcel_Writer_IWriter
+class Xlsx extends \PhpOffice\PhpSpreadsheet\Writer\BaseWriter implements \PhpOffice\PhpSpreadsheet\Writer\IWriter
 {
     /**
      * Pre-calculate formulas
@@ -36,26 +38,26 @@ class PHPExcel_Writer_Excel2007 extends PHPExcel_Writer_Abstract implements PHPE
      *
      * @var boolean
      */
-    protected $preCalculateFormulas = false;
+    protected $preCalculateFormulas = \false;
 
     /**
      * Office2003 compatibility
      *
      * @var boolean
      */
-    private $office2003compatibility = false;
+    private $office2003compatibility = \false;
 
     /**
      * Private writer parts
      *
-     * @var PHPExcel_Writer_Excel2007_WriterPart[]
+     * @var \PhpOffice\PhpSpreadsheet\Writer\Xlsx\WriterPart[]
      */
     private $writerParts    = array();
 
     /**
      * Private PHPExcel
      *
-     * @var PHPExcel
+     * @var \PhpOffice\PhpSpreadsheet\Spreadsheet
      */
     private $spreadSheet;
 
@@ -69,58 +71,58 @@ class PHPExcel_Writer_Excel2007 extends PHPExcel_Writer_Abstract implements PHPE
     /**
      * Private unique PHPExcel_Style_Conditional HashTable
      *
-     * @var PHPExcel_HashTable
+     * @var \PhpOffice\PhpSpreadsheet\HashTable
      */
     private $stylesConditionalHashTable;
 
     /**
      * Private unique PHPExcel_Style HashTable
      *
-     * @var PHPExcel_HashTable
+     * @var \PhpOffice\PhpSpreadsheet\HashTable
      */
     private $styleHashTable;
 
     /**
      * Private unique PHPExcel_Style_Fill HashTable
      *
-     * @var PHPExcel_HashTable
+     * @var \PhpOffice\PhpSpreadsheet\HashTable
      */
     private $fillHashTable;
 
     /**
      * Private unique PHPExcel_Style_Font HashTable
      *
-     * @var PHPExcel_HashTable
+     * @var \PhpOffice\PhpSpreadsheet\HashTable
      */
     private $fontHashTable;
 
     /**
      * Private unique PHPExcel_Style_Borders HashTable
      *
-     * @var PHPExcel_HashTable
+     * @var \PhpOffice\PhpSpreadsheet\HashTable
      */
     private $bordersHashTable ;
 
     /**
      * Private unique PHPExcel_Style_NumberFormat HashTable
      *
-     * @var PHPExcel_HashTable
+     * @var \PhpOffice\PhpSpreadsheet\HashTable
      */
     private $numFmtHashTable;
 
     /**
      * Private unique PHPExcel_Worksheet_BaseDrawing HashTable
      *
-     * @var PHPExcel_HashTable
+     * @var \PhpOffice\PhpSpreadsheet\HashTable
      */
     private $drawingHashTable;
 
     /**
      * Create a new PHPExcel_Writer_Excel2007
      *
-     * @param     PHPExcel    $pPHPExcel
+     * @param     \PhpOffice\PhpSpreadsheet\Spreadsheet    $pPHPExcel
      */
-    public function __construct(PHPExcel $pPHPExcel = null)
+    public function __construct(\PhpOffice\PhpSpreadsheet\Spreadsheet $pPHPExcel = \null)
     {
         // Assign PHPExcel
         $this->setPHPExcel($pPHPExcel);
@@ -153,7 +155,7 @@ class PHPExcel_Writer_Excel2007 extends PHPExcel_Writer_Abstract implements PHPE
 
         // Set HashTable variables
         foreach ($hashTablesArray as $tableName) {
-            $this->$tableName     = new PHPExcel_HashTable();
+            $this->$tableName     = new \PhpOffice\PhpSpreadsheet\HashTable();
         }
     }
 
@@ -161,14 +163,14 @@ class PHPExcel_Writer_Excel2007 extends PHPExcel_Writer_Abstract implements PHPE
      * Get writer part
      *
      * @param     string     $pPartName        Writer part name
-     * @return     PHPExcel_Writer_Excel2007_WriterPart
+     * @return     \PhpOffice\PhpSpreadsheet\Writer\Xlsx\WriterPart
      */
     public function getWriterPart($pPartName = '')
     {
-        if ($pPartName != '' && isset($this->writerParts[strtolower($pPartName)])) {
-            return $this->writerParts[strtolower($pPartName)];
+        if ($pPartName != '' && isset($this->writerParts[\strtolower($pPartName)])) {
+            return $this->writerParts[\strtolower($pPartName)];
         } else {
-            return null;
+            return \null;
         }
     }
 
@@ -176,27 +178,27 @@ class PHPExcel_Writer_Excel2007 extends PHPExcel_Writer_Abstract implements PHPE
      * Save PHPExcel to file
      *
      * @param     string         $pFilename
-     * @throws     PHPExcel_Writer_Exception
+     * @throws     \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
-    public function save($pFilename = null)
+    public function save($pFilename = \null)
     {
-        if ($this->spreadSheet !== null) {
+        if ($this->spreadSheet !== \null) {
             // garbage collect
             $this->spreadSheet->garbageCollect();
 
             // If $pFilename is php://output or php://stdout, make it a temporary file...
             $originalFilename = $pFilename;
-            if (strtolower($pFilename) == 'php://output' || strtolower($pFilename) == 'php://stdout') {
-                $pFilename = @tempnam(PHPExcel_Shared_File::sys_get_temp_dir(), 'phpxltmp');
+            if (\strtolower($pFilename) == 'php://output' || \strtolower($pFilename) == 'php://stdout') {
+                $pFilename = @\tempnam(\PhpOffice\PhpSpreadsheet\Shared\File::sys_get_temp_dir(), 'phpxltmp');
                 if ($pFilename == '') {
                     $pFilename = $originalFilename;
                 }
             }
 
-            $saveDebugLog = PHPExcel_Calculation::getInstance($this->spreadSheet)->getDebugLog()->getWriteDebugLog();
-            PHPExcel_Calculation::getInstance($this->spreadSheet)->getDebugLog()->setWriteDebugLog(false);
-            $saveDateReturnType = PHPExcel_Calculation_Functions::getReturnDateType();
-            PHPExcel_Calculation_Functions::setReturnDateType(PHPExcel_Calculation_Functions::RETURNDATE_EXCEL);
+            $saveDebugLog = \PhpOffice\PhpSpreadsheet\Calculation\Calculation::getInstance($this->spreadSheet)->getDebugLog()->getWriteDebugLog();
+            \PhpOffice\PhpSpreadsheet\Calculation\Calculation::getInstance($this->spreadSheet)->getDebugLog()->setWriteDebugLog(\false);
+            $saveDateReturnType = \PhpOffice\PhpSpreadsheet\Calculation\Functions::getReturnDateType();
+            \PhpOffice\PhpSpreadsheet\Calculation\Functions::setReturnDateType(\PhpOffice\PhpSpreadsheet\Calculation\Functions::RETURNDATE_EXCEL);
 
             // Create string lookup table
             $this->stringTable = array();
@@ -216,22 +218,22 @@ class PHPExcel_Writer_Excel2007 extends PHPExcel_Writer_Abstract implements PHPE
             $this->drawingHashTable->addFromSource($this->getWriterPart('Drawing')->allDrawings($this->spreadSheet));
 
             // Create new ZIP file and open it for writing
-            $zipClass = PHPExcel_Settings::getZipClass();
+            $zipClass = \PhpOffice\PhpSpreadsheet\Settings::getZipClass();
             $objZip = new $zipClass();
 
             //    Retrieve OVERWRITE and CREATE constants from the instantiated zip class
             //    This method of accessing constant values from a dynamic class should work with all appropriate versions of PHP
-            $ro = new ReflectionObject($objZip);
+            $ro = new \ReflectionObject($objZip);
             $zipOverWrite = $ro->getConstant('OVERWRITE');
             $zipCreate = $ro->getConstant('CREATE');
 
-            if (file_exists($pFilename)) {
-                unlink($pFilename);
+            if (\file_exists($pFilename)) {
+                \unlink($pFilename);
             }
             // Try opening the ZIP file
-            if ($objZip->open($pFilename, $zipOverWrite) !== true) {
-                if ($objZip->open($pFilename, $zipCreate) !== true) {
-                    throw new PHPExcel_Writer_Exception("Could not open " . $pFilename . " for writing.");
+            if ($objZip->open($pFilename, $zipOverWrite) !== \true) {
+                if ($objZip->open($pFilename, $zipCreate) !== \true) {
+                    throw new \PhpOffice\PhpSpreadsheet\Writer\Exception("Could not open " . $pFilename . " for writing.");
                 }
             }
 
@@ -241,7 +243,7 @@ class PHPExcel_Writer_Excel2007 extends PHPExcel_Writer_Abstract implements PHPE
             //if hasMacros, add the vbaProject.bin file, Certificate file(if exists)
             if ($this->spreadSheet->hasMacros()) {
                 $macrosCode=$this->spreadSheet->getMacrosCode();
-                if (!is_null($macrosCode)) {// we have the code ?
+                if (!\is_null($macrosCode)) {// we have the code ?
                     $objZip->addFromString('xl/vbaProject.bin', $macrosCode);//allways in 'xl', allways named vbaProject.bin
                     if ($this->spreadSheet->hasMacrosCertificate()) {//signed macros ?
                         // Yes : add the certificate file and the related rels file
@@ -255,13 +257,13 @@ class PHPExcel_Writer_Excel2007 extends PHPExcel_Writer_Abstract implements PHPE
                 $tmpRibbonTarget=$this->spreadSheet->getRibbonXMLData('target');
                 $objZip->addFromString($tmpRibbonTarget, $this->spreadSheet->getRibbonXMLData('data'));
                 if ($this->spreadSheet->hasRibbonBinObjects()) {
-                    $tmpRootPath=dirname($tmpRibbonTarget).'/';
+                    $tmpRootPath=\dirname($tmpRibbonTarget).'/';
                     $ribbonBinObjects=$this->spreadSheet->getRibbonBinObjects('data');//the files to write
                     foreach ($ribbonBinObjects as $aPath => $aContent) {
                         $objZip->addFromString($tmpRootPath.$aPath, $aContent);
                     }
                     //the rels for files
-                    $objZip->addFromString($tmpRootPath.'_rels/'.basename($tmpRibbonTarget).'.rels', $this->getWriterPart('RelsRibbonObjects')->writeRibbonRelationships($this->spreadSheet));
+                    $objZip->addFromString($tmpRootPath.'_rels/'.\basename($tmpRibbonTarget).'.rels', $this->getWriterPart('RelsRibbonObjects')->writeRibbonRelationships($this->spreadSheet));
                 }
             }
             
@@ -273,7 +275,7 @@ class PHPExcel_Writer_Excel2007 extends PHPExcel_Writer_Abstract implements PHPE
             $objZip->addFromString('docProps/app.xml', $this->getWriterPart('DocProps')->writeDocPropsApp($this->spreadSheet));
             $objZip->addFromString('docProps/core.xml', $this->getWriterPart('DocProps')->writeDocPropsCore($this->spreadSheet));
             $customPropertiesPart = $this->getWriterPart('DocProps')->writeDocPropsCustom($this->spreadSheet);
-            if ($customPropertiesPart !== null) {
+            if ($customPropertiesPart !== \null) {
                 $objZip->addFromString('docProps/custom.xml', $customPropertiesPart);
             }
 
@@ -295,7 +297,7 @@ class PHPExcel_Writer_Excel2007 extends PHPExcel_Writer_Abstract implements PHPE
                 $objZip->addFromString('xl/worksheets/sheet' . ($i + 1) . '.xml', $this->getWriterPart('Worksheet')->writeWorksheet($this->spreadSheet->getSheet($i), $this->stringTable, $this->includeCharts));
                 if ($this->includeCharts) {
                     $charts = $this->spreadSheet->getSheet($i)->getChartCollection();
-                    if (count($charts) > 0) {
+                    if (\count($charts) > 0) {
                         foreach ($charts as $chart) {
                             $objZip->addFromString('xl/charts/chart' . ($chartCount + 1) . '.xml', $this->getWriterPart('Chart')->writeChart($chart, $this->preCalculateFormulas));
                             $chartCount++;
@@ -311,7 +313,7 @@ class PHPExcel_Writer_Excel2007 extends PHPExcel_Writer_Abstract implements PHPE
                 $objZip->addFromString('xl/worksheets/_rels/sheet' . ($i + 1) . '.xml.rels', $this->getWriterPart('Rels')->writeWorksheetRelationships($this->spreadSheet->getSheet($i), ($i + 1), $this->includeCharts));
 
                 $drawings = $this->spreadSheet->getSheet($i)->getDrawingCollection();
-                $drawingCount = count($drawings);
+                $drawingCount = \count($drawings);
                 if ($this->includeCharts) {
                     $chartCount = $this->spreadSheet->getSheet($i)->getChartCount();
                 }
@@ -326,7 +328,7 @@ class PHPExcel_Writer_Excel2007 extends PHPExcel_Writer_Abstract implements PHPE
                 }
 
                 // Add comment relationship parts
-                if (count($this->spreadSheet->getSheet($i)->getComments()) > 0) {
+                if (\count($this->spreadSheet->getSheet($i)->getComments()) > 0) {
                     // VML Comments
                     $objZip->addFromString('xl/drawings/vmlDrawing' . ($i + 1) . '.vml', $this->getWriterPart('Comments')->writeVMLComments($this->spreadSheet->getSheet($i)));
 
@@ -335,7 +337,7 @@ class PHPExcel_Writer_Excel2007 extends PHPExcel_Writer_Abstract implements PHPE
                 }
 
                 // Add header/footer relationship parts
-                if (count($this->spreadSheet->getSheet($i)->getHeaderFooter()->getImages()) > 0) {
+                if (\count($this->spreadSheet->getSheet($i)->getHeaderFooter()->getImages()) > 0) {
                     // VML Drawings
                     $objZip->addFromString('xl/drawings/vmlDrawingHF' . ($i + 1) . '.vml', $this->getWriterPart('Drawing')->writeVMLHeaderFooterImages($this->spreadSheet->getSheet($i)));
 
@@ -344,86 +346,86 @@ class PHPExcel_Writer_Excel2007 extends PHPExcel_Writer_Abstract implements PHPE
 
                     // Media
                     foreach ($this->spreadSheet->getSheet($i)->getHeaderFooter()->getImages() as $image) {
-                        $objZip->addFromString('xl/media/' . $image->getIndexedFilename(), file_get_contents($image->getPath()));
+                        $objZip->addFromString('xl/media/' . $image->getIndexedFilename(), \file_get_contents($image->getPath()));
                     }
                 }
             }
 
             // Add media
             for ($i = 0; $i < $this->getDrawingHashTable()->count(); ++$i) {
-                if ($this->getDrawingHashTable()->getByIndex($i) instanceof PHPExcel_Worksheet_Drawing) {
-                    $imageContents = null;
+                if ($this->getDrawingHashTable()->getByIndex($i) instanceof \PhpOffice\PhpSpreadsheet\Worksheet\Drawing) {
+                    $imageContents = \null;
                     $imagePath = $this->getDrawingHashTable()->getByIndex($i)->getPath();
-                    if (strpos($imagePath, 'zip://') !== false) {
-                        $imagePath = substr($imagePath, 6);
-                        $imagePathSplitted = explode('#', $imagePath);
+                    if (\strpos($imagePath, 'zip://') !== \false) {
+                        $imagePath = \substr($imagePath, 6);
+                        $imagePathSplitted = \explode('#', $imagePath);
 
-                        $imageZip = new ZipArchive();
+                        $imageZip = new \ZipArchive();
                         $imageZip->open($imagePathSplitted[0]);
                         $imageContents = $imageZip->getFromName($imagePathSplitted[1]);
                         $imageZip->close();
                         unset($imageZip);
                     } else {
-                        $imageContents = file_get_contents($imagePath);
+                        $imageContents = \file_get_contents($imagePath);
                     }
 
-                    $objZip->addFromString('xl/media/' . str_replace(' ', '_', $this->getDrawingHashTable()->getByIndex($i)->getIndexedFilename()), $imageContents);
-                } elseif ($this->getDrawingHashTable()->getByIndex($i) instanceof PHPExcel_Worksheet_MemoryDrawing) {
-                    ob_start();
-                    call_user_func(
+                    $objZip->addFromString('xl/media/' . \str_replace(' ', '_', $this->getDrawingHashTable()->getByIndex($i)->getIndexedFilename()), $imageContents);
+                } elseif ($this->getDrawingHashTable()->getByIndex($i) instanceof \PhpOffice\PhpSpreadsheet\Worksheet\MemoryDrawing) {
+                    \ob_start();
+                    \call_user_func(
                         $this->getDrawingHashTable()->getByIndex($i)->getRenderingFunction(),
                         $this->getDrawingHashTable()->getByIndex($i)->getImageResource()
                     );
-                    $imageContents = ob_get_contents();
-                    ob_end_clean();
+                    $imageContents = \ob_get_contents();
+                    \ob_end_clean();
 
-                    $objZip->addFromString('xl/media/' . str_replace(' ', '_', $this->getDrawingHashTable()->getByIndex($i)->getIndexedFilename()), $imageContents);
+                    $objZip->addFromString('xl/media/' . \str_replace(' ', '_', $this->getDrawingHashTable()->getByIndex($i)->getIndexedFilename()), $imageContents);
                 }
             }
 
-            PHPExcel_Calculation_Functions::setReturnDateType($saveDateReturnType);
-            PHPExcel_Calculation::getInstance($this->spreadSheet)->getDebugLog()->setWriteDebugLog($saveDebugLog);
+            \PhpOffice\PhpSpreadsheet\Calculation\Functions::setReturnDateType($saveDateReturnType);
+            \PhpOffice\PhpSpreadsheet\Calculation\Calculation::getInstance($this->spreadSheet)->getDebugLog()->setWriteDebugLog($saveDebugLog);
 
             // Close file
-            if ($objZip->close() === false) {
-                throw new PHPExcel_Writer_Exception("Could not close zip file $pFilename.");
+            if ($objZip->close() === \false) {
+                throw new \PhpOffice\PhpSpreadsheet\Writer\Exception("Could not close zip file $pFilename.");
             }
 
             // If a temporary file was used, copy it to the correct file stream
             if ($originalFilename != $pFilename) {
-                if (copy($pFilename, $originalFilename) === false) {
-                    throw new PHPExcel_Writer_Exception("Could not copy temporary zip file $pFilename to $originalFilename.");
+                if (\copy($pFilename, $originalFilename) === \false) {
+                    throw new \PhpOffice\PhpSpreadsheet\Writer\Exception("Could not copy temporary zip file $pFilename to $originalFilename.");
                 }
-                @unlink($pFilename);
+                @\unlink($pFilename);
             }
         } else {
-            throw new PHPExcel_Writer_Exception("PHPExcel object unassigned.");
+            throw new \PhpOffice\PhpSpreadsheet\Writer\Exception("PHPExcel object unassigned.");
         }
     }
 
     /**
      * Get PHPExcel object
      *
-     * @return PHPExcel
-     * @throws PHPExcel_Writer_Exception
+     * @return \PhpOffice\PhpSpreadsheet\Spreadsheet
+     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
     public function getPHPExcel()
     {
-        if ($this->spreadSheet !== null) {
+        if ($this->spreadSheet !== \null) {
             return $this->spreadSheet;
         } else {
-            throw new PHPExcel_Writer_Exception("No PHPExcel object assigned.");
+            throw new \PhpOffice\PhpSpreadsheet\Writer\Exception("No PHPExcel object assigned.");
         }
     }
 
     /**
      * Set PHPExcel object
      *
-     * @param     PHPExcel     $pPHPExcel    PHPExcel object
-     * @throws    PHPExcel_Writer_Exception
-     * @return PHPExcel_Writer_Excel2007
+     * @param     \PhpOffice\PhpSpreadsheet\Spreadsheet     $pPHPExcel    PHPExcel object
+     * @throws    \PhpOffice\PhpSpreadsheet\Writer\Exception
+     * @return \PhpOffice\PhpSpreadsheet\Writer\Xlsx
      */
-    public function setPHPExcel(PHPExcel $pPHPExcel = null)
+    public function setPHPExcel(\PhpOffice\PhpSpreadsheet\Spreadsheet $pPHPExcel = \null)
     {
         $this->spreadSheet = $pPHPExcel;
         return $this;
@@ -442,7 +444,7 @@ class PHPExcel_Writer_Excel2007 extends PHPExcel_Writer_Abstract implements PHPE
     /**
      * Get PHPExcel_Style HashTable
      *
-     * @return PHPExcel_HashTable
+     * @return \PhpOffice\PhpSpreadsheet\HashTable
      */
     public function getStyleHashTable()
     {
@@ -452,7 +454,7 @@ class PHPExcel_Writer_Excel2007 extends PHPExcel_Writer_Abstract implements PHPE
     /**
      * Get PHPExcel_Style_Conditional HashTable
      *
-     * @return PHPExcel_HashTable
+     * @return \PhpOffice\PhpSpreadsheet\HashTable
      */
     public function getStylesConditionalHashTable()
     {
@@ -462,7 +464,7 @@ class PHPExcel_Writer_Excel2007 extends PHPExcel_Writer_Abstract implements PHPE
     /**
      * Get PHPExcel_Style_Fill HashTable
      *
-     * @return PHPExcel_HashTable
+     * @return \PhpOffice\PhpSpreadsheet\HashTable
      */
     public function getFillHashTable()
     {
@@ -472,7 +474,7 @@ class PHPExcel_Writer_Excel2007 extends PHPExcel_Writer_Abstract implements PHPE
     /**
      * Get PHPExcel_Style_Font HashTable
      *
-     * @return PHPExcel_HashTable
+     * @return \PhpOffice\PhpSpreadsheet\HashTable
      */
     public function getFontHashTable()
     {
@@ -482,7 +484,7 @@ class PHPExcel_Writer_Excel2007 extends PHPExcel_Writer_Abstract implements PHPE
     /**
      * Get PHPExcel_Style_Borders HashTable
      *
-     * @return PHPExcel_HashTable
+     * @return \PhpOffice\PhpSpreadsheet\HashTable
      */
     public function getBordersHashTable()
     {
@@ -492,7 +494,7 @@ class PHPExcel_Writer_Excel2007 extends PHPExcel_Writer_Abstract implements PHPE
     /**
      * Get PHPExcel_Style_NumberFormat HashTable
      *
-     * @return PHPExcel_HashTable
+     * @return \PhpOffice\PhpSpreadsheet\HashTable
      */
     public function getNumFmtHashTable()
     {
@@ -502,7 +504,7 @@ class PHPExcel_Writer_Excel2007 extends PHPExcel_Writer_Abstract implements PHPE
     /**
      * Get PHPExcel_Worksheet_BaseDrawing HashTable
      *
-     * @return PHPExcel_HashTable
+     * @return \PhpOffice\PhpSpreadsheet\HashTable
      */
     public function getDrawingHashTable()
     {
@@ -523,9 +525,9 @@ class PHPExcel_Writer_Excel2007 extends PHPExcel_Writer_Abstract implements PHPE
      * Set Office2003 compatibility
      *
      * @param boolean $pValue    Office2003 compatibility?
-     * @return PHPExcel_Writer_Excel2007
+     * @return \PhpOffice\PhpSpreadsheet\Writer\Xlsx
      */
-    public function setOffice2003Compatibility($pValue = false)
+    public function setOffice2003Compatibility($pValue = \false)
     {
         $this->office2003compatibility = $pValue;
         return $this;

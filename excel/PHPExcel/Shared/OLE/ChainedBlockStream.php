@@ -1,5 +1,7 @@
 <?php
 
+namespace PhpOffice\PhpSpreadsheet\Shared\OLE;
+
 /**
  * PHPExcel_Shared_OLE_ChainedBlockStream
  *
@@ -25,7 +27,7 @@
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version ##VERSION##, ##DATE##
  */
-class PHPExcel_Shared_OLE_ChainedBlockStream
+class ChainedBlockStream
 {
     /**
      * The OLE container of the file that is being read.
@@ -65,19 +67,19 @@ class PHPExcel_Shared_OLE_ChainedBlockStream
     public function stream_open($path, $mode, $options, &$openedPath)
     {
         if ($mode != 'r') {
-            if ($options & STREAM_REPORT_ERRORS) {
-                trigger_error('Only reading is supported', E_USER_WARNING);
+            if ($options & \STREAM_REPORT_ERRORS) {
+                \trigger_error('Only reading is supported', \E_USER_WARNING);
             }
-            return false;
+            return \false;
         }
 
         // 25 is length of "ole-chainedblockstream://"
-        parse_str(substr($path, 25), $this->params);
+        \parse_str(\substr($path, 25), $this->params);
         if (!isset($this->params['oleInstanceId'], $this->params['blockId'], $GLOBALS['_OLE_INSTANCES'][$this->params['oleInstanceId']])) {
-            if ($options & STREAM_REPORT_ERRORS) {
-                trigger_error('OLE stream not found', E_USER_WARNING);
+            if ($options & \STREAM_REPORT_ERRORS) {
+                \trigger_error('OLE stream not found', \E_USER_WARNING);
             }
-            return false;
+            return \false;
         }
         $this->ole = $GLOBALS['_OLE_INSTANCES'][$this->params['oleInstanceId']];
 
@@ -89,27 +91,27 @@ class PHPExcel_Shared_OLE_ChainedBlockStream
             while ($blockId != -2) {
                 $pos = $rootPos + $blockId * $this->ole->bigBlockSize;
                 $blockId = $this->ole->sbat[$blockId];
-                fseek($this->ole->_file_handle, $pos);
-                $this->data .= fread($this->ole->_file_handle, $this->ole->bigBlockSize);
+                \fseek($this->ole->_file_handle, $pos);
+                $this->data .= \fread($this->ole->_file_handle, $this->ole->bigBlockSize);
             }
         } else {
             // Block id refers to big blocks
             while ($blockId != -2) {
                 $pos = $this->ole->_getBlockOffset($blockId);
-                fseek($this->ole->_file_handle, $pos);
-                $this->data .= fread($this->ole->_file_handle, $this->ole->bigBlockSize);
+                \fseek($this->ole->_file_handle, $pos);
+                $this->data .= \fread($this->ole->_file_handle, $this->ole->bigBlockSize);
                 $blockId = $this->ole->bbat[$blockId];
             }
         }
         if (isset($this->params['size'])) {
-            $this->data = substr($this->data, 0, $this->params['size']);
+            $this->data = \substr($this->data, 0, $this->params['size']);
         }
 
-        if ($options & STREAM_USE_PATH) {
+        if ($options & \STREAM_USE_PATH) {
             $openedPath = $path;
         }
 
-        return true;
+        return \true;
     }
 
     /**
@@ -118,7 +120,7 @@ class PHPExcel_Shared_OLE_ChainedBlockStream
      */
     public function stream_close()
     {
-        $this->ole = null;
+        $this->ole = \null;
         unset($GLOBALS['_OLE_INSTANCES']);
     }
 
@@ -131,9 +133,9 @@ class PHPExcel_Shared_OLE_ChainedBlockStream
     public function stream_read($count)
     {
         if ($this->stream_eof()) {
-            return false;
+            return \false;
         }
-        $s = substr($this->data, $this->pos, $count);
+        $s = \substr($this->data, $this->pos, $count);
         $this->pos += $count;
         return $s;
     }
@@ -145,7 +147,7 @@ class PHPExcel_Shared_OLE_ChainedBlockStream
      */
     public function stream_eof()
     {
-        return $this->pos >= strlen($this->data);
+        return $this->pos >= \strlen($this->data);
     }
 
     /**
@@ -168,16 +170,16 @@ class PHPExcel_Shared_OLE_ChainedBlockStream
      */
     public function stream_seek($offset, $whence)
     {
-        if ($whence == SEEK_SET && $offset >= 0) {
+        if ($whence == \SEEK_SET && $offset >= 0) {
             $this->pos = $offset;
-        } elseif ($whence == SEEK_CUR && -$offset <= $this->pos) {
+        } elseif ($whence == \SEEK_CUR && -$offset <= $this->pos) {
             $this->pos += $offset;
-        } elseif ($whence == SEEK_END && -$offset <= sizeof($this->data)) {
-            $this->pos = strlen($this->data) + $offset;
+        } elseif ($whence == \SEEK_END && -$offset <= \sizeof($this->data)) {
+            $this->pos = \strlen($this->data) + $offset;
         } else {
-            return false;
+            return \false;
         }
-        return true;
+        return \true;
     }
 
     /**
@@ -188,7 +190,7 @@ class PHPExcel_Shared_OLE_ChainedBlockStream
     public function stream_stat()
     {
         return array(
-            'size' => strlen($this->data),
+            'size' => \strlen($this->data),
             );
     }
 

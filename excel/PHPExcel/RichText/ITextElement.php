@@ -1,5 +1,7 @@
 <?php
 
+namespace PhpOffice\PhpSpreadsheet\RichText;
+
 /**
  * PHPExcel_RichText_ITextElement
  *
@@ -23,7 +25,7 @@
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
-interface PHPExcel_RichText_ITextElement
+interface ITextElement
 {
     /**
      * Get text
@@ -36,14 +38,14 @@ interface PHPExcel_RichText_ITextElement
      * Set text
      *
      * @param     $pText string    Text
-     * @return PHPExcel_RichText_ITextElement
+     * @return \PhpOffice\PhpSpreadsheet\RichText\ITextElement
      */
     public function setText($pText = '');
 
     /**
      * Get font
      *
-     * @return PHPExcel_Style_Font
+     * @return \PhpOffice\PhpSpreadsheet\Style\Font
      */
     public function getFont();
 

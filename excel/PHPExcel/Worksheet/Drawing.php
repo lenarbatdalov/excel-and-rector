@@ -1,5 +1,7 @@
 <?php
 
+namespace PhpOffice\PhpSpreadsheet\Worksheet;
+
 /**
  * PHPExcel_Worksheet_Drawing
  *
@@ -25,7 +27,7 @@
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
-class PHPExcel_Worksheet_Drawing extends PHPExcel_Worksheet_BaseDrawing implements PHPExcel_IComparable
+class Drawing extends \PhpOffice\PhpSpreadsheet\Worksheet\BaseDrawing implements \PhpOffice\PhpSpreadsheet\IComparable
 {
     /**
      * Path
@@ -53,7 +55,7 @@ class PHPExcel_Worksheet_Drawing extends PHPExcel_Worksheet_BaseDrawing implemen
      */
     public function getFilename()
     {
-        return basename($this->path);
+        return \basename($this->path);
     }
 
     /**
@@ -64,8 +66,8 @@ class PHPExcel_Worksheet_Drawing extends PHPExcel_Worksheet_BaseDrawing implemen
     public function getIndexedFilename()
     {
         $fileName = $this->getFilename();
-        $fileName = str_replace(' ', '_', $fileName);
-        return str_replace('.' . $this->getExtension(), '', $fileName) . $this->getImageIndex() . '.' . $this->getExtension();
+        $fileName = \str_replace(' ', '_', $fileName);
+        return \str_replace('.' . $this->getExtension(), '', $fileName) . $this->getImageIndex() . '.' . $this->getExtension();
     }
 
     /**
@@ -75,8 +77,8 @@ class PHPExcel_Worksheet_Drawing extends PHPExcel_Worksheet_BaseDrawing implemen
      */
     public function getExtension()
     {
-        $exploded = explode(".", basename($this->path));
-        return $exploded[count($exploded) - 1];
+        $exploded = \explode(".", \basename($this->path));
+        return $exploded[\count($exploded) - 1];
     }
 
     /**
@@ -94,21 +96,21 @@ class PHPExcel_Worksheet_Drawing extends PHPExcel_Worksheet_BaseDrawing implemen
      *
      * @param     string         $pValue            File path
      * @param     boolean        $pVerifyFile    Verify file
-     * @throws     PHPExcel_Exception
-     * @return PHPExcel_Worksheet_Drawing
+     * @throws     \PhpOffice\PhpSpreadsheet\Exception
+     * @return \PhpOffice\PhpSpreadsheet\Worksheet\Drawing
      */
-    public function setPath($pValue = '', $pVerifyFile = true)
+    public function setPath($pValue = '', $pVerifyFile = \true)
     {
         if ($pVerifyFile) {
-            if (file_exists($pValue)) {
+            if (\file_exists($pValue)) {
                 $this->path = $pValue;
 
                 if ($this->width == 0 && $this->height == 0) {
                     // Get width/height
-                    list($this->width, $this->height) = getimagesize($pValue);
+                    list($this->width, $this->height) = \getimagesize($pValue);
                 }
             } else {
-                throw new PHPExcel_Exception("File $pValue not found!");
+                throw new \PhpOffice\PhpSpreadsheet\Exception("File $pValue not found!");
             }
         } else {
             $this->path = $pValue;
@@ -123,7 +125,7 @@ class PHPExcel_Worksheet_Drawing extends PHPExcel_Worksheet_BaseDrawing implemen
      */
     public function getHashCode()
     {
-        return md5(
+        return \md5(
             $this->path .
             parent::getHashCode() .
             __CLASS__
@@ -135,9 +137,9 @@ class PHPExcel_Worksheet_Drawing extends PHPExcel_Worksheet_BaseDrawing implemen
      */
     public function __clone()
     {
-        $vars = get_object_vars($this);
+        $vars = \get_object_vars($this);
         foreach ($vars as $key => $value) {
-            if (is_object($value)) {
+            if (\is_object($value)) {
                 $this->$key = clone $value;
             } else {
                 $this->$key = $value;

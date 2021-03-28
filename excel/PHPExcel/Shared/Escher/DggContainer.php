@@ -1,5 +1,7 @@
 <?php
 
+namespace PhpOffice\PhpSpreadsheet\Shared\Escher;
+
 /**
  * PHPExcel_Shared_Escher_DggContainer
  *
@@ -25,7 +27,7 @@
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
-class PHPExcel_Shared_Escher_DggContainer
+class DggContainer
 {
     /**
      * Maximum shape index of all shapes in all drawings increased by one
@@ -51,7 +53,7 @@ class PHPExcel_Shared_Escher_DggContainer
     /**
      * BLIP Store Container
      *
-     * @var PHPExcel_Shared_Escher_DggContainer_BstoreContainer
+     * @var \PhpOffice\PhpSpreadsheet\Shared\Escher\DggContainer\BstoreContainer
      */
     private $bstoreContainer;
 
@@ -132,7 +134,7 @@ class PHPExcel_Shared_Escher_DggContainer
     /**
      * Get BLIP Store Container
      *
-     * @return PHPExcel_Shared_Escher_DggContainer_BstoreContainer
+     * @return \PhpOffice\PhpSpreadsheet\Shared\Escher\DggContainer\BstoreContainer
      */
     public function getBstoreContainer()
     {
@@ -142,7 +144,7 @@ class PHPExcel_Shared_Escher_DggContainer
     /**
      * Set BLIP Store Container
      *
-     * @param PHPExcel_Shared_Escher_DggContainer_BstoreContainer $bstoreContainer
+     * @param \PhpOffice\PhpSpreadsheet\Shared\Escher\DggContainer\BstoreContainer $bstoreContainer
      */
     public function setBstoreContainer($bstoreContainer)
     {
@@ -171,7 +173,7 @@ class PHPExcel_Shared_Escher_DggContainer
         if (isset($this->OPT[$property])) {
             return $this->OPT[$property];
         }
-        return null;
+        return \null;
     }
 
     /**

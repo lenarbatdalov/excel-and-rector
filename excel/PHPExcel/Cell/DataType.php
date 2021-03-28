@@ -1,5 +1,7 @@
 <?php
 
+namespace PhpOffice\PhpSpreadsheet\Cell;
+
 /**
  * PHPExcel_Cell_DataType
  *
@@ -25,7 +27,7 @@
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
-class PHPExcel_Cell_DataType
+class DataType
 {
     /* Data types */
     const TYPE_STRING2  = 'str';
@@ -69,9 +71,9 @@ class PHPExcel_Cell_DataType
      * @param       mixed  $pValue
      * @return      string
      */
-    public static function dataTypeForValue($pValue = null)
+    public static function dataTypeForValue($pValue = \null)
     {
-        return PHPExcel_Cell_DefaultValueBinder::dataTypeForValue($pValue);
+        return \PhpOffice\PhpSpreadsheet\Cell\DefaultValueBinder::dataTypeForValue($pValue);
     }
 
     /**
@@ -80,18 +82,18 @@ class PHPExcel_Cell_DataType
      * @param  mixed  Value to sanitize to an Excel string
      * @return mixed  Sanitized value
      */
-    public static function checkString($pValue = null)
+    public static function checkString($pValue = \null)
     {
-        if ($pValue instanceof PHPExcel_RichText) {
+        if ($pValue instanceof \PhpOffice\PhpSpreadsheet\RichText\RichText) {
             // TODO: Sanitize Rich-Text string (max. character count is 32,767)
             return $pValue;
         }
 
         // string must never be longer than 32,767 characters, truncate if necessary
-        $pValue = PHPExcel_Shared_String::Substring($pValue, 0, 32767);
+        $pValue = \PhpOffice\PhpSpreadsheet\Shared\StringHelper::Substring($pValue, 0, 32767);
 
         // we require that newline is represented as "\n" in core, not as "\r\n" or "\r"
-        $pValue = str_replace(array("\r\n", "\r"), "\n", $pValue);
+        $pValue = \str_replace(array("\r\n", "\r"), "\n", $pValue);
 
         return $pValue;
     }
@@ -102,11 +104,11 @@ class PHPExcel_Cell_DataType
      * @param  mixed   Value to sanitize to an Excel error code
      * @return string  Sanitized value
      */
-    public static function checkErrorCode($pValue = null)
+    public static function checkErrorCode($pValue = \null)
     {
         $pValue = (string) $pValue;
 
-        if (!array_key_exists($pValue, self::$errorCodes)) {
+        if (!\array_key_exists($pValue, self::$errorCodes)) {
             $pValue = '#NULL!';
         }
 

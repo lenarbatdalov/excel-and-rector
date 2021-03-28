@@ -1,5 +1,7 @@
 <?php
 
+namespace PhpOffice\PhpSpreadsheet\Reader\Xls;
+
 /**
  * PHPExcel_Reader_Excel5_MD5
  *
@@ -25,7 +27,7 @@
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt        LGPL
  * @version    ##VERSION##, ##DATE##
  */
-class PHPExcel_Reader_Excel5_MD5
+class MD5
 {
     // Context
     private $a;
@@ -62,10 +64,10 @@ class PHPExcel_Reader_Excel5_MD5
         $s = '';
         foreach (array('a', 'b', 'c', 'd') as $i) {
             $v = $this->{$i};
-            $s .= chr($v & 0xff);
-            $s .= chr(($v >> 8) & 0xff);
-            $s .= chr(($v >> 16) & 0xff);
-            $s .= chr(($v >> 24) & 0xff);
+            $s .= \chr($v & 0xff);
+            $s .= \chr(($v >> 8) & 0xff);
+            $s .= \chr(($v >> 16) & 0xff);
+            $s .= \chr(($v >> 24) & 0xff);
         }
 
         return $s;
@@ -78,7 +80,7 @@ class PHPExcel_Reader_Excel5_MD5
      */
     public function add($data)
     {
-        $words = array_values(unpack('V16', $data));
+        $words = \array_values(\unpack('V16', $data));
 
         $A = $this->a;
         $B = $this->b;
@@ -190,14 +192,14 @@ class PHPExcel_Reader_Excel5_MD5
 
     private static function step($func, &$A, $B, $C, $D, $M, $s, $t)
     {
-        $A = ($A + call_user_func($func, $B, $C, $D) + $M + $t) & 0xffffffff;
+        $A = ($A + \call_user_func($func, $B, $C, $D) + $M + $t) & 0xffffffff;
         $A = self::rotate($A, $s);
         $A = ($B + $A) & 0xffffffff;
     }
 
     private static function rotate($decimal, $bits)
     {
-        $binary = str_pad(decbin($decimal), 32, "0", STR_PAD_LEFT);
-        return bindec(substr($binary, $bits).substr($binary, 0, $bits));
+        $binary = \str_pad(\decbin($decimal), 32, "0", \STR_PAD_LEFT);
+        return \bindec(\substr($binary, $bits).\substr($binary, 0, $bits));
     }
 }

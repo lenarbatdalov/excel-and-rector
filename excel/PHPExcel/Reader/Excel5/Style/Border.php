@@ -3,20 +3,20 @@
 class PHPExcel_Reader_Excel5_Style_Border
 {
     protected static $map = array(
-        0x00 => PHPExcel_Style_Border::BORDER_NONE,
-        0x01 => PHPExcel_Style_Border::BORDER_THIN,
-        0x02 => PHPExcel_Style_Border::BORDER_MEDIUM,
-        0x03 => PHPExcel_Style_Border::BORDER_DASHED,
-        0x04 => PHPExcel_Style_Border::BORDER_DOTTED,
-        0x05 => PHPExcel_Style_Border::BORDER_THICK,
-        0x06 => PHPExcel_Style_Border::BORDER_DOUBLE,
-        0x07 => PHPExcel_Style_Border::BORDER_HAIR,
-        0x08 => PHPExcel_Style_Border::BORDER_MEDIUMDASHED,
-        0x09 => PHPExcel_Style_Border::BORDER_DASHDOT,
-        0x0A => PHPExcel_Style_Border::BORDER_MEDIUMDASHDOT,
-        0x0B => PHPExcel_Style_Border::BORDER_DASHDOTDOT,
-        0x0C => PHPExcel_Style_Border::BORDER_MEDIUMDASHDOTDOT,
-        0x0D => PHPExcel_Style_Border::BORDER_SLANTDASHDOT,
+        0x00 => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_NONE,
+        0x01 => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+        0x02 => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM,
+        0x03 => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_DASHED,
+        0x04 => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_DOTTED,
+        0x05 => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THICK,
+        0x06 => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_DOUBLE,
+        0x07 => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_HAIR,
+        0x08 => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUMDASHED,
+        0x09 => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_DASHDOT,
+        0x0A => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUMDASHDOT,
+        0x0B => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_DASHDOTDOT,
+        0x0C => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUMDASHDOTDOT,
+        0x0D => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_SLANTDASHDOT,
     );
 
     /**
@@ -31,6 +31,6 @@ class PHPExcel_Reader_Excel5_Style_Border
         if (isset(self::$map[$index])) {
             return self::$map[$index];
         }
-        return PHPExcel_Style_Border::BORDER_NONE;
+        return \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_NONE;
     }
 }

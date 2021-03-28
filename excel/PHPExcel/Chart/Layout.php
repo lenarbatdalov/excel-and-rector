@@ -1,4 +1,6 @@
 <?php
+namespace PhpOffice\PhpSpreadsheet\Chart;
+
 /**
  * PHPExcel
  *
@@ -24,8 +26,6 @@
  * @license        http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version        ##VERSION##, ##DATE##
  */
-
-
 /**
  * PHPExcel_Chart_Layout
  *
@@ -33,7 +33,7 @@
  * @package        PHPExcel_Chart
  * @copyright    Copyright (c) 2006 - 2015 PHPExcel (http://www.codeplex.com/PHPExcel)
  */
-class PHPExcel_Chart_Layout
+class Layout
 {
     /**
      * layoutTarget
@@ -182,7 +182,7 @@ class PHPExcel_Chart_Layout
      * Set Layout Target
      *
      * @param Layout Target $value
-     * @return PHPExcel_Chart_Layout
+     * @return \PhpOffice\PhpSpreadsheet\Chart\Layout
      */
     public function setLayoutTarget($value)
     {
@@ -204,7 +204,7 @@ class PHPExcel_Chart_Layout
      * Set X-Mode
      *
      * @param X-Mode $value
-     * @return PHPExcel_Chart_Layout
+     * @return \PhpOffice\PhpSpreadsheet\Chart\Layout
      */
     public function setXMode($value)
     {
@@ -226,7 +226,7 @@ class PHPExcel_Chart_Layout
      * Set Y-Mode
      *
      * @param Y-Mode $value
-     * @return PHPExcel_Chart_Layout
+     * @return \PhpOffice\PhpSpreadsheet\Chart\Layout
      */
     public function setYMode($value)
     {
@@ -248,7 +248,7 @@ class PHPExcel_Chart_Layout
      * Set X-Position
      *
      * @param X-Position $value
-     * @return PHPExcel_Chart_Layout
+     * @return \PhpOffice\PhpSpreadsheet\Chart\Layout
      */
     public function setXPosition($value)
     {
@@ -270,7 +270,7 @@ class PHPExcel_Chart_Layout
      * Set Y-Position
      *
      * @param Y-Position $value
-     * @return PHPExcel_Chart_Layout
+     * @return \PhpOffice\PhpSpreadsheet\Chart\Layout
      */
     public function setYPosition($value)
     {
@@ -292,7 +292,7 @@ class PHPExcel_Chart_Layout
      * Set Width
      *
      * @param Width $value
-     * @return PHPExcel_Chart_Layout
+     * @return \PhpOffice\PhpSpreadsheet\Chart\Layout
      */
     public function setWidth($value)
     {
@@ -314,7 +314,7 @@ class PHPExcel_Chart_Layout
      * Set Height
      *
      * @param Height $value
-     * @return PHPExcel_Chart_Layout
+     * @return \PhpOffice\PhpSpreadsheet\Chart\Layout
      */
     public function setHeight($value)
     {
@@ -338,7 +338,7 @@ class PHPExcel_Chart_Layout
      * Specifies that legend keys should be shown in data labels.
      *
      * @param boolean $value        Show legend key
-     * @return PHPExcel_Chart_Layout
+     * @return \PhpOffice\PhpSpreadsheet\Chart\Layout
      */
     public function setShowLegendKey($value)
     {
@@ -361,7 +361,7 @@ class PHPExcel_Chart_Layout
      * Specifies that the value should be shown in data labels.
      *
      * @param boolean $value        Show val
-     * @return PHPExcel_Chart_Layout
+     * @return \PhpOffice\PhpSpreadsheet\Chart\Layout
      */
     public function setShowVal($value)
     {
@@ -384,7 +384,7 @@ class PHPExcel_Chart_Layout
      * Specifies that the category name should be shown in data labels.
      *
      * @param boolean $value        Show cat name
-     * @return PHPExcel_Chart_Layout
+     * @return \PhpOffice\PhpSpreadsheet\Chart\Layout
      */
     public function setShowCatName($value)
     {
@@ -407,7 +407,7 @@ class PHPExcel_Chart_Layout
      * Specifies that the series name should be shown in data labels.
      *
      * @param boolean $value        Show series name
-     * @return PHPExcel_Chart_Layout
+     * @return \PhpOffice\PhpSpreadsheet\Chart\Layout
      */
     public function setShowSerName($value)
     {
@@ -430,7 +430,7 @@ class PHPExcel_Chart_Layout
      * Specifies that the percentage should be shown in data labels.
      *
      * @param boolean $value        Show percentage
-     * @return PHPExcel_Chart_Layout
+     * @return \PhpOffice\PhpSpreadsheet\Chart\Layout
      */
     public function setShowPercent($value)
     {
@@ -453,7 +453,7 @@ class PHPExcel_Chart_Layout
      * Specifies that the bubble size should be shown in data labels.
      *
      * @param boolean $value        Show bubble size
-     * @return PHPExcel_Chart_Layout
+     * @return \PhpOffice\PhpSpreadsheet\Chart\Layout
      */
     public function setShowBubbleSize($value)
     {
@@ -476,7 +476,7 @@ class PHPExcel_Chart_Layout
      * Specifies that leader lines should be shown in data labels.
      *
      * @param boolean $value        Show leader lines
-     * @return PHPExcel_Chart_Layout
+     * @return \PhpOffice\PhpSpreadsheet\Chart\Layout
      */
     public function setShowLeaderLines($value)
     {

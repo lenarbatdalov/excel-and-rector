@@ -1,5 +1,7 @@
 <?php
 
+namespace PhpOffice\PhpSpreadsheet\Shared;
+
 /**
  * PHPExcel
  *
@@ -25,8 +27,6 @@
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
-
-
 /**
  * PHPExcel_Shared_TimeZone
  *
@@ -34,7 +34,7 @@
  * @package    PHPExcel_Shared
  * @copyright  Copyright (c) 2006 - 2015 PHPExcel (http://www.codeplex.com/PHPExcel)
  */
-class PHPExcel_Shared_TimeZone
+class TimeZone
 {
     /*
      * Default Timezone used for date/time conversions
@@ -52,10 +52,10 @@ class PHPExcel_Shared_TimeZone
      */
     public static function _validateTimeZone($timezone)
     {
-        if (in_array($timezone, DateTimeZone::listIdentifiers())) {
-            return true;
+        if (\in_array($timezone, \DateTimeZone::listIdentifiers())) {
+            return \true;
         }
-        return false;
+        return \false;
     }
 
     /**
@@ -68,9 +68,9 @@ class PHPExcel_Shared_TimeZone
     {
         if (self::_validateTimezone($timezone)) {
             self::$timezone = $timezone;
-            return true;
+            return \true;
         }
-        return false;
+        return \false;
     }
 
 
@@ -102,7 +102,7 @@ class PHPExcel_Shared_TimeZone
                 break;
             }
             if (empty($transitions)) {
-                $transitions[] = end($allTransitions);
+                $transitions[] = \end($allTransitions);
             }
         }
 
@@ -116,13 +116,13 @@ class PHPExcel_Shared_TimeZone
      *    @param        string                 $timezone        The timezone for finding the adjustment to UST
      *    @param        integer                 $timestamp        PHP date/time value
      *    @return         integer                Number of seconds for timezone adjustment
-     *    @throws        PHPExcel_Exception
+     *    @throws        \PhpOffice\PhpSpreadsheet\Exception
      */
     public static function getTimeZoneAdjustment($timezone, $timestamp)
     {
-        if ($timezone !== null) {
+        if ($timezone !== \null) {
             if (!self::_validateTimezone($timezone)) {
-                throw new PHPExcel_Exception("Invalid timezone " . $timezone);
+                throw new \PhpOffice\PhpSpreadsheet\Exception("Invalid timezone " . $timezone);
             }
         } else {
             $timezone = self::$timezone;
@@ -132,13 +132,13 @@ class PHPExcel_Shared_TimeZone
             return 0;
         }
 
-        $objTimezone = new DateTimeZone($timezone);
-        if (version_compare(PHP_VERSION, '5.3.0') >= 0) {
+        $objTimezone = new \DateTimeZone($timezone);
+        if (\version_compare(\PHP_VERSION, '5.3.0') >= 0) {
             $transitions = $objTimezone->getTransitions($timestamp, $timestamp);
         } else {
             $transitions = self::getTimezoneTransitions($objTimezone, $timestamp);
         }
 
-        return (count($transitions) > 0) ? $transitions[0]['offset'] : 0;
+        return (\count($transitions) > 0) ? $transitions[0]['offset'] : 0;
     }
 }

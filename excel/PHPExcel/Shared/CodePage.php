@@ -1,5 +1,7 @@
 <?php
 
+namespace PhpOffice\PhpSpreadsheet\Shared;
+
 /**
  * PHPExcel_Shared_CodePage
  *
@@ -25,7 +27,7 @@
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
-class PHPExcel_Shared_CodePage
+class CodePage
 {
     /**
      * Convert Microsoft Code Page Identifier to Code Page Name which iconv
@@ -33,7 +35,7 @@ class PHPExcel_Shared_CodePage
      *
      * @param integer $codePage Microsoft Code Page Indentifier
      * @return string Code Page Name
-     * @throws PHPExcel_Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
     public static function NumberToName($codePage = 1252)
     {
@@ -43,7 +45,7 @@ class PHPExcel_Shared_CodePage
             case 437:
                 return 'CP437';    //    OEM US
             case 720:
-                throw new PHPExcel_Exception('Code page 720 not supported.');    //    OEM Arabic
+                throw new \PhpOffice\PhpSpreadsheet\Exception('Code page 720 not supported.');    //    OEM Arabic
             case 737:
                 return 'CP737';    //    OEM Greek
             case 775:
@@ -145,12 +147,12 @@ class PHPExcel_Shared_CodePage
             case 32768:
                 return 'MAC';      //    Apple Roman
             case 32769:
-                throw new PHPExcel_Exception('Code page 32769 not supported.');  //    ANSI Latin I (BIFF2-BIFF3)
+                throw new \PhpOffice\PhpSpreadsheet\Exception('Code page 32769 not supported.');  //    ANSI Latin I (BIFF2-BIFF3)
             case 65000:
                 return 'UTF-7';    //    Unicode (UTF-7)
             case 65001:
                 return 'UTF-8';    //    Unicode (UTF-8)
         }
-        throw new PHPExcel_Exception('Unknown codepage: ' . $codePage);
+        throw new \PhpOffice\PhpSpreadsheet\Exception('Unknown codepage: ' . $codePage);
     }
 }
